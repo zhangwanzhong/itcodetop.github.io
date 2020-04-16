@@ -11,7 +11,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
     <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:39 GMT+0800 (CST)">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
-    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-capable" content="张万众的博客 - 关注Spring Cloud、Docker">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no,email=no,adress=no">
     <meta name="browsermode" content="application">
@@ -38,10 +38,10 @@ AvailabilityFilteringRule：过滤掉一直连接失败的被标记为circuit tr
     <!--Title-->
 
 
-<title>跟我学Spring Cloud（Finchley版）-08-Ribbon深入 | 周立的博客 - 关注Spring Cloud、Docker</title>
+<title>跟我学Spring Cloud（Finchley版）-08-Ribbon深入 | 张万众的博客 - 关注Spring Cloud、Docker</title>
 
 
-    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+    <link rel="alternate" href="../../atom.html" title="张万众的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
 
 
     
@@ -102,7 +102,7 @@ AvailabilityFilteringRule：过滤掉一直连接失败的被标记为circuit tr
                             <span class="icon-bar"></span>
                         </button>
                         <a class="logo" href="../../index.html">
-                            <img src="../../static/picture/favicon.jpg">周立的博客
+                            <img src="../../static/picture/favicon.jpg">张万众的博客
                         </a>
                     </div>
 
@@ -323,11 +323,11 @@ AvailabilityFilteringRule：过滤掉一直连接失败的被标记为circuit tr
 </ul>
 <h4 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h4><ul>
 <li><p>创建一个空类，并在其上添加<code>@Configuration</code> 注解和<code>@RibbonClient</code> 注解。</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用RibbonClient，为特定的目标服务自定义配置。</span></span><br><span class="line"><span class="comment"> * 使用<span class="doctag">@RibbonClient</span>的configuration属性，指定Ribbon的配置类。</span></span><br><span class="line"><span class="comment"> * 可参考的示例：</span></span><br><span class="line"><span class="comment"> * http://spring.io/guides/gs/client-side-load-balancing/</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> 周立</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@RibbonClient</span>(name = <span class="string">"microservice-provider-user"</span>, configuration = RibbonConfiguration.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestConfiguration</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用RibbonClient，为特定的目标服务自定义配置。</span></span><br><span class="line"><span class="comment"> * 使用<span class="doctag">@RibbonClient</span>的configuration属性，指定Ribbon的配置类。</span></span><br><span class="line"><span class="comment"> * 可参考的示例：</span></span><br><span class="line"><span class="comment"> * http://spring.io/guides/gs/client-side-load-balancing/</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> 张万众</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@RibbonClient</span>(name = <span class="string">"microservice-provider-user"</span>, configuration = RibbonConfiguration.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestConfiguration</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p> 由代码可知，使用<code>@RibbonClient</code> 注解的configuration属性，即可自定义指定名称Ribbon客户端的配置。</p>
 </li>
 <li><p>创建Ribbon的配置类。</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 该类为Ribbon的配置类</span></span><br><span class="line"><span class="comment"> * 注意：该类不能放在主应用程序上下文<span class="doctag">@ComponentScan</span>所扫描的包中，否则配置将会被所有Ribbon Client共享。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> 周立</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RibbonConfiguration</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Bean</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> IRule <span class="title">ribbonRule</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 负载均衡规则，改为随机</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> RandomRule();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 该类为Ribbon的配置类</span></span><br><span class="line"><span class="comment"> * 注意：该类不能放在主应用程序上下文<span class="doctag">@ComponentScan</span>所扫描的包中，否则配置将会被所有Ribbon Client共享。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> 张万众</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RibbonConfiguration</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Bean</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> IRule <span class="title">ribbonRule</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 负载均衡规则，改为随机</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> RandomRule();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h4 id="配套代码"><a href="#配套代码" class="headerlink" title="配套代码"></a>配套代码</h4><p>GitHub：<a href="javascript:;" target="_blank" rel="noopener">https://github.com/eacdy/spring-cloud-study/tree/master/2018-Finchley/microservice-consumer-movie-ribbon-config-java</a></p>
@@ -360,7 +360,7 @@ AvailabilityFilteringRule：过滤掉一直连接失败的被标记为circuit tr
             </div>
             <div>
                 
-                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                    转载声明：本博客由张万众创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
                 
             </div>
             <div>

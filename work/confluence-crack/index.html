@@ -11,7 +11,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
     <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:40 GMT+0800 (CST)">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
-    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-capable" content="张万众的博客 - 关注Spring Cloud、Docker">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no,email=no,adress=no">
     <meta name="browsermode" content="application">
@@ -40,10 +40,10 @@ WARNING
     <!--Title-->
 
 
-<title>基于Docker安装、部署、破解Confluence 6.6图文教程 | 周立的博客 - 关注Spring Cloud、Docker</title>
+<title>基于Docker安装、部署、破解Confluence 6.6图文教程 | 张万众的博客 - 关注Spring Cloud、Docker</title>
 
 
-    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+    <link rel="alternate" href="../../atom.html" title="张万众的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
 
 
     
@@ -104,7 +104,7 @@ WARNING
                             <span class="icon-bar"></span>
                         </button>
                         <a class="logo" href="../../index.html">
-                            <img src="../../static/picture/favicon.jpg">周立的博客
+                            <img src="../../static/picture/favicon.jpg">张万众的博客
                         </a>
                     </div>
 
@@ -309,7 +309,7 @@ WARNING
 <p>最近公司想将Confluence迁到Docker环境，同时顺序想升级一下。虽然公司用的是收费版，不过我顺便也研究了下怎么破解。以下是步骤，所用版本是 <code>Confluence 6.6</code> 。</p>
 <p>Confluence的破解比较简单，只需要替换JAR包 <code>atlassian-extras-decoder-v2-3.2.jar</code> 就可以了。</p>
 <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h3><p>以下是Dockerfile。</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> atlassian/confluence-server</span><br><span class="line"><span class="keyword">MAINTAINER</span> 周立&lt;eacdy0000@<span class="number">126</span>.com&gt;</span><br><span class="line"><span class="comment"># 传入破解补丁</span></span><br><span class="line"><span class="keyword">ADD</span> crack/atlassian-extras-decoder-v2-3.2.jar $&#123;CONFLUENCE_INSTALL_DIR&#125;/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.2.jar</span><br><span class="line"># 设置文件属组</span><br><span class="line">RUN chown -R $&#123;RUN_USER&#125;:$&#123;RUN_GROUP&#125; $&#123;CONFLUENCE_INSTALL_DIR&#125;/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.2.jar</span><br><span class="line"></span><br><span class="line">CMD ["/entrypoint.sh", "-fg"]</span><br><span class="line">ENTRYPOINT ["/sbin/tini", "--"]</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> atlassian/confluence-server</span><br><span class="line"><span class="keyword">MAINTAINER</span> 张万众&lt;eacdy0000@<span class="number">126</span>.com&gt;</span><br><span class="line"><span class="comment"># 传入破解补丁</span></span><br><span class="line"><span class="keyword">ADD</span> crack/atlassian-extras-decoder-v2-3.2.jar $&#123;CONFLUENCE_INSTALL_DIR&#125;/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.2.jar</span><br><span class="line"># 设置文件属组</span><br><span class="line">RUN chown -R $&#123;RUN_USER&#125;:$&#123;RUN_GROUP&#125; $&#123;CONFLUENCE_INSTALL_DIR&#125;/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.2.jar</span><br><span class="line"></span><br><span class="line">CMD ["/entrypoint.sh", "-fg"]</span><br><span class="line">ENTRYPOINT ["/sbin/tini", "--"]</span><br></pre></td></tr></table></figure>
 <h3 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h3><p>为了让配置更加简单，我们使用Docker Compose编排Confluence。这边提供下docker-compose.yml</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  mysql:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">mysql:5.7</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./mysql/:/etc/mysql/conf.d/</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./db_data:/var/lib/mysql</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"3306:3306"</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="attr">      MYSQL_ROOT_PASSWORD:</span> <span class="string">root123</span></span><br><span class="line"><span class="attr">      MYSQL_DATABASE:</span> <span class="string">confluence</span></span><br><span class="line"><span class="attr">      MYSQL_USER:</span> <span class="string">confluence</span></span><br><span class="line"><span class="attr">      MYSQL_PASSWORD:</span> <span class="string">confluence123</span></span><br><span class="line"><span class="attr">  confluence:</span></span><br><span class="line"><span class="attr">    build:</span> <span class="string">.</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"8090:8090"</span></span><br></pre></td></tr></table></figure>
 <p>MySQL所使用的配置文件<code>my.cnf</code> ：</p>
@@ -368,7 +368,7 @@ WARNING
             </div>
             <div>
                 
-                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                    转载声明：本博客由张万众创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
                 
             </div>
             <div>
