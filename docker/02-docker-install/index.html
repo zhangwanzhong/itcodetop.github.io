@@ -1,0 +1,652 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:40 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Docker">
+
+
+    <meta name="description" content="##2.1 CentOS
+2.1.1  系统要求
+CentOS 7或更高版本
+centos-extras 仓库必须处于启用状态，该仓库默认启用，但如果您禁用了该仓库，请按照https://wiki.centos.org/AdditionalResources/Repositories 中的描述...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Docker系列教程02-Docker安装(CentOS7/Ubuntu/macOS/Windows) | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Docker系列教程02-Docker安装(CentOS7/Ubuntu/macOS/Windows)">
+            
+                Docker系列教程02-Docker安装(CentOS7/Ubuntu/macOS/Windows)
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Docker</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Docker</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/02/06</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-系统要求"><span class="toc-text">2.1.1  系统要求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-yum安装"><span class="toc-text">2.1.2 yum安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-1-卸载老版本的Docker"><span class="toc-text">2.1.2.1 卸载老版本的Docker</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-2-安装仓库"><span class="toc-text">2.1.2.2 安装仓库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-3-安装Docker-CE"><span class="toc-text">2.1.2.3 安装Docker CE</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-4-升级Docker-CE"><span class="toc-text">2.1.2.4 升级Docker CE</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-5-参考文档"><span class="toc-text">2.1.2.5 参考文档</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-shell一键安装"><span class="toc-text">2.1.3 shell一键安装</span></a></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Ubuntu"><span class="toc-text">2.2 Ubuntu</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-系统要求"><span class="toc-text">2.2.1 系统要求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-安装步骤"><span class="toc-text">2.2.2 安装步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-1-卸载老版本Docker"><span class="toc-text">2.2.2.1 卸载老版本Docker</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-2-Ubuntu-Trusty-14-04-额外建议安装的包"><span class="toc-text">2.2.2.2 Ubuntu Trusty 14.04 额外建议安装的包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-3-安装仓库"><span class="toc-text">2.2.2.3 安装仓库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-4-安装Docker-CE"><span class="toc-text">2.2.2.4 安装Docker CE</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-5-升级Docker-CE"><span class="toc-text">2.2.2.5 升级Docker CE</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-6-参考文档"><span class="toc-text">2.2.2.6 参考文档</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-macOS"><span class="toc-text">2.3 macOS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-系统要求"><span class="toc-text">2.3.1 系统要求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-安装步骤"><span class="toc-text">2.3.2 安装步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Windows-docker-for-windows"><span class="toc-text">2.4 Windows(docker for windows)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-系统要求"><span class="toc-text">2.4.1 系统要求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-安装步骤"><span class="toc-text">2.4.2 安装步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-其他系统"><span class="toc-text">2.5 其他系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-加速安装"><span class="toc-text">2.6 加速安装</span></a>
+        </li></div>
+    </div>
+
+
+        <p>##2.1 CentOS</p>
+<h3 id="2-1-1-系统要求"><a href="#2-1-1-系统要求" class="headerlink" title="2.1.1  系统要求"></a>2.1.1  系统要求</h3><ul>
+<li><strong>CentOS 7</strong>或更高版本</li>
+<li><code>centos-extras</code> 仓库必须处于启用状态，该仓库默认启用，但如果您禁用了该仓库，请按照<a href="javascript:;" target="_blank" rel="noopener">https://wiki.centos.org/AdditionalResources/Repositories</a> 中的描述重新启用。</li>
+<li>建议使用<code>overlay2</code> 存储驱动<a id="more"></a>
+<h3 id="2-1-2-yum安装"><a href="#2-1-2-yum安装" class="headerlink" title="2.1.2 yum安装"></a>2.1.2 yum安装</h3></li>
+</ul>
+<h4 id="2-1-2-1-卸载老版本的Docker"><a href="#2-1-2-1-卸载老版本的Docker" class="headerlink" title="2.1.2.1 卸载老版本的Docker"></a>2.1.2.1 卸载老版本的Docker</h4><p>在CentOS中，老版本Docker名称是<code>docker</code> 或<code>docker-engine</code> ，而Docker CE的软件包名称是<code>docker-ce</code> 。因此，如已安装过老版本的Docker，需使用如下命令卸载。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-selinux \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，执行该命令只会卸载Docker本身，而不会删除Docker存储的文件，例如镜像、容器、卷以及网络文件等。这些文件保存在<code>/var/lib/docker</code> 目录中，需要手动删除。</p>
+<h4 id="2-1-2-2-安装仓库"><a href="#2-1-2-2-安装仓库" class="headerlink" title="2.1.2.2 安装仓库"></a>2.1.2.2 安装仓库</h4><ol>
+<li><p>执行以下命令，安装Docker所需的包。其中，<code>yum-utils</code> 提供了<code>yum-config-manager</code> 工具；<code>device-mapper-persistent-data</code> 及 <code>lvm2</code> 则是<code>devicemapper</code> 存储驱动所需的包。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行如下命令，安装<code>stable</code> 仓库。必须安装<code>stable</code> 仓库，即使你想安装<code>edge</code> 或<code>test</code> 仓库中的Docker构建版本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>[<strong>可选</strong>] 执行如下命令，启用<code>edge</code> 及<code>test</code> 仓库。edge/test仓库其实也包含在了<code>docker.repo</code> 文件中，但默认是禁用的，可使用以下命令来启用。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum-config-manager --enable docker-ce-edge    # 启用edge仓库</span><br><span class="line">sudo yum-config-manager --enable docker-ce-test    # 启用test仓库</span><br></pre></td></tr></table></figure>
+<p>如需再次禁用，可加上<code>--disable</code> 标签。例如，执行如下命令即可禁用edge仓库。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum-config-manager --disable docker-ce-edge</span><br></pre></td></tr></table></figure>
+<p><strong>TIPS</strong>：从Docker 17.06起，stable版本也会发布到edge以及test仓库中。</p>
+</li>
+</ol>
+<h4 id="2-1-2-3-安装Docker-CE"><a href="#2-1-2-3-安装Docker-CE" class="headerlink" title="2.1.2.3 安装Docker CE"></a>2.1.2.3 安装Docker CE</h4><ol>
+<li><p>执行以下命令，更新<code>yum</code>的包索引</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum makecache fast</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行如下命令即可安装最新版本的Docker CE</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在生产环境中，可能需要指定想要安装的版本，此时可使用如下命令列出当前可用的Docker版本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list docker-ce.x86_64  --showduplicates | sort -r</span><br></pre></td></tr></table></figure>
+<p>这样，列出版本后，可使用如下命令，安装想要安装的Docker CE版本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install docker-ce-&lt;VERSION&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动Docker</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>验证安装是否正确。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+<p>这样，Docker将会下载测试镜像，并使用该镜像启动一个容器。如能够看到类似如下的输出，则说明安装成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Unable to find image &apos;hello-world:latest&apos; locally</span><br><span class="line">latest: Pulling from library/hello-world</span><br><span class="line">b04784fba78d: Pull complete</span><br><span class="line">Digest: sha256:f3b3b28a45160805bb16542c9531888519430e9e6d6ffc09d72261b0d26ff74f</span><br><span class="line">Status: Downloaded newer image for hello-world:latest</span><br><span class="line"></span><br><span class="line">Hello from Docker!</span><br><span class="line">This message shows that your installation appears to be working correctly.</span><br><span class="line"></span><br><span class="line">To generate this message, Docker took the following steps:</span><br><span class="line"> 1. The Docker client contacted the Docker daemon.</span><br><span class="line"> 2. The Docker daemon pulled the &quot;hello-world&quot; image from the Docker Hub.</span><br><span class="line"> 3. The Docker daemon created a new container from that image which runs the</span><br><span class="line">    executable that produces the output you are currently reading.</span><br><span class="line"> 4. The Docker daemon streamed that output to the Docker client, which sent it</span><br><span class="line">    to your terminal.</span><br><span class="line"></span><br><span class="line">To try something more ambitious, you can run an Ubuntu container with:</span><br><span class="line"> $ docker run -it ubuntu bash</span><br><span class="line"></span><br><span class="line">Share images, automate workflows, and more with a free Docker ID:</span><br><span class="line"> https://cloud.docker.com/</span><br><span class="line"></span><br><span class="line">For more examples and ideas, visit:</span><br><span class="line"> https://docs.docker.com/engine/userguide/</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="2-1-2-4-升级Docker-CE"><a href="#2-1-2-4-升级Docker-CE" class="headerlink" title="2.1.2.4 升级Docker CE"></a>2.1.2.4 升级Docker CE</h4><p>如需升级Docker CE，只需执行如下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum makecache fast</span><br></pre></td></tr></table></figure>
+<p>然后按照安装Docker的步骤，即可升级Docker。</p>
+<h4 id="2-1-2-5-参考文档"><a href="#2-1-2-5-参考文档" class="headerlink" title="2.1.2.5 参考文档"></a>2.1.2.5 参考文档</h4><p>CentOS 7安装Docker官方文档：<a href="javascript:;" target="_blank" rel="noopener">https://docs.docker.com/engine/installation/linux/docker-ce/centos/</a> ，文档中还讲解了在CentOS 7中安装Docker CE的其他方式，本文不作赘述。</p>
+<h3 id="2-1-3-shell一键安装"><a href="#2-1-3-shell一键安装" class="headerlink" title="2.1.3 shell一键安装"></a>2.1.3 shell一键安装</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL get.docker.com -o get-docker.sh</span><br><span class="line">sudo sh get-docker.sh</span><br></pre></td></tr></table></figure>
+<p>搞定一切。</p>
+<h2 id="2-2-Ubuntu"><a href="#2-2-Ubuntu" class="headerlink" title="2.2 Ubuntu"></a>2.2 Ubuntu</h2><h3 id="2-2-1-系统要求"><a href="#2-2-1-系统要求" class="headerlink" title="2.2.1 系统要求"></a>2.2.1 系统要求</h3><ul>
+<li>Docker支持以下版本的Ubuntu，要求64位。<ul>
+<li>Zesty 17.04</li>
+<li>Xenial 16.04 (LTS)</li>
+<li>Trusty 14.04 (LTS)</li>
+</ul>
+</li>
+<li>支持运行的平台：<code>x86_64</code> 、<code>armhf</code> 、<code>s390x(IBM Z)</code> 。其中，如选择IBM Z，那么只支持Ubuntu Xenial以及Zesty。</li>
+<li>本文使用<strong>Ubuntu 16.04 LTS</strong>，下载地址：<a href="javascript:;" target="_blank" rel="noopener">http://cn.ubuntu.com/download/</a></li>
+</ul>
+<h3 id="2-2-2-安装步骤"><a href="#2-2-2-安装步骤" class="headerlink" title="2.2.2 安装步骤"></a>2.2.2 安装步骤</h3><h4 id="2-2-2-1-卸载老版本Docker"><a href="#2-2-2-1-卸载老版本Docker" class="headerlink" title="2.2.2.1 卸载老版本Docker"></a>2.2.2.1 卸载老版本Docker</h4><p>在Ubuntu中，老版本的软件包名称是<code>docker</code> 或者<code>docker-engine</code> ，而Docker CE的软件包名称是<code>docker-ce</code> 。因此，如已安装过老版本的Docker，需要先卸载掉。执行以下命令，即可卸载老版本的Docker及其依赖。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove docker docker-engine docker.io</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，执行该命令只会卸载Docker本身，而不会删除Docker内容，例如镜像、容器、卷以及网络。这些文件保存在<code>/var/lib/docker</code> 目录中，需要手动删除。</p>
+<h4 id="2-2-2-2-Ubuntu-Trusty-14-04-额外建议安装的包"><a href="#2-2-2-2-Ubuntu-Trusty-14-04-额外建议安装的包" class="headerlink" title="2.2.2.2 Ubuntu Trusty 14.04 额外建议安装的包"></a>2.2.2.2 Ubuntu Trusty 14.04 额外建议安装的包</h4><p>除非你有不得已的苦衷，否则强烈建议安装<code>linux-image-extra-*</code> 软件包，以便于Docker使用<code>aufs</code> 存储驱动。执行如下命令，即可安装<code>linux-image-extra-*</code> 。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line"></span><br><span class="line">sudo apt-get install \</span><br><span class="line">    linux-image-extra-$(uname -r) \</span><br><span class="line">    linux-image-extra-virtual</span><br></pre></td></tr></table></figure>
+<p>对于Ubuntu 16.04或更高版本，Linux内核包含了对OverlayFS的支持，Docker CE默认会使用<code>overlay2</code> 存储驱动。</p>
+<h4 id="2-2-2-3-安装仓库"><a href="#2-2-2-3-安装仓库" class="headerlink" title="2.2.2.3 安装仓库"></a>2.2.2.3 安装仓库</h4><ol>
+<li><p>执行如下命令，更新<code>apt</code> 的包索引。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行如下命令，从而允许<code>apt</code> 使用HTTPS仓库。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install \</span><br><span class="line">    apt-transport-https \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    software-properties-common</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加Docker官方的GPG key</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+<p>确认指纹是<code>9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88</code> 。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-key fingerprint 0EBFCD88</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行如下命令，安装<code>stable</code> 仓库。无论如何都必须安装<code>stable</code> 仓库，即使你想安装<code>edge</code> 或<code>test</code> 仓库中的Docker构建。如需添加<code>edge</code> 或<code>test</code> 仓库，可在如下命令中的“stable” 后，添加<code>edge</code> 或<code>test</code> 或两者。请视自己Ubuntu所运行的平台来执行如下命令。<br><strong>NOTE</strong>：如下命令中的<code>lsb_release -cs</code> 子命令用于返回您Ubuntu的发行版名称，例如<code>xenial</code> 。有时，在例如Linux Mint这样的发行版中，您可能需要将如下命令中的<code>$(lsb_release -cs)</code> 更改为系统的父级Ubuntu发行版。例如，如果您使用的是Linux Mint Rafaela，则可以使用<code>trusty</code> 。<br><strong>amd64</strong>:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo add-apt-repository \</span><br><span class="line">   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \</span><br><span class="line"><span class="meta">   $</span>(lsb_release -cs) \</span><br><span class="line">   stable"</span><br></pre></td></tr></table></figure>
+<p><strong>armhf</strong>:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo add-apt-repository \</span><br><span class="line">   "deb [arch=armhf] https://download.docker.com/linux/ubuntu \</span><br><span class="line"><span class="meta">   $</span>(lsb_release -cs) \</span><br><span class="line">   stable"</span><br></pre></td></tr></table></figure>
+<p><strong>s390x</strong>:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo add-apt-repository \</span><br><span class="line">   "deb [arch=s390x] https://download.docker.com/linux/ubuntu \</span><br><span class="line"><span class="meta">   $</span>(lsb_release -cs) \</span><br><span class="line">   stable"</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE</strong>：从Docker 17.06起，stable版本也会发布到edge以及test仓库中。</p>
+</li>
+</ol>
+<h4 id="2-2-2-4-安装Docker-CE"><a href="#2-2-2-4-安装Docker-CE" class="headerlink" title="2.2.2.4 安装Docker CE"></a>2.2.2.4 安装Docker CE</h4><ol>
+<li><p>执行如下命令，更新<code>apt</code> 包索引。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行如下命令，即可安装最新版本的Docker CE。任何已存在的Docker将会被覆盖安装。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install docker-ce</span><br></pre></td></tr></table></figure>
+<p><strong>WARNING</strong>：如启用了多个Docker仓库，使用命令apt-get install 或apt-get update 命令安装或升级时，如未指定版本，那么将会安装最新的版本。这可能不适合您的稳定性要求。</p>
+</li>
+<li><p>在生产环境中，我们可能需要指定想要安装的版本，此时可使用如下命令列出当前可用的Docker版本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-cache madison docker-ce</span><br></pre></td></tr></table></figure>
+<p>这样，列出版本后，可使用如下命令，安装想要安装的Docker CE版本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install docker-ce=&lt;VERSION&gt;</span><br></pre></td></tr></table></figure>
+<p>Docker daemon会自动启动。</p>
+</li>
+<li><p>验证安装是否正确。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="2-2-2-5-升级Docker-CE"><a href="#2-2-2-5-升级Docker-CE" class="headerlink" title="2.2.2.5 升级Docker CE"></a>2.2.2.5 升级Docker CE</h4><p>如需升级Docker CE，只需执行如下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+<p>然后按照安装Docker的步骤，即可升级Docker。</p>
+<h4 id="2-2-2-6-参考文档"><a href="#2-2-2-6-参考文档" class="headerlink" title="2.2.2.6 参考文档"></a>2.2.2.6 参考文档</h4><p>Ubuntu安装Docker官方文档：<a href="javascript:;" target="_blank" rel="noopener">https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/</a> ，文档还讲解了在Ubuntu中安装Docker CE的其他方式，本文不作赘述。</p>
+<h2 id="2-3-macOS"><a href="#2-3-macOS" class="headerlink" title="2.3 macOS"></a>2.3 macOS</h2><h3 id="2-3-1-系统要求"><a href="#2-3-1-系统要求" class="headerlink" title="2.3.1 系统要求"></a>2.3.1 系统要求</h3><p>macOS Yosemite 10.10.3或更高版本</p>
+<h3 id="2-3-2-安装步骤"><a href="#2-3-2-安装步骤" class="headerlink" title="2.3.2 安装步骤"></a>2.3.2 安装步骤</h3><ul>
+<li>前往<a href="javascript:;" target="_blank" rel="noopener">https://store.docker.com/editions/community/docker-ce-desktop-mac</a> ，点击页面右侧的“Get Docker”按钮，下载安装包；</li>
+<li>双击即可安装。</li>
+</ul>
+<h2 id="2-4-Windows-docker-for-windows"><a href="#2-4-Windows-docker-for-windows" class="headerlink" title="2.4 Windows(docker for windows)"></a>2.4 Windows(docker for windows)</h2><h3 id="2-4-1-系统要求"><a href="#2-4-1-系统要求" class="headerlink" title="2.4.1 系统要求"></a>2.4.1 系统要求</h3><p>Windows 10 Professional 或 Windows 10 Enterprise X64</p>
+<p>对于Win 7，可使用Docker Toolbox（不建议使用）</p>
+<h3 id="2-4-2-安装步骤"><a href="#2-4-2-安装步骤" class="headerlink" title="2.4.2 安装步骤"></a>2.4.2 安装步骤</h3><ul>
+<li>前往<a href="javascript:;" target="_blank" rel="noopener">https://store.docker.com/editions/community/docker-ce-desktop-windows</a> ，点击页面右侧的“Get Docker”按钮，下载安装包；</li>
+<li>双击即可安装。</li>
+</ul>
+<h2 id="2-5-其他系统"><a href="#2-5-其他系统" class="headerlink" title="2.5 其他系统"></a>2.5 其他系统</h2><p>详见官方文档：<a href="javascript:;" target="_blank" rel="noopener">https://docs.docker.com/engine/installation/</a></p>
+<h2 id="2-6-加速安装"><a href="#2-6-加速安装" class="headerlink" title="2.6 加速安装"></a>2.6 加速安装</h2><p>注册阿里云，参考该页面的内容安装即可：<a href="javascript:;" target="_blank" rel="noopener">https://cr.console.aliyun.com/#/accelerator</a></p>
+
+        <h2>相关文章</h2><ul><li><a href="../11-docker-nexus/index.html">Docker系列教程11-使用Nexus管理Docker镜像</a></li><li><a href="../../docker-compose-eureka-ha/index.html">Docker容器双向联通与高可用的Eureka Server</a></li><li><a href="../03-docker-mirror/index.html">Docker系列教程03-配置镜像加速器</a></li><li><a href="../04-docker-command-images/index.html">Docker系列教程04-Docker镜像常用命令</a></li><li><a href="../01-docker-summary/index.html">Docker系列教程01-Docker简介</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">Docker系列教程02-Docker安装(CentOS7/Ubuntu/macOS/Windows)</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../../spring-cloud-sum/performance-zuul-and-gateway-linkerd/index.html" class="pre-post btn btn-default" title="纠错帖：Zuul & Spring Cloud Gateway & Linkerd性能对比">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">纠错帖：Zuul & Spring Cloud Gateway & Linkerd性能对比</span>
+        </a>
+    
+    
+        <a target="_blank" href="../01-docker-summary/index.html" class="next-post btn btn-default" title="Docker系列教程01-Docker简介">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Docker系列教程01-Docker简介</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

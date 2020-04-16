@@ -1,0 +1,549 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:40 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Feign,Hystrix,Ribbon">
+
+
+    <meta name="description" content="Spring Cloud中，Feign和Ribbon在整合了Hystrix后，可能会出现首次调用失败的问题，要如何解决该问题呢？
+
+TIPS
+本文于2019-01-10更新，基于Spring Cloud Finchley。
+
+造成该问题的原因Hystrix默认的超时时间是1秒，如果超过这个时间...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Spring Cloud中，如何解决Feign/Ribbon第一次请求失败的问题？ | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../index.html">
+                            <img src="../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Spring Cloud中，如何解决Feign/Ribbon第一次请求失败的问题？">
+            
+                Spring Cloud中，如何解决Feign/Ribbon第一次请求失败的问题？
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Feign</a> <a class="tag-link" href="javascript:;">Hystrix</a> <a class="tag-link" href="javascript:;">Ribbon</a> <a class="tag-link" href="javascript:;">Spring Cloud</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/11/07</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#造成该问题的原因"><span class="toc-text">造成该问题的原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法一、将Hystrix超时设长"><span class="toc-text">方法一、将Hystrix超时设长</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法二、禁用Hystrix超时"><span class="toc-text">方法二、禁用Hystrix超时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法三、为Feign禁用Hystrix"><span class="toc-text">方法三、为Feign禁用Hystrix</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#全局禁用"><span class="toc-text">全局禁用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#局部禁用"><span class="toc-text">局部禁用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法四、Ribbon配置饥饿加载（最佳）"><span class="toc-text">方法四、Ribbon配置饥饿加载（最佳）</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>Spring Cloud中，Feign和Ribbon在整合了Hystrix后，可能会出现首次调用失败的问题，要如何解决该问题呢？</p>
+<blockquote>
+<p><strong>TIPS</strong></p>
+<p>本文于2019-01-10更新，基于Spring Cloud Finchley。</p>
+</blockquote>
+<h2 id="造成该问题的原因"><a href="#造成该问题的原因" class="headerlink" title="造成该问题的原因"></a>造成该问题的原因</h2><p>Hystrix默认的超时时间是1秒，如果超过这个时间尚未响应，将会进入fallback代码。而首次请求往往会比较慢（<strong>由于Ribbon是懒加载的，在首次请求时，才会开始初始化相关类</strong>），这个响应时间可能就大于1秒了。知道原因后，我们来总结一下解决方案。以feign为例，解决方案有如下四种。</p>
+<a id="more"></a>
+<h2 id="方法一、将Hystrix超时设长"><a href="#方法一、将Hystrix超时设长" class="headerlink" title="方法一、将Hystrix超时设长"></a>方法一、将Hystrix超时设长</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds:</span> <span class="number">5000</span></span><br></pre></td></tr></table></figure>
+<p>该配置是让Hystrix的超时时间改为5秒，这是最容易想到的办法，不过有点治标不治本。</p>
+<h2 id="方法二、禁用Hystrix超时"><a href="#方法二、禁用Hystrix超时" class="headerlink" title="方法二、禁用Hystrix超时"></a>方法二、禁用Hystrix超时</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">hystrix.command.default.execution.timeout.enabled:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>该配置，用于禁用Hystrix的超时时间，一般不建议使用。</p>
+<h2 id="方法三、为Feign禁用Hystrix"><a href="#方法三、为Feign禁用Hystrix" class="headerlink" title="方法三、为Feign禁用Hystrix"></a>方法三、为Feign禁用Hystrix</h2><h3 id="全局禁用"><a href="#全局禁用" class="headerlink" title="全局禁用"></a>全局禁用</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">feign.hystrix.enabled:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>索性禁用feign的hystrix，该做法比较极端，除非一些特殊场景，不推荐使用。</p>
+<h3 id="局部禁用"><a href="#局部禁用" class="headerlink" title="局部禁用"></a>局部禁用</h3><p>为名为<code>microservice-provider-user</code> 的Feign Client禁用Hystrix</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(name = <span class="string">"microservice-provider-user"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserFeignClient</span> </span>&#123;</span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/users/&#123;id&#125;"</span>)</span><br><span class="line">  <span class="function">User <span class="title">findById</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> Long id)</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooConfiguration</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Bean</span></span><br><span class="line">  <span class="meta">@Scope</span>(<span class="string">"prototype"</span>)</span><br><span class="line">  <span class="keyword">public</span> Feign.<span class="function">Builder <span class="title">feignBuilder</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Feign.builder();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="方法四、Ribbon配置饥饿加载（最佳）"><a href="#方法四、Ribbon配置饥饿加载（最佳）" class="headerlink" title="方法四、Ribbon配置饥饿加载（最佳）"></a>方法四、Ribbon配置饥饿加载（最佳）</h2><p>从Dalston开始，Ribbon支持配置eager load实现在启动时就初始化Ribbon相关类。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ribbon:</span></span><br><span class="line"><span class="attr">  eager-load:</span></span><br><span class="line"><span class="attr">    enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    clients:</span> <span class="string">client1,</span> <span class="string">client2,</span> <span class="string">client3</span></span><br></pre></td></tr></table></figure>
+<p>Dalson之前版本可以通过一些Hack的机制实现eager load，不过成本略高，不建议，这里就不贴了。</p>
+
+        <h2>相关文章</h2><ul><li><a href="../spring-cloud/finchley-13/index.html">跟我学Spring Cloud（Finchley版）-13-通用方式使用Hystrix</a></li><li><a href="../spring-cloud/finchley-14/index.html">跟我学Spring Cloud（Finchley版）-14-Feign使用Hystrix</a></li><li><a href="../spring-cloud/finchley-15/index.html">跟我学Spring Cloud（Finchley版）-15-Hystrix监控详解</a></li><li><a href="../spring-cloud/finchley-7/index.html">跟我学Spring Cloud（Finchley版）-07-Ribbon入门</a></li><li><a href="../spring-cloud/finchley-12/index.html">跟我学Spring Cloud（Finchley版）-12-微服务容错三板斧</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">Spring Cloud中，如何解决Feign/Ribbon第一次请求失败的问题？</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../work/app-can-not-startup-without-any-error/index.html" class="pre-post btn btn-default" title="应用无法启动，并且不报错的总结">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">应用无法启动，并且不报错的总结</span>
+        </a>
+    
+    
+        <a target="_blank" href="../spring-cloud-sum-eureka/index.html" class="next-post btn btn-default" title="Spring Cloud中，Eureka常见问题总结">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Spring Cloud中，Eureka常见问题总结</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

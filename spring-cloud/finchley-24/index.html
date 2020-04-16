@@ -1,0 +1,577 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:39 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Spring Cloud Sleuth">
+
+
+    <meta name="description" content="经过前文讲述，我们的微服务架构日趋完善，已可使用Spring Cloud构建一个非常健壮的系统！
+但假设，你的项目一旦出现问题，如何才能快速定位出来呢？一般项目上要求我们快速定位两种问题：
+
+调用发生失败，快速定位出是哪个环节出了问题。是微服务问题，还是网络？
+调用慢，如何快速找到性能瓶颈？
+...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>跟我学Spring Cloud（Finchley版）-24-Spring Cloud Sleuth入门 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="跟我学Spring Cloud（Finchley版）-24-Spring Cloud Sleuth入门">
+            
+                跟我学Spring Cloud（Finchley版）-24-Spring Cloud Sleuth入门
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="javascript:;">Spring Cloud Sleuth</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/03/13</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本概念"><span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#快速入门"><span class="toc-text">快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#测试"><span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TIPS"><span class="toc-text">TIPS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配套代码"><span class="toc-text">配套代码</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>经过前文讲述，我们的微服务架构日趋完善，已可使用Spring Cloud构建一个非常健壮的系统！</p>
+<p>但假设，你的项目一旦出现问题，如何才能快速定位出来呢？一般项目上要求我们快速定位两种问题：</p>
+<ul>
+<li>调用发生失败，快速定位出是哪个环节出了问题。是微服务问题，还是网络？</li>
+<li>调用慢，如何快速找到性能瓶颈？</li>
+</ul>
+<p>这正是调用链监控要做的事情。Spring Cloud提供Sleuth来实现调用链监控。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Spring Cloud Sleuth为Spring Cloud提供了分布式跟踪的解决方案，它大量借用了Google Dapper、Twitter Zipkin和Apache HTrace的设计。</p>
+<p><strong>TIPS</strong></p>
+<ul>
+<li>Spring Cloud Sleuth的GitHub：<a href="javascript:;" target="_blank" rel="noopener">https://github.com/spring-cloud/spring-cloud-sleuth</a></li>
+<li>Dapper论文：<a href="javascript:;" target="_blank" rel="noopener">https://research.google.com/pubs/pub36356.html</a></li>
+</ul>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>(1) Span（跨度）:</p>
+<p>基本工作单元。span用一个64位的id唯一标识。除ID外，span还包含其他数据，例如描述、时间戳事件、键值对的注解（标签），span ID、span父ID等。</p>
+<p>span被启动和停止时，记录了时间信息。初始化span被称为“root span”，该span的id和trace的id相等。</p>
+<p>(2) Trace（跟踪）:</p>
+<p>一组共享“root span”的span组成的树状结构称为trace。trace也用一个64位的ID唯一标识，trace中的所有span都共享该trace的ID。</p>
+<p>(3) Annotation（标注）:</p>
+<p>annotation用来记录事件的存在，其中，核心annotation用来定义请求的开始和结束。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(1) cs（Client Sent 客户端发送）：客户端发起一个请求，该annotation描述了span的开始。</span><br><span class="line"></span><br><span class="line">(2) sr（Server Received 服务器端接收）：服务器端获得请求并准备处理它。如果用sr减去cs时间戳，就能得到网络延迟。</span><br><span class="line"></span><br><span class="line">(3) ss（Server Sent 服务器端发送）：该annotation表明完成请求处理（当响应发回客户端时）。如果用ss减去sr时间戳，就能得到服务器端处理请求所需的时间。</span><br><span class="line"></span><br><span class="line">(4) cr（Client Received 客户端接收）：span结束的标识。客户端成功接收到服务器端的响应。如果cr减去cs时间戳，就能得到从客户端发送请求到服务器响应的所需的时间。</span><br></pre></td></tr></table></figure>
+<p><img src="../../static/picture/sleuth-1.png" alt="Sleuth"></p>
+<h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><ul>
+<li><p>加依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-sleuth<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">logging:</span></span><br><span class="line"><span class="attr">  level:</span></span><br><span class="line"><span class="attr">    root:</span> <span class="string">INFO</span></span><br><span class="line">    <span class="string">org.springframework.cloud.sleuth:</span> <span class="string">DEBUG</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>其中，配置不是必选的，这里加上日志，只是为了看到更多Sleuth相关的日志。</p>
+<p>是不是非常简单！</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><ul>
+<li><p>启动 <code>microservice-provider-user-sleuth</code> </p>
+</li>
+<li><p>访问 <code>http://localhost:8000/users/1</code> ，可看到类似如下的日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">2019-03-13 23:32:46.913  INFO [microservice-provider-user,,,] 14759 --- [nio-8000-exec-1] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1551574921,1551708812,1552142696] that contained an invalid cookie. That cookie will be ignored.Note: further occurrences of this error will be logged at DEBUG level.</span><br><span class="line">Hibernate: select user0_.id as id1_0_0_, user0_.age as age2_0_0_, user0_.balance as balance3_0_0_, user0_.name as name4_0_0_, user0_.username as username5_0_0_ from user user0_ where user0_.id=?</span><br><span class="line">2019-03-13 23:32:46.975 TRACE [microservice-provider-user,e22f74e62c06104b,e22f74e62c06104b,false] 14759 --- [nio-8000-exec-1] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [BIGINT] - [1]</span><br><span class="line">2019-03-13 23:32:46.981 TRACE [microservice-provider-user,e22f74e62c06104b,e22f74e62c06104b,false] 14759 --- [nio-8000-exec-1] o.h.type.descriptor.sql.BasicExtractor   : extracted value ([age2_0_0_] : [INTEGER]) - [20]</span><br><span class="line">2019-03-13 23:32:46.982 TRACE [microservice-provider-user,e22f74e62c06104b,e22f74e62c06104b,false] 14759 --- [nio-8000-exec-1] o.h.type.descriptor.sql.BasicExtractor   : extracted value ([balance3_0_0_] : [NUMERIC]) - [100.00]</span><br><span class="line">2019-03-13 23:32:46.982 TRACE [microservice-provider-user,e22f74e62c06104b,e22f74e62c06104b,false] 14759 --- [nio-8000-exec-1] o.h.type.descriptor.sql.BasicExtractor   : extracted value ([name4_0_0_] : [VARCHAR]) - [张三]</span><br><span class="line">2019-03-13 23:32:46.982 TRACE [microservice-provider-user,e22f74e62c06104b,e22f74e62c06104b,false] 14759 --- [nio-8000-exec-1] o.h.type.descriptor.sql.BasicExtractor   : extracted value ([username5_0_0_] : [VARCHAR]) - [account1]</span><br></pre></td></tr></table></figure>
+<p>从日志可以发现，此时日志多出来类似 <code>[microservice-provider-user,e22f74e62c06104b,e22f74e62c06104b,false]</code> 的内容。</p>
+<p>经过数据分析，就能实现本文开始提出的两个诉求啦！如何分析呢？且听下回分解。</p>
+</li>
+</ul>
+<h2 id="TIPS"><a href="#TIPS" class="headerlink" title="TIPS"></a>TIPS</h2><p>本文的例子本身意义不大，主要是让大家了解下Sleuth的基本概念以及如何整合。实现分布式应用的监控才有意义；另外完善的监控工具一般都会配备一个良好的界面，便于大家才能迅速了解系统的运行情况。这些都是下一节要探索的问题。</p>
+<h2 id="配套代码"><a href="#配套代码" class="headerlink" title="配套代码"></a>配套代码</h2><ul>
+<li>GitHub：<a href="javascript:;" target="_blank" rel="noopener">https://github.com/eacdy/spring-cloud-study/tree/master/2018-Finchley/microservice-provider-user-sleuth</a></li>
+<li>Gitee：<a href="javascript:;" target="_blank" rel="noopener">https://gitee.com/itmuch/spring-cloud-study/tree/master/2018-Finchley/microservice-provider-user-sleuth</a></li>
+</ul>
+
+        <h2>相关文章</h2><ul><li><a href="../finchley-26/index.html">跟我学Spring Cloud（Finchley版）-26-使用Elasticsearch作为Zipkin Server的后端存储</a></li><li><a href="../finchley-25/index.html">跟我学Spring Cloud（Finchley版）-25-Spring Cloud Sleuth与Zipkin配合使用</a></li><li><a href="../sleuth-elk/index.html">Spring Cloud Sleuth使用ELK收集&分析日志</a></li><li><a href="../../advertisment/my-spring-book/index.html">《Spring Cloud与Docker微服务实战》实体书目录</a></li><li><a href="../../advertisment/my-spring-book-code/index.html">《Spring Cloud与Docker微服务架构实战》配套代码</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">跟我学Spring Cloud（Finchley版）-24-Spring Cloud Sleuth入门</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../finchley-25/index.html" class="pre-post btn btn-default" title="跟我学Spring Cloud（Finchley版）-25-Spring Cloud Sleuth与Zipkin配合使用">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">跟我学Spring Cloud（Finchley版）-25-Spring Cloud Sleuth与Zipkin配合使用</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../spring-cloud-sum/debug-zuul/index.html" class="next-post btn btn-default" title="实用技巧：快速定位Zuul的性能瓶颈">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">实用技巧：快速定位Zuul的性能瓶颈</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

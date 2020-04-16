@@ -1,0 +1,580 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:40 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Eureka">
+
+
+    <meta name="description" content="阅读本文你将了解
+微服务注册到Eureka Server上的粗粒度过程
+eureka.instance.prefer-ip-address = true 时，发生的一些事
+深度理解eureka.instance.ip-address 和eureka.instance.prefer-ip-add...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Eureka服务注册过程详解之IpAddress（详解eureka.instance.prefer-ip-address = true 与 eureka.instance.prefer-ip-address） | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Eureka服务注册过程详解之IpAddress（详解eureka.instance.prefer-ip-address = true 与 eureka.instance.prefer-ip-address）">
+            
+                Eureka服务注册过程详解之IpAddress（详解eureka.instance.prefer-ip-address = true 与 eureka.instance.prefer-ip-address）
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Eureka</a> <a class="tag-link" href="javascript:;">Spring Cloud</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/12/24</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#阅读本文你将了解"><span class="toc-text">阅读本文你将了解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析，eureka-instance-prefer-ip-address"><span class="toc-text">分析，eureka.instance.prefer-ip-address</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#eureka-instance-ip-address和eureka-instance-prefer-ip-address-true同时设置，会用自动获取的ip还是手动设置的？"><span class="toc-text">eureka.instance.ip-address和eureka.instance.prefer-ip-address = true同时设置，会用自动获取的ip还是手动设置的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-T-W"><span class="toc-text">B.T.W</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <h2 id="阅读本文你将了解"><a href="#阅读本文你将了解" class="headerlink" title="阅读本文你将了解"></a>阅读本文你将了解</h2><ul>
+<li>微服务注册到Eureka Server上的粗粒度过程</li>
+<li><code>eureka.instance.prefer-ip-address = true</code> 时，发生的一些事</li>
+<li>深度理解<code>eureka.instance.ip-address</code> 和<code>eureka.instance.prefer-ip-address = true</code> 。</li>
+<li>杂谈</li>
+</ul>
+<p>注：本篇较长、枯燥、烧脑，并且涉及的范围相对广，建议选择一个舒服的姿势阅读。</p>
+<a id="more"></a>
+<h2 id="分析，eureka-instance-prefer-ip-address"><a href="#分析，eureka-instance-prefer-ip-address" class="headerlink" title="分析，eureka.instance.prefer-ip-address"></a>分析，eureka.instance.prefer-ip-address</h2><ul>
+<li>本节解释为什么配置eureka.instance.prefer-ip-address = true时，注册到Eureka Server上的是IP，以及是什么IP</li>
+</ul>
+<p>老套路，定位问题从配置开始。</p>
+<p>(1) 我们通过<code>eureka.instance.prefer-ip-address</code> 配置项，可以找到源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean.preferIpAddress</span><br></pre></td></tr></table></figure>
+<p>(2) preferIpAddress被哪里调用，可以找到</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean.getHostName(boolean)</span><br></pre></td></tr></table></figure>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getHostName</span><span class="params">(<span class="keyword">boolean</span> refresh)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (refresh &amp;&amp; !<span class="keyword">this</span>.hostInfo.override) &#123;</span><br><span class="line">		<span class="keyword">this</span>.ipAddress = <span class="keyword">this</span>.hostInfo.getIpAddress();</span><br><span class="line">		<span class="keyword">this</span>.hostname = <span class="keyword">this</span>.hostInfo.getHostname();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.preferIpAddress ? <span class="keyword">this</span>.ipAddress : <span class="keyword">this</span>.hostname;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从这里我们可以知道，为什么配置<code>eureka.instance.prefer-ip-address = true</code> 就可以将IP注册到Eureka Server上，而如果不配置就是机器的主机名。</p>
+<p>我们看到以上代码有个hostInfo，这是在哪里实例化的呢？</p>
+<p>(3) hostInfo在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean</span><br></pre></td></tr></table></figure>
+<p>的构造方法中实例化！我们来阅读该类的构造方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">EurekaInstanceConfigBean</span><span class="params">(InetUtils inetUtils)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.inetUtils = inetUtils;</span><br><span class="line">	<span class="keyword">this</span>.hostInfo = <span class="keyword">this</span>.inetUtils.findFirstNonLoopbackHostInfo();</span><br><span class="line">	<span class="keyword">this</span>.ipAddress = <span class="keyword">this</span>.hostInfo.getIpAddress();</span><br><span class="line">	<span class="keyword">this</span>.hostname = <span class="keyword">this</span>.hostInfo.getHostname();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从中 可以看到，hostInfo是调用了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.inetUtils.findFirstNonLoopbackHostInfo();</span><br></pre></td></tr></table></figure>
+<p>从中可以看到，原来hostInfo是调用了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.cloud.commons.util.InetUtils.findFirstNonLoopbackHostInfo()</span><br></pre></td></tr></table></figure>
+<p>(4) 阅读</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.cloud.commons.util.InetUtils.findFirstNonLoopbackHostInfo()</span><br></pre></td></tr></table></figure>
+<p>可以看到以下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public HostInfo findFirstNonLoopbackHostInfo() &#123;</span><br><span class="line">	InetAddress address = findFirstNonLoopbackAddress();</span><br><span class="line">	if (address != null) &#123;</span><br><span class="line">		return convertAddress(address);</span><br><span class="line">	&#125;</span><br><span class="line">	HostInfo hostInfo = new HostInfo();</span><br><span class="line">	hostInfo.setHostname(this.properties.getDefaultHostname());</span><br><span class="line">	hostInfo.setIpAddress(this.properties.getDefaultIpAddress());</span><br><span class="line">	return hostInfo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们再看一下该类的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.cloud.commons.util.InetUtils.findFirstNonLoopbackAddress()</span><br></pre></td></tr></table></figure>
+<p>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> InetAddress <span class="title">findFirstNonLoopbackAddress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	InetAddress result = <span class="keyword">null</span>;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="keyword">int</span> lowest = Integer.MAX_VALUE;</span><br><span class="line">		<span class="keyword">for</span> (Enumeration&lt;NetworkInterface&gt; nics = NetworkInterface</span><br><span class="line">				.getNetworkInterfaces(); nics.hasMoreElements();) &#123;</span><br><span class="line">			NetworkInterface ifc = nics.nextElement();</span><br><span class="line">			<span class="keyword">if</span> (ifc.isUp()) &#123;</span><br><span class="line">				log.trace(<span class="string">"Testing interface: "</span> + ifc.getDisplayName());</span><br><span class="line">				<span class="keyword">if</span> (ifc.getIndex() &lt; lowest || result == <span class="keyword">null</span>) &#123;</span><br><span class="line">					lowest = ifc.getIndex();</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> <span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">				<span class="comment">// @formatter:off</span></span><br><span class="line">				<span class="keyword">if</span> (!ignoreInterface(ifc.getDisplayName())) &#123;</span><br><span class="line">					<span class="keyword">for</span> (Enumeration&lt;InetAddress&gt; addrs = ifc</span><br><span class="line">							.getInetAddresses(); addrs.hasMoreElements();) &#123;</span><br><span class="line">						InetAddress address = addrs.nextElement();</span><br><span class="line">						<span class="keyword">if</span> (address <span class="keyword">instanceof</span> Inet4Address</span><br><span class="line">								&amp;&amp; !address.isLoopbackAddress()</span><br><span class="line">								&amp;&amp; !ignoreAddress(address)) &#123;</span><br><span class="line">							log.trace(<span class="string">"Found non-loopback interface: "</span></span><br><span class="line">									+ ifc.getDisplayName());</span><br><span class="line">							result = address;</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="comment">// @formatter:on</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (IOException ex) &#123;</span><br><span class="line">		log.error(<span class="string">"Cannot get first non-loopback address"</span>, ex);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> InetAddress.getLocalHost();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (UnknownHostException e) &#123;</span><br><span class="line">		log.warn(<span class="string">"Unable to retrieve localhost"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，终于找到了获得IP的详细方法，原来只需要配置eureka.instance.prefer-ip-address = true，Spring就会自动为我们获取第一个非回环IP地址（这只是简单的说法，事实上这段代码有些容错的处理）。代码虽然长，但是很清晰。不做赘述。</p>
+<h2 id="eureka-instance-ip-address和eureka-instance-prefer-ip-address-true同时设置，会用自动获取的ip还是手动设置的？"><a href="#eureka-instance-ip-address和eureka-instance-prefer-ip-address-true同时设置，会用自动获取的ip还是手动设置的？" class="headerlink" title="eureka.instance.ip-address和eureka.instance.prefer-ip-address = true同时设置，会用自动获取的ip还是手动设置的？"></a>eureka.instance.ip-address和eureka.instance.prefer-ip-address = true同时设置，会用自动获取的ip还是手动设置的？</h2><p>上文是讨论设置<code>eureka.instance.prefer-ip-address = true</code> ，但没有指定<code>eureka.instance.ip-address</code> 的情况。那么如果两者都被指定了，Spring会怎么处理呢？是使用eureka.instance.ip-address手动设置的IP，还是用上面自动获取的IP呢？</p>
+<p>答案是听eureka.instance.ip-address的。</p>
+<p>原因是：在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean.setIpAddress(String)</span><br></pre></td></tr></table></figure>
+<p>中：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIpAddress</span><span class="params">(String ipAddress)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.ipAddress = ipAddress;</span><br><span class="line">	<span class="keyword">this</span>.hostInfo.override = <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这边设置了this.hostInfo.override，因此会导致getHostName方法不会进if语句，直接返回this.ipAddress。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getHostName</span><span class="params">(<span class="keyword">boolean</span> refresh)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (refresh &amp;&amp; !<span class="keyword">this</span>.hostInfo.override) &#123;</span><br><span class="line">		<span class="keyword">this</span>.ipAddress = <span class="keyword">this</span>.hostInfo.getIpAddress();</span><br><span class="line">		<span class="keyword">this</span>.hostname = <span class="keyword">this</span>.hostInfo.getHostname();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.preferIpAddress ? <span class="keyword">this</span>.ipAddress : <span class="keyword">this</span>.hostname;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="B-T-W"><a href="#B-T-W" class="headerlink" title="B.T.W"></a>B.T.W</h2><p>回到上文的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.cloud.commons.util.InetUtils.findFirstNonLoopbackAddress()</span><br></pre></td></tr></table></figure>
+<p>方法，上面有很多ignoreXXX的代码。那么，如何配置想要忽略的网卡或者IP地址呢？</p>
+<p>答案非常简单，详见Spring Cloud官方文档：</p>
+<p><a href="javascript:;" target="_blank" rel="noopener">http://cloud.spring.io/spring-cloud-static/Camden.SR3/#ignore-network-interfaces</a> </p>
+<p>当然了，这些配置的本意并不是用来注册到Eureka上的，而是用作其他用途，只不过如果没有设置eureka.instance.ip-address时，这个IP就是注册到Eureka Server上的IP。</p>
+<p>我们可以在应用的/env端点看到Spring为我们挑选的IP：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">springCloudClientHostInfo: &#123;</span><br><span class="line">  spring.cloud.client.hostname: "itmuch",</span><br><span class="line">  spring.cloud.client.ipAddress: "192.168.0.59"</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+        <h2>相关文章</h2><ul><li><a href="../../spring-cloud-sum-eureka/index.html">Spring Cloud中，Eureka常见问题总结</a></li><li><a href="../../spring-cloud-alibaba-migration/spring-cloud-alibaba-1/index.html">Spring Cloud Alibaba迁移指南1：零代码从Eureka迁移到Nacos</a></li><li><a href="../../spring-cloud/eureka-2-news/index.html">关于Eureka 2.x，别再人云亦云了！</a></li><li><a href="../../spring-cloud/finchley-5/index.html">跟我学Spring Cloud（Finchley版）-05-服务注册与服务发现-Eureka入门</a></li><li><a href="../../spring-cloud/finchley-6/index.html">跟我学Spring Cloud（Finchley版）-06-服务注册与服务发现-Eureka深入</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">Eureka服务注册过程详解之IpAddress（详解eureka.instance.prefer-ip-address = true 与 eureka.instance.prefer-ip-address）</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../../spring-cloud/config-server-encrypt-decrypt/index.html" class="pre-post btn btn-default" title="Config Server——配置内容的加密与解密">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Config Server——配置内容的加密与解密</span>
+        </a>
+    
+    
+        <a target="_blank" href="../spring-cloud-code-read-eureka-registry-appname/index.html" class="next-post btn btn-default" title="理解微服务注册到Eureka Server上的过程（以appname为例）">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">理解微服务注册到Eureka Server上的过程（以appname为例）</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

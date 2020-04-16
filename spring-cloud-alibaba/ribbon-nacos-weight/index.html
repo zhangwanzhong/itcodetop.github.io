@@ -1,0 +1,588 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:38 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Ribbon,Spring Cloud Alibaba">
+
+
+    <meta name="description" content="Nacos支持权重配置，这是个比较实用的功能，例如：
+
+把性能差的机器权重设低，性能好的机器权重设高，让请求优先打到性能高的机器上去；
+某个实例出现异常时，把权重设低，排查问题，问题排查完再把权重恢复；
+想要下线某个实例时，可先将该实例的权重设为0，这样流量就不会打到该实例上了——此时再去关停...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>扩展Ribbon支持Nacos权重的三种方式 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="扩展Ribbon支持Nacos权重的三种方式">
+            
+                扩展Ribbon支持Nacos权重的三种方式
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud Alibaba</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Ribbon</a> <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="javascript:;">Spring Cloud Alibaba</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/06/30</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#方案1：自己实现负载均衡规则"><span class="toc-text">方案1：自己实现负载均衡规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方案2：利用Nacos-Client的能力-推荐"><span class="toc-text">方案2：利用Nacos Client的能力[推荐]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方案3：最暴力的玩法"><span class="toc-text">方案3：最暴力的玩法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结与对比"><span class="toc-text">总结与对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#思考"><span class="toc-text">思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配套代码"><span class="toc-text">配套代码</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>Nacos支持权重配置，这是个比较实用的功能，例如：</p>
+<ul>
+<li>把性能差的机器权重设低，性能好的机器权重设高，让请求优先打到性能高的机器上去；</li>
+<li>某个实例出现异常时，把权重设低，排查问题，问题排查完再把权重恢复；</li>
+<li>想要下线某个实例时，可先将该实例的权重设为0，这样流量就不会打到该实例上了——此时再去关停该实例，这样就能实现优雅下线啦。当然这是为Nacos量身定制的优雅下线方案——Spring Cloud中，要想实现优雅下线还有很多姿势，详见：<a href="../../spring-cloud-sum/how-to-unregister-service-in-eureka/index.html">《实用技巧：Spring Cloud中，如何优雅下线微服务？》</a> ，里面笔者总结了四种优雅下线的方式。</li>
+</ul>
+<p><strong>然而测试发现，Nacos权重配置对Spring Cloud Alibaba无效</strong>。也就是说，不管在Nacos控制台上如何配置，调用时都不管权重设置的。</p>
+<p>Spring Cloud Alibaba通过整合Ribbon的方式，实现了负载均衡。所使用的负载均衡规则是 <code>ZoneAvoidanceRule</code> 。</p>
+<p>本节来探讨如何扩展Ribbon，让其支持Nacos的权重配置，笔者总结了三种方案。</p>
+<h2 id="方案1：自己实现负载均衡规则"><a href="#方案1：自己实现负载均衡规则" class="headerlink" title="方案1：自己实现负载均衡规则"></a>方案1：自己实现负载均衡规则</h2><p><strong>思路</strong>：</p>
+<p>自己首先一个Ribbon负载均衡规则就可以了。</p>
+<ul>
+<li>权重配置啥的，都可以在实例信息中获取到。</li>
+<li>自己基于权重配置，计算出一个实例即可。</li>
+</ul>
+<p><strong>代码</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NacosWeightRandomV1Rule</span> <span class="keyword">extends</span> <span class="title">AbstractLoadBalancerRule</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initWithNiwsConfig</span><span class="params">(IClientConfig iClientConfig)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Server <span class="title">choose</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">        List&lt;Server&gt; servers = <span class="keyword">this</span>.getLoadBalancer().getReachableServers();</span><br><span class="line"></span><br><span class="line">        List&lt;InstanceWithWeight&gt; instanceWithWeights = servers.stream()</span><br><span class="line">                .map(server -&gt; &#123;</span><br><span class="line">                    <span class="comment">// 注册中心只用Nacos，没同时用其他注册中心（例如Eureka），理论上不会实现</span></span><br><span class="line">                    <span class="keyword">if</span> (!(server <span class="keyword">instanceof</span> NacosServer)) &#123;</span><br><span class="line">                        log.error(<span class="string">"参数非法，server = &#123;&#125;"</span>, server);</span><br><span class="line">                        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"参数非法，不是NacosServer实例！"</span>);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    NacosServer nacosServer = (NacosServer) server;</span><br><span class="line">                    Instance instance = nacosServer.getInstance();</span><br><span class="line">                    <span class="keyword">double</span> weight = instance.getWeight();</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> InstanceWithWeight(</span><br><span class="line">                            server,</span><br><span class="line">                            Double.valueOf(weight).intValue()</span><br><span class="line">                    );</span><br><span class="line">                &#125;)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">        Server server = <span class="keyword">this</span>.weightRandom(instanceWithWeights);</span><br><span class="line"></span><br><span class="line">        log.info(<span class="string">"选中的server = &#123;&#125;"</span>, server);</span><br><span class="line">        <span class="keyword">return</span> server;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Data</span></span><br><span class="line">    <span class="meta">@AllArgsConstructor</span></span><br><span class="line">    <span class="meta">@NoArgsConstructor</span></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">InstanceWithWeight</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> Server server;</span><br><span class="line">        <span class="keyword">private</span> Integer weight;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据权重随机</span></span><br><span class="line"><span class="comment">     * 算法参考 https://blog.csdn.net/u011627980/article/details/79401026</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> list 实例列表</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 随机出来的结果</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Server <span class="title">weightRandom</span><span class="params">(List&lt;InstanceWithWeight&gt; list)</span> </span>&#123;</span><br><span class="line">        List&lt;Server&gt; instances = Lists.newArrayList();</span><br><span class="line">        <span class="keyword">for</span> (InstanceWithWeight instanceWithWeight : list) &#123;</span><br><span class="line">            <span class="keyword">int</span> weight = instanceWithWeight.getWeight();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= weight; i++) &#123;</span><br><span class="line">                instances.add(instanceWithWeight.getServer());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="keyword">new</span> Random().nextInt(instances.size());</span><br><span class="line">        <span class="keyword">return</span> instances.get(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p><strong>本段代码存在优化空间，只是用来演示思考的过程，不建议用于生产，如打算使用本方案实现，请参考以下两点优化</strong>：</p>
+<ul>
+<li>简单起见，我直接把double型的权重(weight)，转成了integer计算了，<strong>存在精度丢失</strong>。</li>
+<li>InstanceWithWeight太重了，在 <code>weightRandom</code> 还得再两层for循环，还挺吃内存的，建议百度其他权重随机算法优化。不过实际项目一个微服务一般也就三五个实例，所以其实内存消耗也能忍受。不优化问题也不大。</li>
+</ul>
+</blockquote>
+<h2 id="方案2：利用Nacos-Client的能力-推荐"><a href="#方案2：利用Nacos-Client的能力-推荐" class="headerlink" title="方案2：利用Nacos Client的能力[推荐]"></a>方案2：利用Nacos Client的能力[推荐]</h2><p><strong>思路</strong>：</p>
+<p>在阅读代码Nacos源码的过程中，发现<strong>Nacos Client本身就提供了负载均衡的能力</strong>，并且负载均衡算法<strong>正是我们想要的根据权重选择实例</strong>！</p>
+<p>代码在 <code>com.alibaba.nacos.api.naming.NamingService#selectOneHealthyInstance</code> ，只要想办法调用到这行代码，就可以实现我们想要的功能啦！</p>
+<p><strong>代码</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NacosWeightRandomV2Rule</span> <span class="keyword">extends</span> <span class="title">AbstractLoadBalancerRule</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> NacosDiscoveryProperties discoveryProperties;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Server <span class="title">choose</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">        DynamicServerListLoadBalancer loadBalancer = (DynamicServerListLoadBalancer) getLoadBalancer();</span><br><span class="line">        String name = loadBalancer.getName();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Instance instance = discoveryProperties.namingServiceInstance()</span><br><span class="line">                    .selectOneHealthyInstance(name);</span><br><span class="line"></span><br><span class="line">            log.info(<span class="string">"选中的instance = &#123;&#125;"</span>, instance);</span><br><span class="line"></span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">             * instance转server的逻辑参考自：</span></span><br><span class="line"><span class="comment">             * org.springframework.cloud.alibaba.nacos.ribbon.NacosServerList.instancesToServerList</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> NacosServer(instance);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NacosException e) &#123;</span><br><span class="line">            log.error(<span class="string">"发生异常"</span>, e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initWithNiwsConfig</span><span class="params">(IClientConfig iClientConfig)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="方案3：最暴力的玩法"><a href="#方案3：最暴力的玩法" class="headerlink" title="方案3：最暴力的玩法"></a>方案3：最暴力的玩法</h2><p><strong>思路</strong>：</p>
+<p>在阅读源码的过程中，发现如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 来自：org.springframework.cloud.alibaba.nacos.ribbon.NacosServerList#getServers</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> List&lt;NacosServer&gt; <span class="title">getServers</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    List&lt;Instance&gt; instances = discoveryProperties.namingServiceInstance()</span><br><span class="line">      .selectInstances(serviceId, <span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">return</span> instancesToServerList(instances);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(</span><br><span class="line">      <span class="string">"Can not get service instances from nacos, serviceId="</span> + serviceId,</span><br><span class="line">      e);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个<code>NacosServerList</code> 就是给Ribbon去做负载均衡的”数据源”！如果把这里的代码改成 <code>com.alibaba.nacos.api.naming.NamingService#selectOneHealthyInstance</code> 不也可以实现我们想要的功能吗？</p>
+<p>也就是说，<strong>交给Ribbon的List永远只有1个实例</strong>！这样不管Ribbon用什么负载均衡，都随他便了。</p>
+<p><strong>代码</strong>：</p>
+<p>1 参考NacosServerList的代码，重写NacosRibbonServerList</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 参考org.springframework.cloud.alibaba.nacos.ribbon.NacosServerList</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NacosRibbonServerList</span> <span class="keyword">extends</span> <span class="title">AbstractServerList</span>&lt;<span class="title">NacosServer</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> NacosDiscoveryProperties discoveryProperties;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String serviceId;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NacosRibbonServerList</span><span class="params">(NacosDiscoveryProperties discoveryProperties)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.discoveryProperties = discoveryProperties;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;NacosServer&gt; <span class="title">getInitialListOfServers</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getServers();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;NacosServer&gt; <span class="title">getUpdatedListOfServers</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getServers();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> List&lt;NacosServer&gt; <span class="title">getServers</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Instance instance = discoveryProperties.namingServiceInstance()</span><br><span class="line">                    .selectOneHealthyInstance(serviceId, <span class="keyword">true</span>);</span><br><span class="line">            log.debug(<span class="string">"选择的instance = &#123;&#125;"</span>, instance);</span><br><span class="line">            <span class="keyword">return</span> instancesToServerList(</span><br><span class="line">                    Lists.newArrayList(instance)</span><br><span class="line">            );</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(</span><br><span class="line">                    <span class="string">"Can not get service instances from nacos, serviceId="</span> + serviceId,</span><br><span class="line">                    e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> List&lt;NacosServer&gt; <span class="title">instancesToServerList</span><span class="params">(List&lt;Instance&gt; instances)</span> </span>&#123;</span><br><span class="line">        List&lt;NacosServer&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> == instances) &#123;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Instance instance : instances) &#123;</span><br><span class="line">            result.add(<span class="keyword">new</span> NacosServer(instance));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getServiceId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> serviceId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initWithNiwsConfig</span><span class="params">(IClientConfig iClientConfig)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.serviceId = iClientConfig.getClientName();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2 编写配置类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 参考：org.springframework.cloud.alibaba.nacos.ribbon.NacosRibbonClientConfiguration</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NacosRibbonClientExtendConfiguration</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> ServerList&lt;?&gt; ribbonServerList(IClientConfig config, NacosDiscoveryProperties nacosDiscoveryProperties) &#123;</span><br><span class="line">        NacosRibbonServerList serverList = <span class="keyword">new</span> NacosRibbonServerList(nacosDiscoveryProperties);</span><br><span class="line">        serverList.initWithNiwsConfig(config);</span><br><span class="line">        <span class="keyword">return</span> serverList;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3 添加注解，<strong>让上面的NacosRibbonClientExtendConfiguration成为Ribbon的默认配置</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...其他注解</span></span><br><span class="line"><span class="meta">@RibbonClients</span>(defaultConfiguration = NacosRibbonClientExtendConfiguration.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerMovieApplication</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    SpringApplication.run(ConsumerMovieApplication.class, args);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong> ：</p>
+<p>务必注意，将 <code>NacosRibbonClientExtendConfiguration</code> 放在ComponentScan上下文（默认是启动类所在包及其子包）以外！！！</p>
+<h2 id="总结与对比"><a href="#总结与对比" class="headerlink" title="总结与对比"></a>总结与对比</h2><ul>
+<li>方案1：是最容易想到的玩法。</li>
+<li>方案2：是个人目前最喜欢的方案。首先简单，并且都是复用Nacos/Ribbon现有的代码——而Ribbon/Nacos本身都是来自于大公司生产环境，经过严苛的生产考验。</li>
+<li>方案3：太暴力了，把Ribbon架空了。此方案中，扔给Ribbon做负载均衡选择时，List只有1个元素，不管用什么算法去算，最后总是会返回这个元素！</li>
+</ul>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p><strong>既然Nacos Client已经有负载均衡的能力，Spring Cloud Alibaba为什么还要去整合Ribbon呢？</strong></p>
+<blockquote>
+<p>个人认为，这主要是为了符合Spring Cloud标准。Spring Cloud Commons有个子项目 <code>spring-cloud-loadbalancer</code> ，该项目制定了标准，用来适配各种客户端负载均衡器(虽然目前实现只有Ribbon，但Hoxton就会有替代的实现了)。</p>
+<p>Spring Cloud Alibaba遵循了这一标准，所以整合了Ribbon，而没有去使用Nacos Client提供的负载均衡能力。</p>
+</blockquote>
+<h2 id="配套代码"><a href="#配套代码" class="headerlink" title="配套代码"></a>配套代码</h2><ul>
+<li><a href="javascript:;" target="_blank" rel="noopener">GitHub</a></li>
+<li><a href="javascript:;" target="_blank" rel="noopener">Gitee</a></li>
+</ul>
+
+        <h2>相关文章</h2><ul><li><a href="../ribbon-nacos-weight-cluster/index.html">扩展Ribbon支持Nacos集群配置</a></li><li><a href="../sentinel-rules-persistence-pull-mode/index.html">Alibaba Sentinel 规则持久化-拉模式-手把手教程【基于文件】</a></li><li><a href="../01-nacos-install/index.html">Spring Cloud Alibaba系列教程-01-Nacos安装与启停</a></li><li><a href="../05-sentinel/index.html">Spring Cloud Alibaba系列教程-05-Sentinel入门与整合</a></li><li><a href="../../spring-cloud-feign-ribbon-first-request-fail/index.html">Spring Cloud中，如何解决Feign/Ribbon第一次请求失败的问题？</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">扩展Ribbon支持Nacos权重的三种方式</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../ribbon-nacos-weight-cluster/index.html" class="pre-post btn btn-default" title="扩展Ribbon支持Nacos集群配置">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">扩展Ribbon支持Nacos集群配置</span>
+        </a>
+    
+    
+        <a target="_blank" href="../nacos-ha/index.html" class="next-post btn btn-default" title="搭建生产可用的Nacos集群">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">搭建生产可用的Nacos集群</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

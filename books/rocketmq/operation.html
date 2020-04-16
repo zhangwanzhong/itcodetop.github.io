@@ -1,0 +1,1766 @@
+
+<!DOCTYPE HTML>
+<html lang="">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>集群部署(Operation) · Apache RocketMQ开发者指南</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="RocketMQ官方">
+        
+        
+    
+    <link rel="stylesheet" href="../../static/css/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../static/css/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../static/css/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../static/css/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../static/css/website1.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    
+
+    
+    <link rel="next" href="../../categories/spring-cloud/index">
+    
+    
+    <link rel="prev" href="dledger/deploy_guide.html">
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search">
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+    
+        
+        <li>
+            <a href="../../index.html" target="_blank" class="custom-link">博客首页</a>
+        </li>
+    
+        
+        <li>
+            <a href="javascript:;" target="_blank" class="custom-link">RocketMQ官方网站</a>
+        </li>
+    
+    
+
+    
+    <li class="divider"></li>
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="../rocketmq.html">
+            
+                    
+                    README
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="concept.html">
+            
+                <a href="concept.html">
+            
+                    
+                    概念(Concept)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="features.html">
+            
+                <a href="features.html">
+            
+                    
+                    特性(Features)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="architecture.html">
+            
+                <a href="architecture.html">
+            
+                    
+                    架构(Architecture)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="design.html">
+            
+                <a href="design.html">
+            
+                    
+                    设计(Design)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="RocketMQ_Example.html">
+            
+                <a href="javascript:;">
+            
+                    
+                    样例(Example)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="best_practice.html">
+            
+                <a href="best_practice.html">
+            
+                    
+                    最佳实践（Best Practice）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="msg_trace/user_guide.html">
+            
+                <a href="msg_trace/user_guide.html">
+            
+                    
+                    消息轨迹指南(Message Trace)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="acl/user_guide.html">
+            
+                <a href="acl/user_guide.html">
+            
+                    
+                    权限管理(Auth Management)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="dledger/quick_start.html">
+            
+                <a href="dledger/quick_start.html">
+            
+                    
+                    Dledger快速搭建(Quick Start)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" data-path="dledger/deploy_guide.html">
+            
+                <a href="dledger/deploy_guide.html">
+            
+                    
+                    集群部署(Cluster Deployment)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.12" data-path="operation.html">
+            
+                <a href="">
+            
+                    
+                    集群部署(Operation)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" data-path="client/java/API_Reference_DefaultMQProducer.html">
+            
+                <a href="javascript:;">
+            
+                    
+                    DefaultMQProducer API Reference
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="javascript:;" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../rocketmq.html">集群部署(Operation)</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><a href="#&#x8FD0;&#x7EF4;&#x7BA1;&#x7406;">1. &#x8FD0;&#x7EF4;&#x7BA1;&#x7406;</a></li></ul></div><a href="#&#x8FD0;&#x7EF4;&#x7BA1;&#x7406;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="&#x8FD0;&#x7EF4;&#x7BA1;&#x7406;"><a name="&#x8FD0;&#x7EF4;&#x7BA1;&#x7406;" class="anchor-navigation-ex-anchor" href="#&#x8FD0;&#x7EF4;&#x7BA1;&#x7406;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x8FD0;&#x7EF4;&#x7BA1;&#x7406;</h1>
+<hr>
+<h3 id="1---&#x96C6;&#x7FA4;&#x642D;&#x5EFA;"><a name="1---&#x96C6;&#x7FA4;&#x642D;&#x5EFA;" class="anchor-navigation-ex-anchor" href="#1---&#x96C6;&#x7FA4;&#x642D;&#x5EFA;"><i class="fa fa-link" aria-hidden="true"></i></a>1   &#x96C6;&#x7FA4;&#x642D;&#x5EFA;</h3>
+<h4 id="11-&#x5355;master&#x6A21;&#x5F0F;"><a name="11-&#x5355;master&#x6A21;&#x5F0F;" class="anchor-navigation-ex-anchor" href="#11-&#x5355;master&#x6A21;&#x5F0F;"><i class="fa fa-link" aria-hidden="true"></i></a>1.1 &#x5355;Master&#x6A21;&#x5F0F;</h4>
+<p>&#x8FD9;&#x79CD;&#x65B9;&#x5F0F;&#x98CE;&#x9669;&#x8F83;&#x5927;&#xFF0C;&#x4E00;&#x65E6;Broker&#x91CD;&#x542F;&#x6216;&#x8005;&#x5B95;&#x673A;&#x65F6;&#xFF0C;&#x4F1A;&#x5BFC;&#x81F4;&#x6574;&#x4E2A;&#x670D;&#x52A1;&#x4E0D;&#x53EF;&#x7528;&#x3002;&#x4E0D;&#x5EFA;&#x8BAE;&#x7EBF;&#x4E0A;&#x73AF;&#x5883;&#x4F7F;&#x7528;,&#x53EF;&#x4EE5;&#x7528;&#x4E8E;&#x672C;&#x5730;&#x6D4B;&#x8BD5;&#x3002;</p>
+<h5 id="1&#xFF09;&#x542F;&#x52A8;-nameserver"><a name="1&#xFF09;&#x542F;&#x52A8;-nameserver" class="anchor-navigation-ex-anchor" href="#1&#xFF09;&#x542F;&#x52A8;-nameserver"><i class="fa fa-link" aria-hidden="true"></i></a>1&#xFF09;&#x542F;&#x52A8; NameServer</h5>
+<pre><code class="lang-bash"><span class="hljs-comment">### &#x9996;&#x5148;&#x542F;&#x52A8;Name Server</span>
+$ nohup sh mqnamesrv &amp;
+
+<span class="hljs-comment">### &#x9A8C;&#x8BC1;Name Server &#x662F;&#x5426;&#x542F;&#x52A8;&#x6210;&#x529F;</span>
+$ tail <span class="hljs-_">-f</span> ~/logs/rocketmqlogs/namesrv.log
+The Name Server boot success...
+</code></pre>
+<h5 id="2&#xFF09;&#x542F;&#x52A8;-broker"><a name="2&#xFF09;&#x542F;&#x52A8;-broker" class="anchor-navigation-ex-anchor" href="#2&#xFF09;&#x542F;&#x52A8;-broker"><i class="fa fa-link" aria-hidden="true"></i></a>2&#xFF09;&#x542F;&#x52A8; Broker</h5>
+<pre><code class="lang-bash"><span class="hljs-comment">### &#x542F;&#x52A8;Broker</span>
+$ nohup sh bin/mqbroker -n localhost:9876 &amp;
+
+<span class="hljs-comment">### &#x9A8C;&#x8BC1;Name Server &#x662F;&#x5426;&#x542F;&#x52A8;&#x6210;&#x529F;&#xFF0C;&#x4F8B;&#x5982;Broker&#x7684;IP&#x4E3A;&#xFF1A;192.168.1.2&#xFF0C;&#x4E14;&#x540D;&#x79F0;&#x4E3A;broker-a</span>
+$ tail <span class="hljs-_">-f</span> ~/logs/rocketmqlogs/Broker.log 
+The broker[broker<span class="hljs-_">-a</span>, 192.169.1.2:10911] boot success...
+</code></pre>
+<h4 id="12-&#x591A;master&#x6A21;&#x5F0F;"><a name="12-&#x591A;master&#x6A21;&#x5F0F;" class="anchor-navigation-ex-anchor" href="#12-&#x591A;master&#x6A21;&#x5F0F;"><i class="fa fa-link" aria-hidden="true"></i></a>1.2 &#x591A;Master&#x6A21;&#x5F0F;</h4>
+<p>&#x4E00;&#x4E2A;&#x96C6;&#x7FA4;&#x65E0;Slave&#xFF0C;&#x5168;&#x662F;Master&#xFF0C;&#x4F8B;&#x5982;2&#x4E2A;Master&#x6216;&#x8005;3&#x4E2A;Master&#xFF0C;&#x8FD9;&#x79CD;&#x6A21;&#x5F0F;&#x7684;&#x4F18;&#x7F3A;&#x70B9;&#x5982;&#x4E0B;&#xFF1A;</p>
+<ul>
+<li><p>&#x4F18;&#x70B9;&#xFF1A;&#x914D;&#x7F6E;&#x7B80;&#x5355;&#xFF0C;&#x5355;&#x4E2A;Master&#x5B95;&#x673A;&#x6216;&#x91CD;&#x542F;&#x7EF4;&#x62A4;&#x5BF9;&#x5E94;&#x7528;&#x65E0;&#x5F71;&#x54CD;&#xFF0C;&#x5728;&#x78C1;&#x76D8;&#x914D;&#x7F6E;&#x4E3A;RAID10&#x65F6;&#xFF0C;&#x5373;&#x4F7F;&#x673A;&#x5668;&#x5B95;&#x673A;&#x4E0D;&#x53EF;&#x6062;&#x590D;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x7531;&#x4E8E;RAID10&#x78C1;&#x76D8;&#x975E;&#x5E38;&#x53EF;&#x9760;&#xFF0C;&#x6D88;&#x606F;&#x4E5F;&#x4E0D;&#x4F1A;&#x4E22;&#xFF08;&#x5F02;&#x6B65;&#x5237;&#x76D8;&#x4E22;&#x5931;&#x5C11;&#x91CF;&#x6D88;&#x606F;&#xFF0C;&#x540C;&#x6B65;&#x5237;&#x76D8;&#x4E00;&#x6761;&#x4E0D;&#x4E22;&#xFF09;&#xFF0C;&#x6027;&#x80FD;&#x6700;&#x9AD8;&#xFF1B;</p>
+</li>
+<li><p>&#x7F3A;&#x70B9;&#xFF1A;&#x5355;&#x53F0;&#x673A;&#x5668;&#x5B95;&#x673A;&#x671F;&#x95F4;&#xFF0C;&#x8FD9;&#x53F0;&#x673A;&#x5668;&#x4E0A;&#x672A;&#x88AB;&#x6D88;&#x8D39;&#x7684;&#x6D88;&#x606F;&#x5728;&#x673A;&#x5668;&#x6062;&#x590D;&#x4E4B;&#x524D;&#x4E0D;&#x53EF;&#x8BA2;&#x9605;&#xFF0C;&#x6D88;&#x606F;&#x5B9E;&#x65F6;&#x6027;&#x4F1A;&#x53D7;&#x5230;&#x5F71;&#x54CD;&#x3002;</p>
+</li>
+</ul>
+<h5 id="1&#xFF09;&#x542F;&#x52A8;nameserver"><a name="1&#xFF09;&#x542F;&#x52A8;nameserver" class="anchor-navigation-ex-anchor" href="#1&#xFF09;&#x542F;&#x52A8;nameserver"><i class="fa fa-link" aria-hidden="true"></i></a>1&#xFF09;&#x542F;&#x52A8;NameServer</h5>
+<p>NameServer&#x9700;&#x8981;&#x5148;&#x4E8E;Broker&#x542F;&#x52A8;&#xFF0C;&#x4E14;&#x5982;&#x679C;&#x5728;&#x751F;&#x4EA7;&#x73AF;&#x5883;&#x4F7F;&#x7528;&#xFF0C;&#x4E3A;&#x4E86;&#x4FDD;&#x8BC1;&#x9AD8;&#x53EF;&#x7528;&#xFF0C;&#x5EFA;&#x8BAE;&#x4E00;&#x822C;&#x89C4;&#x6A21;&#x7684;&#x96C6;&#x7FA4;&#x542F;&#x52A8;3&#x4E2A;NameServer&#xFF0C;&#x5404;&#x8282;&#x70B9;&#x7684;&#x542F;&#x52A8;&#x547D;&#x4EE4;&#x76F8;&#x540C;&#xFF0C;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-bash"><span class="hljs-comment">### &#x9996;&#x5148;&#x542F;&#x52A8;Name Server</span>
+$ nohup sh mqnamesrv &amp;
+
+<span class="hljs-comment">### &#x9A8C;&#x8BC1;Name Server &#x662F;&#x5426;&#x542F;&#x52A8;&#x6210;&#x529F;</span>
+$ tail <span class="hljs-_">-f</span> ~/logs/rocketmqlogs/namesrv.log
+The Name Server boot success...
+</code></pre>
+<h5 id="2&#xFF09;&#x542F;&#x52A8;broker&#x96C6;&#x7FA4;"><a name="2&#xFF09;&#x542F;&#x52A8;broker&#x96C6;&#x7FA4;" class="anchor-navigation-ex-anchor" href="#2&#xFF09;&#x542F;&#x52A8;broker&#x96C6;&#x7FA4;"><i class="fa fa-link" aria-hidden="true"></i></a>2&#xFF09;&#x542F;&#x52A8;Broker&#x96C6;&#x7FA4;</h5>
+<pre><code class="lang-bash"><span class="hljs-comment">### &#x5728;&#x673A;&#x5668;A&#xFF0C;&#x542F;&#x52A8;&#x7B2C;&#x4E00;&#x4E2A;Master&#xFF0C;&#x4F8B;&#x5982;NameServer&#x7684;IP&#x4E3A;&#xFF1A;192.168.1.1</span>
+$ nohup sh mqbroker -n 192.168.1.1:9876 -c <span class="hljs-variable">$ROCKETMQ_HOME</span>/conf/2m-noslave/broker-a.properties &amp;
+
+<span class="hljs-comment">### &#x5728;&#x673A;&#x5668;B&#xFF0C;&#x542F;&#x52A8;&#x7B2C;&#x4E8C;&#x4E2A;Master&#xFF0C;&#x4F8B;&#x5982;NameServer&#x7684;IP&#x4E3A;&#xFF1A;192.168.1.1</span>
+$ nohup sh mqbroker -n 192.168.1.1:9876 -c <span class="hljs-variable">$ROCKETMQ_HOME</span>/conf/2m-noslave/broker-b.properties &amp;
+
+...
+</code></pre>
+<p>&#x5982;&#x4E0A;&#x542F;&#x52A8;&#x547D;&#x4EE4;&#x662F;&#x5728;&#x5355;&#x4E2A;NameServer&#x60C5;&#x51B5;&#x4E0B;&#x4F7F;&#x7528;&#x7684;&#x3002;&#x5BF9;&#x4E8E;&#x591A;&#x4E2A;NameServer&#x7684;&#x96C6;&#x7FA4;&#xFF0C;Broker&#x542F;&#x52A8;&#x547D;&#x4EE4;&#x4E2D;<code>-n</code>&#x540E;&#x9762;&#x7684;&#x5730;&#x5740;&#x5217;&#x8868;&#x7528;&#x5206;&#x53F7;&#x9694;&#x5F00;&#x5373;&#x53EF;&#xFF0C;&#x4F8B;&#x5982; <code>192.168.1.1:9876;192.161.2:9876</code>&#x3002;</p>
+<h4 id="13-&#x591A;master&#x591A;slave&#x6A21;&#x5F0F;-&#x5F02;&#x6B65;&#x590D;&#x5236;"><a name="13-&#x591A;master&#x591A;slave&#x6A21;&#x5F0F;-&#x5F02;&#x6B65;&#x590D;&#x5236;" class="anchor-navigation-ex-anchor" href="#13-&#x591A;master&#x591A;slave&#x6A21;&#x5F0F;-&#x5F02;&#x6B65;&#x590D;&#x5236;"><i class="fa fa-link" aria-hidden="true"></i></a>1.3 &#x591A;Master&#x591A;Slave&#x6A21;&#x5F0F;-&#x5F02;&#x6B65;&#x590D;&#x5236;</h4>
+<p>&#x6BCF;&#x4E2A;Master&#x914D;&#x7F6E;&#x4E00;&#x4E2A;Slave&#xFF0C;&#x6709;&#x591A;&#x5BF9;Master-Slave&#xFF0C;HA&#x91C7;&#x7528;&#x5F02;&#x6B65;&#x590D;&#x5236;&#x65B9;&#x5F0F;&#xFF0C;&#x4E3B;&#x5907;&#x6709;&#x77ED;&#x6682;&#x6D88;&#x606F;&#x5EF6;&#x8FDF;&#xFF08;&#x6BEB;&#x79D2;&#x7EA7;&#xFF09;&#xFF0C;&#x8FD9;&#x79CD;&#x6A21;&#x5F0F;&#x7684;&#x4F18;&#x7F3A;&#x70B9;&#x5982;&#x4E0B;&#xFF1A;</p>
+<ul>
+<li><p>&#x4F18;&#x70B9;&#xFF1A;&#x5373;&#x4F7F;&#x78C1;&#x76D8;&#x635F;&#x574F;&#xFF0C;&#x6D88;&#x606F;&#x4E22;&#x5931;&#x7684;&#x975E;&#x5E38;&#x5C11;&#xFF0C;&#x4E14;&#x6D88;&#x606F;&#x5B9E;&#x65F6;&#x6027;&#x4E0D;&#x4F1A;&#x53D7;&#x5F71;&#x54CD;&#xFF0C;&#x540C;&#x65F6;Master&#x5B95;&#x673A;&#x540E;&#xFF0C;&#x6D88;&#x8D39;&#x8005;&#x4ECD;&#x7136;&#x53EF;&#x4EE5;&#x4ECE;Slave&#x6D88;&#x8D39;&#xFF0C;&#x800C;&#x4E14;&#x6B64;&#x8FC7;&#x7A0B;&#x5BF9;&#x5E94;&#x7528;&#x900F;&#x660E;&#xFF0C;&#x4E0D;&#x9700;&#x8981;&#x4EBA;&#x5DE5;&#x5E72;&#x9884;&#xFF0C;&#x6027;&#x80FD;&#x540C;&#x591A;Master&#x6A21;&#x5F0F;&#x51E0;&#x4E4E;&#x4E00;&#x6837;&#xFF1B;</p>
+</li>
+<li><p>&#x7F3A;&#x70B9;&#xFF1A;Master&#x5B95;&#x673A;&#xFF0C;&#x78C1;&#x76D8;&#x635F;&#x574F;&#x60C5;&#x51B5;&#x4E0B;&#x4F1A;&#x4E22;&#x5931;&#x5C11;&#x91CF;&#x6D88;&#x606F;&#x3002;</p>
+</li>
+</ul>
+<h5 id="1&#xFF09;&#x542F;&#x52A8;nameserver"><a name="1&#xFF09;&#x542F;&#x52A8;nameserver" class="anchor-navigation-ex-anchor" href="#1&#xFF09;&#x542F;&#x52A8;nameserver"><i class="fa fa-link" aria-hidden="true"></i></a>1&#xFF09;&#x542F;&#x52A8;NameServer</h5>
+<pre><code class="lang-bash"><span class="hljs-comment">### &#x9996;&#x5148;&#x542F;&#x52A8;Name Server</span>
+$ nohup sh mqnamesrv &amp;
+
+<span class="hljs-comment">### &#x9A8C;&#x8BC1;Name Server &#x662F;&#x5426;&#x542F;&#x52A8;&#x6210;&#x529F;</span>
+$ tail <span class="hljs-_">-f</span> ~/logs/rocketmqlogs/namesrv.log
+The Name Server boot success...
+</code></pre>
+<h5 id="2&#xFF09;&#x542F;&#x52A8;broker&#x96C6;&#x7FA4;"><a name="2&#xFF09;&#x542F;&#x52A8;broker&#x96C6;&#x7FA4;" class="anchor-navigation-ex-anchor" href="#2&#xFF09;&#x542F;&#x52A8;broker&#x96C6;&#x7FA4;"><i class="fa fa-link" aria-hidden="true"></i></a>2&#xFF09;&#x542F;&#x52A8;Broker&#x96C6;&#x7FA4;</h5>
+<pre><code class="lang-bash"><span class="hljs-comment">### &#x5728;&#x673A;&#x5668;A&#xFF0C;&#x542F;&#x52A8;&#x7B2C;&#x4E00;&#x4E2A;Master&#xFF0C;&#x4F8B;&#x5982;NameServer&#x7684;IP&#x4E3A;&#xFF1A;192.168.1.1</span>
+$ nohup sh mqbroker -n 192.168.1.1:9876 -c <span class="hljs-variable">$ROCKETMQ_HOME</span>/conf/2m-2s-async/broker-a.properties &amp;
+
+<span class="hljs-comment">### &#x5728;&#x673A;&#x5668;B&#xFF0C;&#x542F;&#x52A8;&#x7B2C;&#x4E8C;&#x4E2A;Master&#xFF0C;&#x4F8B;&#x5982;NameServer&#x7684;IP&#x4E3A;&#xFF1A;192.168.1.1</span>
+$ nohup sh mqbroker -n 192.168.1.1:9876 -c <span class="hljs-variable">$ROCKETMQ_HOME</span>/conf/2m-2s-async/broker-b.properties &amp;
+
+<span class="hljs-comment">### &#x5728;&#x673A;&#x5668;C&#xFF0C;&#x542F;&#x52A8;&#x7B2C;&#x4E00;&#x4E2A;Slave&#xFF0C;&#x4F8B;&#x5982;NameServer&#x7684;IP&#x4E3A;&#xFF1A;192.168.1.1</span>
+$ nohup sh mqbroker -n 192.168.1.1:9876 -c <span class="hljs-variable">$ROCKETMQ_HOME</span>/conf/2m-2s-async/broker<span class="hljs-_">-a</span>-s.properties &amp;
+
+<span class="hljs-comment">### &#x5728;&#x673A;&#x5668;D&#xFF0C;&#x542F;&#x52A8;&#x7B2C;&#x4E8C;&#x4E2A;Slave&#xFF0C;&#x4F8B;&#x5982;NameServer&#x7684;IP&#x4E3A;&#xFF1A;192.168.1.1</span>
+$ nohup sh mqbroker -n 192.168.1.1:9876 -c <span class="hljs-variable">$ROCKETMQ_HOME</span>/conf/2m-2s-async/broker-b-s.properties &amp;
+</code></pre>
+<h4 id="14-&#x591A;master&#x591A;slave&#x6A21;&#x5F0F;-&#x540C;&#x6B65;&#x53CC;&#x5199;"><a name="14-&#x591A;master&#x591A;slave&#x6A21;&#x5F0F;-&#x540C;&#x6B65;&#x53CC;&#x5199;" class="anchor-navigation-ex-anchor" href="#14-&#x591A;master&#x591A;slave&#x6A21;&#x5F0F;-&#x540C;&#x6B65;&#x53CC;&#x5199;"><i class="fa fa-link" aria-hidden="true"></i></a>1.4 &#x591A;Master&#x591A;Slave&#x6A21;&#x5F0F;-&#x540C;&#x6B65;&#x53CC;&#x5199;</h4>
+<p>&#x6BCF;&#x4E2A;Master&#x914D;&#x7F6E;&#x4E00;&#x4E2A;Slave&#xFF0C;&#x6709;&#x591A;&#x5BF9;Master-Slave&#xFF0C;HA&#x91C7;&#x7528;&#x540C;&#x6B65;&#x53CC;&#x5199;&#x65B9;&#x5F0F;&#xFF0C;&#x5373;&#x53EA;&#x6709;&#x4E3B;&#x5907;&#x90FD;&#x5199;&#x6210;&#x529F;&#xFF0C;&#x624D;&#x5411;&#x5E94;&#x7528;&#x8FD4;&#x56DE;&#x6210;&#x529F;&#xFF0C;&#x8FD9;&#x79CD;&#x6A21;&#x5F0F;&#x7684;&#x4F18;&#x7F3A;&#x70B9;&#x5982;&#x4E0B;&#xFF1A;</p>
+<ul>
+<li><p>&#x4F18;&#x70B9;&#xFF1A;&#x6570;&#x636E;&#x4E0E;&#x670D;&#x52A1;&#x90FD;&#x65E0;&#x5355;&#x70B9;&#x6545;&#x969C;&#xFF0C;Master&#x5B95;&#x673A;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x6D88;&#x606F;&#x65E0;&#x5EF6;&#x8FDF;&#xFF0C;&#x670D;&#x52A1;&#x53EF;&#x7528;&#x6027;&#x4E0E;&#x6570;&#x636E;&#x53EF;&#x7528;&#x6027;&#x90FD;&#x975E;&#x5E38;&#x9AD8;&#xFF1B;</p>
+</li>
+<li><p>&#x7F3A;&#x70B9;&#xFF1A;&#x6027;&#x80FD;&#x6BD4;&#x5F02;&#x6B65;&#x590D;&#x5236;&#x6A21;&#x5F0F;&#x7565;&#x4F4E;&#xFF08;&#x5927;&#x7EA6;&#x4F4E;10%&#x5DE6;&#x53F3;&#xFF09;&#xFF0C;&#x53D1;&#x9001;&#x5355;&#x4E2A;&#x6D88;&#x606F;&#x7684;RT&#x4F1A;&#x7565;&#x9AD8;&#xFF0C;&#x4E14;&#x76EE;&#x524D;&#x7248;&#x672C;&#x5728;&#x4E3B;&#x8282;&#x70B9;&#x5B95;&#x673A;&#x540E;&#xFF0C;&#x5907;&#x673A;&#x4E0D;&#x80FD;&#x81EA;&#x52A8;&#x5207;&#x6362;&#x4E3A;&#x4E3B;&#x673A;&#x3002;</p>
+</li>
+</ul>
+<h5 id="1&#xFF09;&#x542F;&#x52A8;nameserver"><a name="1&#xFF09;&#x542F;&#x52A8;nameserver" class="anchor-navigation-ex-anchor" href="#1&#xFF09;&#x542F;&#x52A8;nameserver"><i class="fa fa-link" aria-hidden="true"></i></a>1&#xFF09;&#x542F;&#x52A8;NameServer</h5>
+<pre><code class="lang-bash"><span class="hljs-comment">### &#x9996;&#x5148;&#x542F;&#x52A8;Name Server</span>
+$ nohup sh mqnamesrv &amp;
+
+<span class="hljs-comment">### &#x9A8C;&#x8BC1;Name Server &#x662F;&#x5426;&#x542F;&#x52A8;&#x6210;&#x529F;</span>
+$ tail <span class="hljs-_">-f</span> ~/logs/rocketmqlogs/namesrv.log
+The Name Server boot success...
+</code></pre>
+<h5 id="2&#xFF09;&#x542F;&#x52A8;broker&#x96C6;&#x7FA4;"><a name="2&#xFF09;&#x542F;&#x52A8;broker&#x96C6;&#x7FA4;" class="anchor-navigation-ex-anchor" href="#2&#xFF09;&#x542F;&#x52A8;broker&#x96C6;&#x7FA4;"><i class="fa fa-link" aria-hidden="true"></i></a>2&#xFF09;&#x542F;&#x52A8;Broker&#x96C6;&#x7FA4;</h5>
+<pre><code class="lang-bash"><span class="hljs-comment">### &#x5728;&#x673A;&#x5668;A&#xFF0C;&#x542F;&#x52A8;&#x7B2C;&#x4E00;&#x4E2A;Master&#xFF0C;&#x4F8B;&#x5982;NameServer&#x7684;IP&#x4E3A;&#xFF1A;192.168.1.1</span>
+$ nohup sh mqbroker -n 192.168.1.1:9876 -c <span class="hljs-variable">$ROCKETMQ_HOME</span>/conf/2m-2s-sync/broker-a.properties &amp;
+
+<span class="hljs-comment">### &#x5728;&#x673A;&#x5668;B&#xFF0C;&#x542F;&#x52A8;&#x7B2C;&#x4E8C;&#x4E2A;Master&#xFF0C;&#x4F8B;&#x5982;NameServer&#x7684;IP&#x4E3A;&#xFF1A;192.168.1.1</span>
+$ nohup sh mqbroker -n 192.168.1.1:9876 -c <span class="hljs-variable">$ROCKETMQ_HOME</span>/conf/2m-2s-sync/broker-b.properties &amp;
+
+<span class="hljs-comment">### &#x5728;&#x673A;&#x5668;C&#xFF0C;&#x542F;&#x52A8;&#x7B2C;&#x4E00;&#x4E2A;Slave&#xFF0C;&#x4F8B;&#x5982;NameServer&#x7684;IP&#x4E3A;&#xFF1A;192.168.1.1</span>
+$ nohup sh mqbroker -n 192.168.1.1:9876 -c <span class="hljs-variable">$ROCKETMQ_HOME</span>/conf/2m-2s-sync/broker<span class="hljs-_">-a</span>-s.properties &amp;
+
+<span class="hljs-comment">### &#x5728;&#x673A;&#x5668;D&#xFF0C;&#x542F;&#x52A8;&#x7B2C;&#x4E8C;&#x4E2A;Slave&#xFF0C;&#x4F8B;&#x5982;NameServer&#x7684;IP&#x4E3A;&#xFF1A;192.168.1.1</span>
+$ nohup sh mqbroker -n 192.168.1.1:9876 -c <span class="hljs-variable">$ROCKETMQ_HOME</span>/conf/2m-2s-sync/broker-b-s.properties &amp;
+</code></pre>
+<p>&#x4EE5;&#x4E0A;Broker&#x4E0E;Slave&#x914D;&#x5BF9;&#x662F;&#x901A;&#x8FC7;&#x6307;&#x5B9A;&#x76F8;&#x540C;&#x7684;BrokerName&#x53C2;&#x6570;&#x6765;&#x914D;&#x5BF9;&#xFF0C;Master&#x7684;BrokerId&#x5FC5;&#x987B;&#x662F;0&#xFF0C;Slave&#x7684;BrokerId&#x5FC5;&#x987B;&#x662F;&#x5927;&#x4E8E;0&#x7684;&#x6570;&#x3002;&#x53E6;&#x5916;&#x4E00;&#x4E2A;Master&#x4E0B;&#x9762;&#x53EF;&#x4EE5;&#x6302;&#x8F7D;&#x591A;&#x4E2A;Slave&#xFF0C;&#x540C;&#x4E00;Master&#x4E0B;&#x7684;&#x591A;&#x4E2A;Slave&#x901A;&#x8FC7;&#x6307;&#x5B9A;&#x4E0D;&#x540C;&#x7684;BrokerId&#x6765;&#x533A;&#x5206;&#x3002;$ROCKETMQ_HOME&#x6307;&#x7684;RocketMQ&#x5B89;&#x88C5;&#x76EE;&#x5F55;&#xFF0C;&#x9700;&#x8981;&#x7528;&#x6237;&#x81EA;&#x5DF1;&#x8BBE;&#x7F6E;&#x6B64;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x3002;</p>
+<h3 id="2-mqadmin&#x7BA1;&#x7406;&#x5DE5;&#x5177;"><a name="2-mqadmin&#x7BA1;&#x7406;&#x5DE5;&#x5177;" class="anchor-navigation-ex-anchor" href="#2-mqadmin&#x7BA1;&#x7406;&#x5DE5;&#x5177;"><i class="fa fa-link" aria-hidden="true"></i></a>2 mqadmin&#x7BA1;&#x7406;&#x5DE5;&#x5177;</h3>
+<blockquote>
+<p>&#x6CE8;&#x610F;&#xFF1A;</p>
+<ol>
+<li>&#x6267;&#x884C;&#x547D;&#x4EE4;&#x65B9;&#x6CD5;&#xFF1A;<code>./mqadmin {command} {args}</code></li>
+<li>&#x51E0;&#x4E4E;&#x6240;&#x6709;&#x547D;&#x4EE4;&#x90FD;&#x9700;&#x8981;&#x914D;&#x7F6E;-n&#x8868;&#x793A;NameServer&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F;&#x4E3A;ip:port</li>
+<li>&#x51E0;&#x4E4E;&#x6240;&#x6709;&#x547D;&#x4EE4;&#x90FD;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;-h&#x83B7;&#x53D6;&#x5E2E;&#x52A9;</li>
+<li>&#x5982;&#x679C;&#x65E2;&#x6709;Broker&#x5730;&#x5740;&#xFF08;-b&#xFF09;&#x914D;&#x7F6E;&#x9879;&#x53C8;&#x6709;clusterName&#xFF08;-c&#xFF09;&#x914D;&#x7F6E;&#x9879;&#xFF0C;&#x5219;&#x4F18;&#x5148;&#x4EE5;Broker&#x5730;&#x5740;&#x6267;&#x884C;&#x547D;&#x4EE4;&#xFF0C;&#x5982;&#x679C;&#x4E0D;&#x914D;&#x7F6E;Broker&#x5730;&#x5740;&#xFF0C;&#x5219;&#x5BF9;&#x96C6;&#x7FA4;&#x4E2D;&#x6240;&#x6709;&#x4E3B;&#x673A;&#x6267;&#x884C;&#x547D;&#x4EE4;&#xFF0C;&#x53EA;&#x652F;&#x6301;&#x4E00;&#x4E2A;Broker&#x5730;&#x5740;&#x3002;-b&#x683C;&#x5F0F;&#x4E3A;ip:port&#xFF0C;port&#x9ED8;&#x8BA4;&#x662F;10911</li>
+<li>&#x5728;tools&#x4E0B;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x5F88;&#x591A;&#x547D;&#x4EE4;&#xFF0C;&#x4F46;&#x5E76;&#x4E0D;&#x662F;&#x6240;&#x6709;&#x547D;&#x4EE4;&#x90FD;&#x80FD;&#x4F7F;&#x7528;&#xFF0C;&#x53EA;&#x6709;&#x5728;MQAdminStartup&#x4E2D;&#x521D;&#x59CB;&#x5316;&#x7684;&#x547D;&#x4EE4;&#x624D;&#x80FD;&#x4F7F;&#x7528;&#xFF0C;&#x4F60;&#x4E5F;&#x53EF;&#x4EE5;&#x4FEE;&#x6539;&#x8FD9;&#x4E2A;&#x7C7B;&#xFF0C;&#x589E;&#x52A0;&#x6216;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x4EE4;</li>
+<li>&#x7531;&#x4E8E;&#x7248;&#x672C;&#x66F4;&#x65B0;&#x95EE;&#x9898;&#xFF0C;&#x5C11;&#x90E8;&#x5206;&#x547D;&#x4EE4;&#x53EF;&#x80FD;&#x672A;&#x53CA;&#x65F6;&#x66F4;&#x65B0;&#xFF0C;&#x9047;&#x5230;&#x9519;&#x8BEF;&#x8BF7;&#x76F4;&#x63A5;&#x9605;&#x8BFB;&#x76F8;&#x5173;&#x547D;&#x4EE4;&#x6E90;&#x7801;</li>
+</ol>
+</blockquote>
+<h4 id="21-topic&#x76F8;&#x5173;"><a name="21-topic&#x76F8;&#x5173;" class="anchor-navigation-ex-anchor" href="#21-topic&#x76F8;&#x5173;"><i class="fa fa-link" aria-hidden="true"></i></a>2.1 Topic&#x76F8;&#x5173;</h4>
+<table border="0" cellpadding="0" cellspacing="0" width="714">
+ <col width="177">
+ <col width="175">
+ <col width="177">
+ <col width="185">
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl63" width="177" style="height:17.0pt;width:133pt">&#x540D;&#x79F0;</td>
+  <td class="xl64" width="175" style="width:131pt">&#x542B;&#x4E49;</td>
+  <td class="xl64" width="177" style="width:133pt">&#x547D;&#x4EE4;&#x9009;&#x9879;</td>
+  <td class="xl64" width="185" style="width:139pt">&#x8BF4;&#x660E;</td>
+ </tr>
+ <tr height="132" style="height:99.0pt">
+  <td rowspan="8" height="593" class="xl68" width="163" style="border-bottom:1.0pt;
+  height:444.0pt;border-top:none;width:122pt">updateTopic</td>
+  <td rowspan="8" class="xl70" width="135" style="border-bottom:1.0pt;
+  border-top:none;width:101pt">&#x521B;&#x5EFA;&#x66F4;&#x65B0;Topic&#x914D;&#x7F6E;</td>
+  <td class="xl65" width="149" style="width:112pt">-b</td>
+  <td class="xl66" width="159" style="width:119pt">Broker &#x5730;&#x5740;&#xFF0C;&#x8868;&#x793A; topic &#x6240;&#x5728;
+  Broker&#xFF0C;&#x53EA;&#x652F;&#x6301;&#x5355;&#x53F0;Broker&#xFF0C;&#x5730;&#x5740;&#x4E3A;ip:port</td>
+ </tr>
+ <tr height="132" style="height:99.0pt">
+  <td height="132" class="xl65" width="149" style="height:99.0pt;width:112pt">-c</td>
+  <td class="xl66" width="159" style="width:119pt">cluster &#x540D;&#x79F0;&#xFF0C;&#x8868;&#x793A; topic &#x6240;&#x5728;&#x96C6;&#x7FA4;&#xFF08;&#x96C6;&#x7FA4;&#x53EF;&#x901A;&#x8FC7;
+  clusterList &#x67E5;&#x8BE2;&#xFF09;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl65" width="149" style="height:17.0pt;width:112pt">-h-</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="149" style="height:43.0pt;width:112pt">-n</td>
+  <td class="xl66" width="159" style="width:119pt">NameServer&#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="76" style="height:57.0pt">
+  <td height="76" class="xl65" width="149" style="height:57.0pt;width:112pt">-p</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6307;&#x5B9A;&#x65B0;topic&#x7684;&#x8BFB;&#x5199;&#x6743;&#x9650;( W=2|R=4|WR=6 )</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl65" width="149" style="height:29.0pt;width:112pt">-r</td>
+  <td class="xl66" width="159" style="width:119pt">&#x53EF;&#x8BFB;&#x961F;&#x5217;&#x6570;&#xFF08;&#x9ED8;&#x8BA4;&#x4E3A; 8&#xFF09;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl65" width="149" style="height:29.0pt;width:112pt">-w</td>
+  <td class="xl66" width="159" style="width:119pt">&#x53EF;&#x5199;&#x961F;&#x5217;&#x6570;&#xFF08;&#x9ED8;&#x8BA4;&#x4E3A; 8&#xFF09;</td>
+ </tr>
+ <tr height="95" style="height:71.0pt">
+  <td height="95" class="xl65" width="149" style="height:71.0pt;width:112pt">-t</td>
+  <td class="xl66" width="159" style="width:119pt">topic &#x540D;&#x79F0;&#xFF08;&#x540D;&#x79F0;&#x53EA;&#x80FD;&#x4F7F;&#x7528;&#x5B57;&#x7B26;
+  ^[a-zA-Z0-9_-]+$ &#xFF09;</td>
+ </tr>
+ <tr height="132" style="height:99.0pt">
+  <td rowspan="4" height="307" class="xl68" width="163" style="border-bottom:1.0pt;
+  height:230.0pt;border-top:none;width:122pt">deleteTopic</td>
+  <td rowspan="4" class="xl70" width="135" style="border-bottom:1.0pt;
+  border-top:none;width:101pt">&#x5220;&#x9664;Topic</td>
+  <td class="xl65" width="149" style="width:112pt">-c</td>
+  <td class="xl66" width="159" style="width:119pt">cluster &#x540D;&#x79F0;&#xFF0C;&#x8868;&#x793A;&#x5220;&#x9664;&#x67D0;&#x96C6;&#x7FA4;&#x4E0B;&#x7684;&#x67D0;&#x4E2A; topic &#xFF08;&#x96C6;&#x7FA4;
+  &#x53EF;&#x901A;&#x8FC7; clusterList &#x67E5;&#x8BE2;&#xFF09;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl65" width="149" style="height:17.0pt;width:112pt">-h</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="149" style="height:43.0pt;width:112pt">-n</td>
+  <td class="xl66" width="159" style="width:119pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="95" style="height:71.0pt">
+  <td height="95" class="xl65" width="149" style="height:71.0pt;width:112pt">-t</td>
+  <td class="xl66" width="159" style="width:119pt">topic &#x540D;&#x79F0;&#xFF08;&#x540D;&#x79F0;&#x53EA;&#x80FD;&#x4F7F;&#x7528;&#x5B57;&#x7B26;
+  ^[a-zA-Z0-9_-]+$ &#xFF09;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="3" height="287" class="xl68" width="163" style="border-bottom:1.0pt;
+  height:215.0pt;border-top:none;width:122pt">topicList</td>
+  <td rowspan="3" class="xl70" width="135" style="border-bottom:1.0pt;
+  border-top:none;width:101pt">&#x67E5;&#x770B; Topic &#x5217;&#x8868;&#x4FE1;&#x606F;</td>
+  <td class="xl65" width="149" style="width:112pt">-h</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="207" style="height:155.0pt">
+  <td height="207" class="xl65" width="149" style="height:155.0pt;width:112pt">-c</td>
+  <td class="xl66" width="159" style="width:119pt">&#x4E0D;&#x914D;&#x7F6E;-c&#x53EA;&#x8FD4;&#x56DE;topic&#x5217;&#x8868;&#xFF0C;&#x589E;&#x52A0;-c&#x8FD4;&#x56DE;clusterName,
+  topic, consumerGroup&#x4FE1;&#x606F;&#xFF0C;&#x5373;topic&#x7684;&#x6240;&#x5C5E;&#x96C6;&#x7FA4;&#x548C;&#x8BA2;&#x9605;&#x5173;&#x7CFB;&#xFF0C;&#x6CA1;&#x6709;&#x53C2;&#x6570;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="149" style="height:43.0pt;width:112pt">-n</td>
+  <td class="xl66" width="159" style="width:119pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="3" height="103" class="xl68" width="163" style="border-bottom:1.0pt;
+  height:77.0pt;border-top:none;width:122pt">topicRoute</td>
+  <td rowspan="3" class="xl70" width="135" style="border-bottom:1.0pt;
+  border-top:none;width:101pt">&#x67E5;&#x770B; Topic &#x8DEF;&#x7531;&#x4FE1;&#x606F;</td>
+  <td class="xl65" width="149" style="width:112pt">-t</td>
+  <td class="xl66" width="159" style="width:119pt">topic &#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl65" width="149" style="height:17.0pt;width:112pt">-h</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="149" style="height:43.0pt;width:112pt">-n</td>
+  <td class="xl66" width="159" style="width:119pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="3" height="103" class="xl68" width="163" style="border-bottom:1.0pt;
+  height:77.0pt;border-top:none;width:122pt">topicStatus</td>
+  <td rowspan="3" class="xl70" width="135" style="border-bottom:1.0pt;
+  border-top:none;width:101pt">&#x67E5;&#x770B; Topic &#x6D88;&#x606F;&#x961F;&#x5217;offset</td>
+  <td class="xl65" width="149" style="width:112pt">-t</td>
+  <td class="xl66" width="159" style="width:119pt">topic &#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl65" width="149" style="height:17.0pt;width:112pt">-h</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="149" style="height:43.0pt;width:112pt">-n</td>
+  <td class="xl66" width="159" style="width:119pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="3" height="103" class="xl68" width="163" style="border-bottom:1.0pt;
+  height:77.0pt;border-top:none;width:122pt">topicClusterList</td>
+  <td rowspan="3" class="xl70" width="135" style="border-bottom:1.0pt;
+  border-top:none;width:101pt">&#x67E5;&#x770B; Topic &#x6240;&#x5728;&#x96C6;&#x7FA4;&#x5217;&#x8868;</td>
+  <td class="xl65" width="149" style="width:112pt">-t</td>
+  <td class="xl66" width="159" style="width:119pt">topic &#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl65" width="149" style="height:17.0pt;width:112pt">-h</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="149" style="height:43.0pt;width:112pt">-n</td>
+  <td class="xl66" width="159" style="width:119pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="6" height="518" class="xl68" width="163" style="border-bottom:1.0pt;
+  height:380pt;border-top:none;width:122pt">updateTopicPerm</td>
+  <td rowspan="6" class="xl70" width="135" style="border-bottom:1.0pt;
+  border-top:none;width:101pt">&#x66F4;&#x65B0; Topic &#x8BFB;&#x5199;&#x6743;&#x9650;</td>
+  <td class="xl65" width="149" style="width:112pt">-t</td>
+  <td class="xl66" width="159" style="width:119pt">topic &#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl65" width="149" style="height:17.0pt;width:112pt">-h</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="149" style="height:43.0pt;width:112pt">-n</td>
+  <td class="xl66" width="159" style="width:119pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="132" style="height:99.0pt">
+  <td height="132" class="xl65" width="149" style="height:99.0pt;width:112pt">-b</td>
+  <td class="xl66" width="159" style="width:119pt">Broker &#x5730;&#x5740;&#xFF0C;&#x8868;&#x793A; topic &#x6240;&#x5728;
+  Broker&#xFF0C;&#x53EA;&#x652F;&#x6301;&#x5355;&#x53F0;Broker&#xFF0C;&#x5730;&#x5740;&#x4E3A;ip:port</td>
+ </tr>
+ <tr height="76" style="height:57.0pt">
+  <td height="76" class="xl65" width="149" style="height:57.0pt;width:112pt">-p</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6307;&#x5B9A;&#x65B0; topic &#x7684;&#x8BFB;&#x5199;&#x6743;&#x9650;( W=2|R=4|WR=6 )</td>
+ </tr>
+ <tr height="207" style="height:155.0pt">
+  <td height="207" class="xl65" width="149" style="height:155.0pt;width:112pt">-c</td>
+  <td class="xl66" width="159" style="width:119pt">cluster &#x540D;&#x79F0;&#xFF0C;&#x8868;&#x793A; topic &#x6240;&#x5728;&#x96C6;&#x7FA4;&#xFF08;&#x96C6;&#x7FA4;&#x53EF;&#x901A;&#x8FC7;
+  clusterList &#x67E5;&#x8BE2;&#xFF09;&#xFF0C;-b&#x4F18;&#x5148;&#xFF0C;&#x5982;&#x679C;&#x6CA1;&#x6709;-b&#xFF0C;&#x5219;&#x5BF9;&#x96C6;&#x7FA4;&#x4E2D;&#x6240;&#x6709;Broker&#x6267;&#x884C;&#x547D;&#x4EE4;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="5" height="199" class="xl68" width="163" style="border-bottom:1.0pt;
+  height:149.0pt;border-top:none;width:122pt">updateOrderConf</td>
+  <td rowspan="5" class="xl70" width="135" style="border-bottom:1.0pt;
+  border-top:none;width:101pt">&#x4ECE;NameServer&#x4E0A;&#x521B;&#x5EFA;&#x3001;&#x5220;&#x9664;&#x3001;&#x83B7;&#x53D6;&#x7279;&#x5B9A;&#x547D;&#x540D;&#x7A7A;&#x95F4;&#x7684;kv&#x914D;&#x7F6E;&#xFF0C;&#x76EE;&#x524D;&#x8FD8;&#x672A;&#x542F;&#x7528;</td>
+  <td class="xl65" width="149" style="width:112pt">-h</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="149" style="height:43.0pt;width:112pt">-n</td>
+  <td class="xl66" width="159" style="width:119pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl65" width="149" style="height:17.0pt;width:112pt">-t</td>
+  <td class="xl66" width="159" style="width:119pt">topic&#xFF0C;&#x952E;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl65" width="149" style="height:29.0pt;width:112pt">-v</td>
+  <td class="xl66" width="159" style="width:119pt">orderConf&#xFF0C;&#x503C;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="149" style="height:43.0pt;width:112pt">-m</td>
+  <td class="xl66" width="159" style="width:119pt">method&#xFF0C;&#x53EF;&#x9009;get&#x3001;put&#x3001;delete</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="4" height="198" class="xl68" width="163" style="border-bottom:1.0pt;
+  height:140pt;border-top:none;width:122pt">allocateMQ</td>
+  <td rowspan="4" class="xl70" width="135" style="border-bottom:1.0pt;
+  border-top:none;width:101pt">&#x4EE5;&#x5E73;&#x5747;&#x8D1F;&#x8F7D;&#x7B97;&#x6CD5;&#x8BA1;&#x7B97;&#x6D88;&#x8D39;&#x8005;&#x5217;&#x8868;&#x8D1F;&#x8F7D;&#x6D88;&#x606F;&#x961F;&#x5217;&#x7684;&#x8D1F;&#x8F7D;&#x7ED3;&#x679C;</td>
+  <td class="xl65" width="149" style="width:112pt">-t</td>
+  <td class="xl66" width="159" style="width:119pt">topic &#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl65" width="149" style="height:17.0pt;width:112pt">-h</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="149" style="height:43.0pt;width:112pt">-n</td>
+  <td class="xl66" width="159" style="width:119pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="95" style="height:71.0pt">
+  <td height="95" class="xl65" width="149" style="height:71.0pt;width:112pt">-i</td>
+  <td class="xl66" width="159" style="width:119pt">ipList&#xFF0C;&#x7528;&#x9017;&#x53F7;&#x5206;&#x9694;&#xFF0C;&#x8BA1;&#x7B97;&#x8FD9;&#x4E9B;ip&#x53BB;&#x8D1F;&#x8F7D;Topic&#x7684;&#x6D88;&#x606F;&#x961F;&#x5217;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="4" height="142" class="xl68" width="163" style="border-bottom:1.0pt solid black;
+  height:106.0pt;border-top:1.0pt;width:122pt">statsAll</td>
+  <td rowspan="4" class="xl70" width="135" style="border-bottom:1.0pt;
+  border-top:none;width:101pt">&#x6253;&#x5370;Topic&#x8BA2;&#x9605;&#x5173;&#x7CFB;&#x3001;TPS&#x3001;&#x79EF;&#x7D2F;&#x91CF;&#x3001;24h&#x8BFB;&#x5199;&#x603B;&#x91CF;&#x7B49;&#x4FE1;&#x606F;</td>
+  <td class="xl65" width="149" style="width:112pt">-h</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="149" style="height:43.0pt;width:112pt">-n</td>
+  <td class="xl66" width="159" style="width:119pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl65" width="149" style="height:29.0pt;width:112pt">-a</td>
+  <td class="xl66" width="159" style="width:119pt">&#x662F;&#x5426;&#x53EA;&#x6253;&#x5370;&#x6D3B;&#x8DC3;topic</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl65" width="149" style="height:17.0pt;width:112pt">-t</td>
+  <td class="xl66" width="159" style="width:119pt">&#x6307;&#x5B9A;topic</td>
+ </tr>
+</table>
+
+
+
+<h4 id="22-&#x96C6;&#x7FA4;&#x76F8;&#x5173;"><a name="22-&#x96C6;&#x7FA4;&#x76F8;&#x5173;" class="anchor-navigation-ex-anchor" href="#22-&#x96C6;&#x7FA4;&#x76F8;&#x5173;"><i class="fa fa-link" aria-hidden="true"></i></a>2.2 &#x96C6;&#x7FA4;&#x76F8;&#x5173;</h4>
+<table border="0" cellpadding="0" cellspacing="0" width="714">
+ <col width="177">
+ <col width="175">
+ <col width="177">
+ <col width="185">
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl63" width="177" style="height:17.0pt;width:133pt">&#x540D;&#x79F0;</td>
+  <td class="xl64" width="175" style="width:131pt">&#x542B;&#x4E49;</td>
+  <td class="xl64" width="177" style="width:133pt">&#x547D;&#x4EE4;&#x9009;&#x9879;</td>
+  <td class="xl64" width="185" style="width:139pt">&#x8BF4;&#x660E;</td>
+ </tr>
+ <tr height="207" style="height:155.0pt">
+  <td rowspan="4" height="326" class="xl67" width="177" style="border-bottom:1.0pt;
+  height:244.0pt;border-top:none;width:133pt"><span style="mso-spacerun:yes"> </span>clusterList</td>
+  <td rowspan="4" class="xl70" width="175" style="border-bottom:1.0pt;
+  border-top:none;width:131pt">&#x67E5;&#x770B;&#x96C6;&#x7FA4;&#x4FE1;&#x606F;&#xFF0C;&#x96C6;&#x7FA4;&#x3001;BrokerName&#x3001;BrokerId&#x3001;TPS&#x7B49;&#x4FE1;&#x606F;</td>
+  <td class="xl65" width="177" style="width:133pt">-m</td>
+  <td class="xl66" width="185" style="width:139pt">&#x6253;&#x5370;&#x66F4;&#x591A;&#x4FE1;&#x606F; (&#x589E;&#x52A0;&#x6253;&#x5370;&#x51FA;&#x5982;&#x4E0B;&#x4FE1;&#x606F; #InTotalYest,
+  #OutTotalYest, #InTotalToday ,#OutTotalToday)</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl65" width="177" style="height:17.0pt;width:133pt">-h</td>
+  <td class="xl66" width="185" style="width:139pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="177" style="height:43.0pt;width:133pt">-n</td>
+  <td class="xl66" width="185" style="width:139pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl65" width="177" style="height:29.0pt;width:133pt">-i</td>
+  <td class="xl66" width="185" style="width:139pt">&#x6253;&#x5370;&#x95F4;&#x9694;&#xFF0C;&#x5355;&#x4F4D;&#x79D2;</td>
+ </tr>
+ <tr height="95" style="height:71.0pt">
+  <td rowspan="8" height="391" class="xl67" width="177" style="border-bottom:1.0pt;
+  height:292.0pt;border-top:none;width:133pt">clusterRT</td>
+  <td rowspan="8" class="xl70" width="175" style="border-bottom:1.0pt;
+  border-top:none;width:131pt">&#x53D1;&#x9001;&#x6D88;&#x606F;&#x68C0;&#x6D4B;&#x96C6;&#x7FA4;&#x5404;Broker RT&#x3002;&#x6D88;&#x606F;&#x53D1;&#x5F80;${BrokerName} Topic&#x3002;</td>
+  <td class="xl65" width="177" style="width:133pt">-a</td>
+  <td class="xl66" width="185" style="width:139pt">amount&#xFF0C;&#x6BCF;&#x6B21;&#x63A2;&#x6D4B;&#x7684;&#x603B;&#x6570;&#xFF0C;RT = &#x603B;&#x65F6;&#x95F4; /
+  amount</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl65" width="177" style="height:29.0pt;width:133pt">-s</td>
+  <td class="xl66" width="185" style="width:139pt">&#x6D88;&#x606F;&#x5927;&#x5C0F;&#xFF0C;&#x5355;&#x4F4D;B</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl65" width="177" style="height:17.0pt;width:133pt">-c</td>
+  <td class="xl66" width="185" style="width:139pt">&#x63A2;&#x6D4B;&#x54EA;&#x4E2A;&#x96C6;&#x7FA4;</td>
+ </tr>
+ <tr height="76" style="height:57.0pt">
+  <td height="76" class="xl65" width="177" style="height:57.0pt;width:133pt">-p</td>
+  <td class="xl66" width="185" style="width:139pt">&#x662F;&#x5426;&#x6253;&#x5370;&#x683C;&#x5F0F;&#x5316;&#x65E5;&#x5FD7;&#xFF0C;&#x4EE5;|&#x5206;&#x5272;&#xFF0C;&#x9ED8;&#x8BA4;&#x4E0D;&#x6253;&#x5370;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl65" width="177" style="height:17.0pt;width:133pt">-h</td>
+  <td class="xl66" width="185" style="width:139pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl65" width="177" style="height:29.0pt;width:133pt">-m</td>
+  <td class="xl66" width="185" style="width:139pt">&#x6240;&#x5C5E;&#x673A;&#x623F;&#xFF0C;&#x6253;&#x5370;&#x4F7F;&#x7528;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl65" width="177" style="height:29.0pt;width:133pt">-i</td>
+  <td class="xl66" width="185" style="width:139pt">&#x53D1;&#x9001;&#x95F4;&#x9694;&#xFF0C;&#x5355;&#x4F4D;&#x79D2;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl65" width="177" style="height:43.0pt;width:133pt">-n</td>
+  <td class="xl66" width="185" style="width:139pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+</table>
+
+
+<h4 id="23-broker&#x76F8;&#x5173;"><a name="23-broker&#x76F8;&#x5173;" class="anchor-navigation-ex-anchor" href="#23-broker&#x76F8;&#x5173;"><i class="fa fa-link" aria-hidden="true"></i></a>2.3 Broker&#x76F8;&#x5173;</h4>
+<table border="0" cellpadding="0" cellspacing="0" width="714">
+ <col width="177">
+ <col width="175">
+ <col width="177">
+ <col width="185">
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl63" width="177" style="height:17.0pt;width:133pt">&#x540D;&#x79F0;</td>
+  <td class="xl64" width="175" style="width:131pt">&#x542B;&#x4E49;</td>
+  <td class="xl64" width="177" style="width:133pt">&#x547D;&#x4EE4;&#x9009;&#x9879;</td>
+  <td class="xl64" width="185" style="width:139pt">&#x8BF4;&#x660E;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="6" height="206" class="xl69" width="191" style="border-bottom:1.0pt;
+  height:154.0pt;border-top:none;width:143pt">updateBrokerConfig</td>
+  <td rowspan="6" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x66F4;&#x65B0; Broker &#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF0C;&#x4F1A;&#x4FEE;&#x6539;Broker.conf</td>
+  <td class="xl67" width="87" style="width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">Broker &#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F;&#x4E3A;ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-c</td>
+  <td class="xl68" width="87" style="width:65pt">cluster &#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-k</td>
+  <td class="xl68" width="87" style="width:65pt">key &#x503C;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-v</td>
+  <td class="xl68" width="87" style="width:65pt">value &#x503C;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="3" height="137" class="xl69" width="191" style="border-bottom:1.0pt;
+  height:103.0pt;border-top:none;width:143pt">brokerStatus</td>
+  <td rowspan="3" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x67E5;&#x770B; Broker &#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x3001;&#x8FD0;&#x884C;&#x72B6;&#x6001;&#xFF08;&#x4F60;&#x60F3;&#x8981;&#x7684;&#x4FE1;&#x606F;&#x51E0;&#x4E4E;&#x90FD;&#x5728;&#x91CC;&#x9762;&#xFF09;</td>
+  <td class="xl67" width="87" style="width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">Broker &#x5730;&#x5740;&#xFF0C;&#x5730;&#x5740;&#x4E3A;ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="6" height="256" class="xl69" width="191" style="border-bottom:1.0pt;
+  height:192.0pt;border-top:none;width:143pt">brokerConsumeStats</td>
+  <td rowspan="6" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">Broker&#x4E2D;&#x5404;&#x4E2A;&#x6D88;&#x8D39;&#x8005;&#x7684;&#x6D88;&#x8D39;&#x60C5;&#x51B5;&#xFF0C;&#x6309;Message Queue&#x7EF4;&#x5EA6;&#x8FD4;&#x56DE;Consume
+  Offset&#xFF0C;Broker Offset&#xFF0C;Diff&#xFF0C;TImestamp&#x7B49;&#x4FE1;&#x606F;</td>
+  <td class="xl67" width="87" style="width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">Broker &#x5730;&#x5740;&#xFF0C;&#x5730;&#x5740;&#x4E3A;ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">&#x8BF7;&#x6C42;&#x8D85;&#x65F6;&#x65F6;&#x95F4;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-l</td>
+  <td class="xl68" width="87" style="width:65pt">diff&#x9608;&#x503C;&#xFF0C;&#x8D85;&#x8FC7;&#x9608;&#x503C;&#x624D;&#x6253;&#x5370;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-o</td>
+  <td class="xl68" width="87" style="width:65pt">&#x662F;&#x5426;&#x4E3A;&#x987A;&#x5E8F;topic&#xFF0C;&#x4E00;&#x822C;&#x4E3A;false</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="2" height="114" class="xl69" width="191" style="border-bottom:1.0pt;
+  height:86.0pt;border-top:none;width:143pt">getBrokerConfig</td>
+  <td rowspan="2" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x83B7;&#x53D6;Broker&#x914D;&#x7F6E;</td>
+  <td class="xl67" width="87" style="width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">Broker &#x5730;&#x5740;&#xFF0C;&#x5730;&#x5740;&#x4E3A;ip:port</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="3" height="137" class="xl69" width="191" style="border-bottom:1.0pt;
+  height:103.0pt;border-top:none;width:143pt">wipeWritePerm</td>
+  <td rowspan="3" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x4ECE;NameServer&#x4E0A;&#x6E05;&#x9664; Broker&#x5199;&#x6743;&#x9650;</td>
+  <td class="xl67" width="87" style="width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">Broker &#x5730;&#x5740;&#xFF0C;&#x5730;&#x5740;&#x4E3A;ip:port</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="4" height="160" class="xl69" width="191" style="border-bottom:1.0pt;
+  height:120.0pt;border-top:none;width:143pt">cleanExpiredCQ</td>
+  <td rowspan="4" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x6E05;&#x7406;Broker&#x4E0A;&#x8FC7;&#x671F;&#x7684;Consume Queue&#xFF0C;&#x5982;&#x679C;&#x624B;&#x52A8;&#x51CF;&#x5C11;&#x5BF9;&#x5217;&#x6570;&#x53EF;&#x80FD;&#x4EA7;&#x751F;&#x8FC7;&#x671F;&#x961F;&#x5217;</td>
+  <td class="xl67" width="87" style="width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">Broker &#x5730;&#x5740;&#xFF0C;&#x5730;&#x5740;&#x4E3A;ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-c</td>
+  <td class="xl68" width="87" style="width:65pt">&#x96C6;&#x7FA4;&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="88" style="mso-height-source:userset;height:66.0pt">
+  <td rowspan="4" height="191" class="xl69" width="191" style="border-bottom:1.0pt;
+  height:143.0pt;border-top:none;width:143pt">cleanUnusedTopic</td>
+  <td rowspan="4" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x6E05;&#x7406;Broker&#x4E0A;&#x4E0D;&#x4F7F;&#x7528;&#x7684;Topic&#xFF0C;&#x4ECE;&#x5185;&#x5B58;&#x4E2D;&#x91CA;&#x653E;Topic&#x7684;Consume
+  Queue&#xFF0C;&#x5982;&#x679C;&#x624B;&#x52A8;&#x5220;&#x9664;Topic&#x4F1A;&#x4EA7;&#x751F;&#x4E0D;&#x4F7F;&#x7528;&#x7684;Topic</td>
+  <td class="xl67" width="87" style="width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">Broker &#x5730;&#x5740;&#xFF0C;&#x5730;&#x5740;&#x4E3A;ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-c</td>
+  <td class="xl68" width="87" style="width:65pt">&#x96C6;&#x7FA4;&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="5" height="199" class="xl69" width="191" style="border-bottom:1.0pt;
+  height:149.0pt;border-top:none;width:143pt">sendMsgStatus</td>
+  <td rowspan="5" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x5411;Broker&#x53D1;&#x6D88;&#x606F;&#xFF0C;&#x8FD4;&#x56DE;&#x53D1;&#x9001;&#x72B6;&#x6001;&#x548C;RT</td>
+  <td class="xl67" width="87" style="width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">BrokerName&#xFF0C;&#x6CE8;&#x610F;&#x4E0D;&#x540C;&#x4E8E;Broker&#x5730;&#x5740;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-s</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6D88;&#x606F;&#x5927;&#x5C0F;&#xFF0C;&#x5355;&#x4F4D;B</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-c</td>
+  <td class="xl68" width="87" style="width:65pt">&#x53D1;&#x9001;&#x6B21;&#x6570;</td>
+ </tr>
+</table>
+
+
+<h4 id="24-&#x6D88;&#x606F;&#x76F8;&#x5173;"><a name="24-&#x6D88;&#x606F;&#x76F8;&#x5173;" class="anchor-navigation-ex-anchor" href="#24-&#x6D88;&#x606F;&#x76F8;&#x5173;"><i class="fa fa-link" aria-hidden="true"></i></a>2.4 &#x6D88;&#x606F;&#x76F8;&#x5173;</h4>
+<table border="0" cellpadding="0" cellspacing="0" width="714">
+ <col width="177">
+ <col width="175">
+ <col width="177">
+ <col width="185">
+<tr height="23" style="height:17.0pt">
+  <td height="23" class="xl63" width="177" style="height:17.0pt;width:133pt">&#x540D;&#x79F0;</td>
+  <td class="xl64" width="175" style="width:131pt">&#x542B;&#x4E49;</td>
+  <td class="xl64" width="177" style="width:133pt">&#x547D;&#x4EE4;&#x9009;&#x9879;</td>
+  <td class="xl64" width="185" style="width:139pt">&#x8BF4;&#x660E;</td>
+ </tr>
+ <tr height="128" style="height:96.0pt">
+  <td rowspan="3" height="208" class="xl69" width="87" style="border-bottom:1.0pt;
+  height:156.0pt;border-top:none;width:65pt">queryMsgById</td>
+  <td rowspan="3" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x6839;&#x636E;offsetMsgId&#x67E5;&#x8BE2;msg&#xFF0C;&#x5982;&#x679C;&#x4F7F;&#x7528;&#x5F00;&#x6E90;&#x63A7;&#x5236;&#x53F0;&#xFF0C;&#x5E94;&#x4F7F;&#x7528;offsetMsgId&#xFF0C;&#x6B64;&#x547D;&#x4EE4;&#x8FD8;&#x6709;&#x5176;&#x4ED6;&#x53C2;&#x6570;&#xFF0C;&#x5177;&#x4F53;&#x4F5C;&#x7528;&#x8BF7;&#x9605;&#x8BFB;QueryMsgByIdSubCommand&#x3002;</td>
+  <td class="xl67" width="87" style="width:65pt">-i</td>
+  <td class="xl67" width="87" style="width:65pt">msgId</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="4" height="126" class="xl69" width="87" style="border-bottom:1.0pt;
+  height:94.0pt;border-top:none;width:65pt">queryMsgByKey</td>
+  <td rowspan="4" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x6839;&#x636E;&#x6D88;&#x606F; Key &#x67E5;&#x8BE2;&#x6D88;&#x606F;</td>
+  <td class="xl67" width="87" style="width:65pt">-k</td>
+  <td class="xl67" width="87" style="width:65pt">msgKey</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">Topic &#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="225" style="height:169.0pt">
+  <td rowspan="6" height="390" class="xl69" width="87" style="border-bottom:1.0pt;
+  height:292.0pt;border-top:none;width:65pt">queryMsgByOffset</td>
+  <td rowspan="6" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x6839;&#x636E; Offset &#x67E5;&#x8BE2;&#x6D88;&#x606F;</td>
+  <td class="xl67" width="87" style="width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">Broker &#x540D;&#x79F0;&#xFF0C;&#xFF08;&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x6CE8;&#x610F;
+  &#x586B;&#x5199;&#x7684;&#x662F; Broker &#x7684;&#x540D;&#x79F0;&#xFF0C;&#x4E0D;&#x662F; Broker &#x7684;&#x5730;&#x5740;&#xFF0C;Broker &#x540D;&#x79F0;&#x53EF;&#x4EE5;&#x5728; clusterList &#x67E5;&#x5230;&#xFF09;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-i</td>
+  <td class="xl68" width="87" style="width:65pt">query &#x961F;&#x5217; id</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-o</td>
+  <td class="xl68" width="87" style="width:65pt">offset &#x503C;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">topic &#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="47">
+  <td rowspan="6" height="209" class="xl69" width="87" style="border-bottom:1.0pt;
+  height:156.0pt;border-top:none;width:65pt">queryMsgByUniqueKey</td>
+  <td rowspan="6" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x6839;&#x636E;msgId&#x67E5;&#x8BE2;&#xFF0C;msgId&#x4E0D;&#x540C;&#x4E8E;offsetMsgId&#xFF0C;&#x533A;&#x522B;&#x8BE6;&#x89C1;&#x5E38;&#x89C1;&#x8FD0;&#x7EF4;&#x95EE;&#x9898;&#x3002;-g&#xFF0C;-d&#x914D;&#x5408;&#x4F7F;&#x7528;&#xFF0C;&#x67E5;&#x5230;&#x6D88;&#x606F;&#x540E;&#x5C1D;&#x8BD5;&#x8BA9;&#x7279;&#x5B9A;&#x7684;&#x6D88;&#x8D39;&#x8005;&#x6D88;&#x8D39;&#x6D88;&#x606F;&#x5E76;&#x8FD4;&#x56DE;&#x6D88;&#x8D39;&#x7ED3;&#x679C;</td>
+  <td class="xl67" width="87" style="width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-i</td>
+  <td class="xl67" width="87" style="width:65pt">uniqe msg id</td>
+ </tr>
+ <tr height="36" style="height:27.0pt">
+  <td height="36" class="xl67" width="87" style="height:27.0pt;width:65pt">-g</td>
+  <td class="xl67" width="87" style="width:65pt">consumerGroup</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-d</td>
+  <td class="xl67" width="87" style="width:65pt">clientId</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">topic&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="5" height="149" class="xl69" width="87" style="border-bottom:1.0pt
+  height:111.0pt;border-top:none;width:65pt">checkMsgSendRT</td>
+  <td rowspan="5" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x68C0;&#x6D4B;&#x5411;topic&#x53D1;&#x6D88;&#x606F;&#x7684;RT&#xFF0C;&#x529F;&#x80FD;&#x7C7B;&#x4F3C;clusterRT</td>
+  <td class="xl67" width="87" style="width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">topic&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-a</td>
+  <td class="xl68" width="87" style="width:65pt">&#x63A2;&#x6D4B;&#x6B21;&#x6570;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-s</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6D88;&#x606F;&#x5927;&#x5C0F;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="8" height="218" class="xl69" width="87" style="border-bottom:1.0pt;
+  height:162.0pt;border-top:none;width:65pt">sendMessage</td>
+  <td rowspan="8" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x53D1;&#x9001;&#x4E00;&#x6761;&#x6D88;&#x606F;&#xFF0C;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x914D;&#x7F6E;&#x53D1;&#x5F80;&#x7279;&#x5B9A;Message Queue&#xFF0C;&#x6216;&#x666E;&#x901A;&#x53D1;&#x9001;&#x3002;</td>
+  <td class="xl67" width="87" style="width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">topic&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-p</td>
+  <td class="xl68" width="87" style="width:65pt">body&#xFF0C;&#x6D88;&#x606F;&#x4F53;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-k</td>
+  <td class="xl67" width="87" style="width:65pt">keys</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-c</td>
+  <td class="xl67" width="87" style="width:65pt">tags</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-b</td>
+  <td class="xl67" width="87" style="width:65pt">BrokerName</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-i</td>
+  <td class="xl67" width="87" style="width:65pt">queueId</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="10" height="312" class="xl69" width="87" style="border-bottom:1.0pt;
+  height:232.0pt;border-top:none;width:65pt">consumeMessage</td>
+  <td rowspan="10" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x6D88;&#x8D39;&#x6D88;&#x606F;&#x3002;&#x53EF;&#x4EE5;&#x6839;&#x636E;offset&#x3001;&#x5F00;&#x59CB;&amp;&#x7ED3;&#x675F;&#x65F6;&#x95F4;&#x6233;&#x3001;&#x6D88;&#x606F;&#x961F;&#x5217;&#x6D88;&#x8D39;&#x6D88;&#x606F;&#xFF0C;&#x914D;&#x7F6E;&#x4E0D;&#x540C;&#x6267;&#x884C;&#x4E0D;&#x540C;&#x6D88;&#x8D39;&#x903B;&#x8F91;&#xFF0C;&#x8BE6;&#x89C1;ConsumeMessageCommand&#x3002;</td>
+  <td class="xl67" width="87" style="width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">topic&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-b</td>
+  <td class="xl67" width="87" style="width:65pt">BrokerName</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-o</td>
+  <td class="xl68" width="87" style="width:65pt">&#x4ECE;offset&#x5F00;&#x59CB;&#x6D88;&#x8D39;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-i</td>
+  <td class="xl67" width="87" style="width:65pt">queueId</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-g</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6D88;&#x8D39;&#x8005;&#x5206;&#x7EC4;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-s</td>
+  <td class="xl68" width="87" style="width:65pt">&#x5F00;&#x59CB;&#x65F6;&#x95F4;&#x6233;&#xFF0C;&#x683C;&#x5F0F;&#x8BE6;&#x89C1;-h</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-d</td>
+  <td class="xl68" width="87" style="width:65pt">&#x7ED3;&#x675F;&#x65F6;&#x95F4;&#x6233;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-c</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6D88;&#x8D39;&#x591A;&#x5C11;&#x6761;&#x6D88;&#x606F;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="8" height="282" class="xl69" width="87" style="border-bottom:1.0pt;
+  height:210.0pt;border-top:none;width:65pt">printMsg</td>
+  <td rowspan="8" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x4ECE;Broker&#x6D88;&#x8D39;&#x6D88;&#x606F;&#x5E76;&#x6253;&#x5370;&#xFF0C;&#x53EF;&#x9009;&#x65F6;&#x95F4;&#x6BB5;</td>
+  <td class="xl67" width="87" style="width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">topic&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-c</td>
+  <td class="xl68" width="87" style="width:65pt">&#x5B57;&#x7B26;&#x96C6;&#xFF0C;&#x4F8B;&#x5982;UTF-8</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-s</td>
+  <td class="xl68" width="87" style="width:65pt">subExpress&#xFF0C;&#x8FC7;&#x6EE4;&#x8868;&#x8FBE;&#x5F0F;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">&#x5F00;&#x59CB;&#x65F6;&#x95F4;&#x6233;&#xFF0C;&#x683C;&#x5F0F;&#x53C2;&#x89C1;-h</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-e</td>
+  <td class="xl68" width="87" style="width:65pt">&#x7ED3;&#x675F;&#x65F6;&#x95F4;&#x6233;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-d</td>
+  <td class="xl68" width="87" style="width:65pt">&#x662F;&#x5426;&#x6253;&#x5370;&#x6D88;&#x606F;&#x4F53;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="12" height="390" class="xl69" width="87" style="border-bottom:1.0pt;
+  height:290.0pt;border-top:none;width:65pt">printMsgByQueue</td>
+  <td rowspan="12" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x7C7B;&#x4F3C;printMsg&#xFF0C;&#x4F46;&#x6307;&#x5B9A;Message Queue</td>
+  <td class="xl67" width="87" style="width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">topic&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-i</td>
+  <td class="xl67" width="87" style="width:65pt">queueId</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-a</td>
+  <td class="xl67" width="87" style="width:65pt">BrokerName</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-c</td>
+  <td class="xl68" width="87" style="width:65pt">&#x5B57;&#x7B26;&#x96C6;&#xFF0C;&#x4F8B;&#x5982;UTF-8</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-s</td>
+  <td class="xl68" width="87" style="width:65pt">subExpress&#xFF0C;&#x8FC7;&#x6EE4;&#x8868;&#x8FBE;&#x5F0F;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">&#x5F00;&#x59CB;&#x65F6;&#x95F4;&#x6233;&#xFF0C;&#x683C;&#x5F0F;&#x53C2;&#x89C1;-h</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-e</td>
+  <td class="xl68" width="87" style="width:65pt">&#x7ED3;&#x675F;&#x65F6;&#x95F4;&#x6233;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-p</td>
+  <td class="xl68" width="87" style="width:65pt">&#x662F;&#x5426;&#x6253;&#x5370;&#x6D88;&#x606F;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-d</td>
+  <td class="xl68" width="87" style="width:65pt">&#x662F;&#x5426;&#x6253;&#x5370;&#x6D88;&#x606F;&#x4F53;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-f</td>
+  <td class="xl68" width="87" style="width:65pt">&#x662F;&#x5426;&#x7EDF;&#x8BA1;tag&#x6570;&#x91CF;&#x5E76;&#x6253;&#x5370;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="7" height="410" class="xl69" width="87" style="border-bottom:1.0pt;
+  height:307.0pt;border-top:none;width:65pt">resetOffsetByTime</td>
+  <td rowspan="7" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x6309;&#x65F6;&#x95F4;&#x6233;&#x91CD;&#x7F6E;offset&#xFF0C;Broker&#x548C;consumer&#x90FD;&#x4F1A;&#x91CD;&#x7F6E;</td>
+  <td class="xl67" width="87" style="width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-g</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6D88;&#x8D39;&#x8005;&#x5206;&#x7EC4;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">topic&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-s</td>
+  <td class="xl68" width="87" style="width:65pt">&#x91CD;&#x7F6E;&#x4E3A;&#x6B64;&#x65F6;&#x95F4;&#x6233;&#x5BF9;&#x5E94;&#x7684;offset</td>
+ </tr>
+ <tr height="188" style="height:141.0pt">
+  <td height="188" class="xl67" width="87" style="height:141.0pt;width:65pt">-f</td>
+  <td class="xl68" width="87" style="width:65pt">&#x662F;&#x5426;&#x5F3A;&#x5236;&#x91CD;&#x7F6E;&#xFF0C;&#x5982;&#x679C;false&#xFF0C;&#x53EA;&#x652F;&#x6301;&#x56DE;&#x6EAF;offset&#xFF0C;&#x5982;&#x679C;true&#xFF0C;&#x4E0D;&#x7BA1;&#x65F6;&#x95F4;&#x6233;&#x5BF9;&#x5E94;offset&#x4E0E;consumeOffset&#x5173;&#x7CFB;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-c</td>
+  <td class="xl68" width="87" style="width:65pt">&#x662F;&#x5426;&#x91CD;&#x7F6E;c++&#x5BA2;&#x6237;&#x7AEF;offset</td>
+ </tr>
+</table>
+
+
+<h4 id="25-&#x6D88;&#x8D39;&#x8005;&#x3001;&#x6D88;&#x8D39;&#x7EC4;&#x76F8;&#x5173;"><a name="25-&#x6D88;&#x8D39;&#x8005;&#x3001;&#x6D88;&#x8D39;&#x7EC4;&#x76F8;&#x5173;" class="anchor-navigation-ex-anchor" href="#25-&#x6D88;&#x8D39;&#x8005;&#x3001;&#x6D88;&#x8D39;&#x7EC4;&#x76F8;&#x5173;"><i class="fa fa-link" aria-hidden="true"></i></a>2.5 &#x6D88;&#x8D39;&#x8005;&#x3001;&#x6D88;&#x8D39;&#x7EC4;&#x76F8;&#x5173;</h4>
+<table border="0" cellpadding="0" cellspacing="0" width="714">
+ <col width="177">
+ <col width="175">
+ <col width="177">
+ <col width="185">
+<tr height="23" style="height:17.0pt">
+  <td height="23" class="xl63" width="177" style="height:17.0pt;width:133pt">&#x540D;&#x79F0;</td>
+  <td class="xl64" width="175" style="width:131pt">&#x542B;&#x4E49;</td>
+  <td class="xl64" width="177" style="width:133pt">&#x547D;&#x4EE4;&#x9009;&#x9879;</td>
+  <td class="xl64" width="185" style="width:139pt">&#x8BF4;&#x660E;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td rowspan="4" height="158" class="xl69" width="87" style="border-bottom:1.0pt;
+  height:110pt;border-top:none;width:65pt">consumerProgress</td>
+  <td rowspan="4" class="xl72" width="87" style="border-bottom:1.0pt;
+  border-top:none;width:65pt">&#x67E5;&#x770B;&#x8BA2;&#x9605;&#x7EC4;&#x6D88;&#x8D39;&#x72B6;&#x6001;&#xFF0C;&#x53EF;&#x4EE5;&#x67E5;&#x770B;&#x5177;&#x4F53;&#x7684;client IP&#x7684;&#x6D88;&#x606F;&#x79EF;&#x7D2F;&#x91CF;</td>
+  <td class="xl67" width="87" style="width:65pt">-g</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6D88;&#x8D39;&#x8005;&#x6240;&#x5C5E;&#x7EC4;&#x540D;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-s</td>
+  <td class="xl68" width="87" style="width:65pt">&#x662F;&#x5426;&#x6253;&#x5370;client IP</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="105" style="mso-height-source:userset;height:79.0pt">
+  <td rowspan="5" height="260" class="xl69" width="87" style="border-bottom:1.0pt;
+  height:195.0pt;border-top:none;width:65pt">consumerStatus</td>
+  <td rowspan="5" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x67E5;&#x770B;&#x6D88;&#x8D39;&#x8005;&#x72B6;&#x6001;&#xFF0C;&#x5305;&#x62EC;&#x540C;&#x4E00;&#x4E2A;&#x5206;&#x7EC4;&#x4E2D;&#x662F;&#x5426;&#x90FD;&#x662F;&#x76F8;&#x540C;&#x7684;&#x8BA2;&#x9605;&#xFF0C;&#x5206;&#x6790;Process
+  Queue&#x662F;&#x5426;&#x5806;&#x79EF;&#xFF0C;&#x8FD4;&#x56DE;&#x6D88;&#x8D39;&#x8005;jstack&#x7ED3;&#x679C;&#xFF0C;&#x5185;&#x5BB9;&#x8F83;&#x591A;&#xFF0C;&#x4F7F;&#x7528;&#x8005;&#x53C2;&#x89C1;ConsumerStatusSubCommand</td>
+  <td class="xl67" width="87" style="width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="36" style="height:27.0pt">
+  <td height="36" class="xl67" width="87" style="height:27.0pt;width:65pt">-g</td>
+  <td class="xl67" width="87" style="width:65pt">consumer group</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-i</td>
+  <td class="xl67" width="87" style="width:65pt">clientId</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-s</td>
+  <td class="xl68" width="87" style="width:65pt">&#x662F;&#x5426;&#x6267;&#x884C;jstack</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td rowspan="5" height="181" class="xl69" width="87" style="border-bottom:1.0pt
+  height:135.0pt;border-top:none;width:65pt">getConsumerStatus</td>
+  <td rowspan="5" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x83B7;&#x53D6; Consumer &#x6D88;&#x8D39;&#x8FDB;&#x5EA6;</td>
+  <td class="xl67" width="87" style="width:65pt">-g</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6D88;&#x8D39;&#x8005;&#x6240;&#x5C5E;&#x7EC4;&#x540D;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">&#x67E5;&#x8BE2;&#x4E3B;&#x9898;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-i</td>
+  <td class="xl68" width="87" style="width:65pt">Consumer &#x5BA2;&#x6237;&#x7AEF; ip</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="13" height="761" class="xl69" width="87" style="border-bottom:1.0pt
+  height:569.0pt;border-top:none;width:65pt">updateSubGroup</td>
+  <td rowspan="13" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x66F4;&#x65B0;&#x6216;&#x521B;&#x5EFA;&#x8BA2;&#x9605;&#x5173;&#x7CFB;</td>
+  <td class="xl67" width="87" style="width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">Broker&#x5730;&#x5740;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-c</td>
+  <td class="xl68" width="87" style="width:65pt">&#x96C6;&#x7FA4;&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-g</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6D88;&#x8D39;&#x8005;&#x5206;&#x7EC4;&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-s</td>
+  <td class="xl68" width="87" style="width:65pt">&#x5206;&#x7EC4;&#x662F;&#x5426;&#x5141;&#x8BB8;&#x6D88;&#x8D39;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-m</td>
+  <td class="xl68" width="87" style="width:65pt">&#x662F;&#x5426;&#x4ECE;&#x6700;&#x5C0F;offset&#x5F00;&#x59CB;&#x6D88;&#x8D39;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-d</td>
+  <td class="xl68" width="87" style="width:65pt">&#x662F;&#x5426;&#x662F;&#x5E7F;&#x64AD;&#x6A21;&#x5F0F;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-q</td>
+  <td class="xl68" width="87" style="width:65pt">&#x91CD;&#x8BD5;&#x961F;&#x5217;&#x6570;&#x91CF;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-r</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6700;&#x5927;&#x91CD;&#x8BD5;&#x6B21;&#x6570;</td>
+ </tr>
+ <tr height="207" style="height:155.0pt">
+  <td height="207" class="xl67" width="87" style="height:155.0pt;width:65pt">-i</td>
+  <td class="xl68" width="87" style="width:65pt">&#x5F53;slaveReadEnable&#x5F00;&#x542F;&#x65F6;&#x6709;&#x6548;&#xFF0C;&#x4E14;&#x8FD8;&#x672A;&#x8FBE;&#x5230;&#x4ECE;slave&#x6D88;&#x8D39;&#x65F6;&#x5EFA;&#x8BAE;&#x4ECE;&#x54EA;&#x4E2A;BrokerId&#x6D88;&#x8D39;&#xFF0C;&#x53EF;&#x4EE5;&#x914D;&#x7F6E;&#x5907;&#x673A;id&#xFF0C;&#x4E3B;&#x52A8;&#x4ECE;&#x5907;&#x673A;&#x6D88;&#x8D39;</td>
+ </tr>
+ <tr height="132" style="height:99.0pt">
+  <td height="132" class="xl67" width="87" style="height:99.0pt;width:65pt">-w</td>
+  <td class="xl68" width="87" style="width:65pt">&#x5982;&#x679C;Broker&#x5EFA;&#x8BAE;&#x4ECE;slave&#x6D88;&#x8D39;&#xFF0C;&#x914D;&#x7F6E;&#x51B3;&#x5B9A;&#x4ECE;&#x54EA;&#x4E2A;slave&#x6D88;&#x8D39;&#xFF0C;&#x914D;&#x7F6E;BrokerId&#xFF0C;&#x4F8B;&#x5982;1</td>
+ </tr>
+ <tr height="76" style="height:57.0pt">
+  <td height="76" class="xl67" width="87" style="height:57.0pt;width:65pt">-a</td>
+  <td class="xl68" width="87" style="width:65pt">&#x5F53;&#x6D88;&#x8D39;&#x8005;&#x6570;&#x91CF;&#x53D8;&#x5316;&#x65F6;&#x662F;&#x5426;&#x901A;&#x77E5;&#x5176;&#x4ED6;&#x6D88;&#x8D39;&#x8005;&#x8D1F;&#x8F7D;&#x5747;&#x8861;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="5" height="165" class="xl69" width="87" style="border-bottom:1.0pt
+  height:123.0pt;border-top:none;width:65pt">deleteSubGroup</td>
+  <td rowspan="5" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x4ECE;Broker&#x5220;&#x9664;&#x8BA2;&#x9605;&#x5173;&#x7CFB;</td>
+  <td class="xl67" width="87" style="width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-b</td>
+  <td class="xl68" width="87" style="width:65pt">Broker&#x5730;&#x5740;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-c</td>
+  <td class="xl68" width="87" style="width:65pt">&#x96C6;&#x7FA4;&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td height="39" class="xl67" width="87" style="height:29.0pt;width:65pt">-g</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6D88;&#x8D39;&#x8005;&#x5206;&#x7EC4;&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="6" height="172" class="xl69" width="87" style="border-bottom:1.0pt
+  height:120pt;border-top:none;width:65pt">cloneGroupOffset</td>
+  <td rowspan="6" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x5728;&#x76EE;&#x6807;&#x7FA4;&#x7EC4;&#x4E2D;&#x4F7F;&#x7528;&#x6E90;&#x7FA4;&#x7EC4;&#x7684;offset</td>
+  <td class="xl67" width="87" style="width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-s</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6E90;&#x6D88;&#x8D39;&#x8005;&#x7EC4;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-d</td>
+  <td class="xl68" width="87" style="width:65pt">&#x76EE;&#x6807;&#x6D88;&#x8D39;&#x8005;&#x7EC4;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">topic&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-o</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6682;&#x672A;&#x4F7F;&#x7528;</td>
+ </tr>
+</table>
+
+
+
+
+<h4 id="26-&#x8FDE;&#x63A5;&#x76F8;&#x5173;"><a name="26-&#x8FDE;&#x63A5;&#x76F8;&#x5173;" class="anchor-navigation-ex-anchor" href="#26-&#x8FDE;&#x63A5;&#x76F8;&#x5173;"><i class="fa fa-link" aria-hidden="true"></i></a>2.6 &#x8FDE;&#x63A5;&#x76F8;&#x5173;</h4>
+<table border="0" cellpadding="0" cellspacing="0" width="714">
+ <col width="177">
+ <col width="175">
+ <col width="177">
+ <col width="185">
+<tr height="23" style="height:17.0pt">
+  <td height="23" class="xl63" width="177" style="height:17.0pt;width:133pt">&#x540D;&#x79F0;</td>
+  <td class="xl64" width="175" style="width:131pt">&#x542B;&#x4E49;</td>
+  <td class="xl64" width="177" style="width:133pt">&#x547D;&#x4EE4;&#x9009;&#x9879;</td>
+  <td class="xl64" width="185" style="width:139pt">&#x8BF4;&#x660E;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td rowspan="3" height="119" class="xl69" width="87" style="border-bottom:1.0pt
+  height:89.0pt;border-top:none;width:65pt">consumerConnec tion</td>
+  <td rowspan="3" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x67E5;&#x8BE2; Consumer &#x7684;&#x7F51;&#x7EDC;&#x8FDE;&#x63A5;</td>
+  <td class="xl67" width="87" style="width:65pt">-g</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6D88;&#x8D39;&#x8005;&#x6240;&#x5C5E;&#x7EC4;&#x540D;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="39" style="height:29.0pt">
+  <td rowspan="4" height="142" class="xl69" width="87" style="border-bottom:1.0pt
+  height:106.0pt;border-top:none;width:65pt">producerConnec tion</td>
+  <td rowspan="4" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x67E5;&#x8BE2; Producer &#x7684;&#x7F51;&#x7EDC;&#x8FDE;&#x63A5;</td>
+  <td class="xl67" width="87" style="width:65pt">-g</td>
+  <td class="xl68" width="87" style="width:65pt">&#x751F;&#x4EA7;&#x8005;&#x6240;&#x5C5E;&#x7EC4;&#x540D;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-t</td>
+  <td class="xl68" width="87" style="width:65pt">&#x4E3B;&#x9898;&#x540D;&#x79F0;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+</table>
+
+
+
+
+<h4 id="27-nameserver&#x76F8;&#x5173;"><a name="27-nameserver&#x76F8;&#x5173;" class="anchor-navigation-ex-anchor" href="#27-nameserver&#x76F8;&#x5173;"><i class="fa fa-link" aria-hidden="true"></i></a>2.7 NameServer&#x76F8;&#x5173;</h4>
+<table border="0" cellpadding="0" cellspacing="0" width="714">
+ <col width="177">
+ <col width="175">
+ <col width="177">
+ <col width="185">
+<tr height="23" style="height:17.0pt">
+  <td height="23" class="xl63" width="177" style="height:17.0pt;width:133pt">&#x540D;&#x79F0;</td>
+  <td class="xl64" width="175" style="width:131pt">&#x542B;&#x4E49;</td>
+  <td class="xl64" width="177" style="width:133pt">&#x547D;&#x4EE4;&#x9009;&#x9879;</td>
+  <td class="xl64" width="185" style="width:139pt">&#x8BF4;&#x660E;</td>
+ </tr>
+ <tr height="21" style="height:16.0pt">
+  <td rowspan="5" height="143" class="xl69" width="87" style="border-bottom:1.0pt
+  height:100pt;border-top:none;width:65pt">updateKvConfig</td>
+  <td rowspan="5" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x66F4;&#x65B0;NameServer&#x7684;kv&#x914D;&#x7F6E;&#xFF0C;&#x76EE;&#x524D;&#x8FD8;&#x672A;&#x4F7F;&#x7528;</td>
+  <td class="xl75" width="87" style="width:65pt">-s</td>
+  <td class="xl76" width="87" style="width:65pt">&#x547D;&#x540D;&#x7A7A;&#x95F4;</td>
+ </tr>
+ <tr height="21" style="height:16.0pt">
+  <td height="21" class="xl75" width="87" style="height:16.0pt;width:65pt">-k</td>
+  <td class="xl75" width="87" style="width:65pt">key</td>
+ </tr>
+ <tr height="21" style="height:16.0pt">
+  <td height="21" class="xl75" width="87" style="height:16.0pt;width:65pt">-v</td>
+  <td class="xl75" width="87" style="width:65pt">value</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td rowspan="4" height="126" class="xl69" width="87" style="border-bottom:1.0pt
+  height:94.0pt;border-top:none;width:65pt">deleteKvConfig</td>
+  <td rowspan="4" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x5220;&#x9664;NameServer&#x7684;kv&#x914D;&#x7F6E;</td>
+  <td class="xl67" width="87" style="width:65pt">-s</td>
+  <td class="xl68" width="87" style="width:65pt">&#x547D;&#x540D;&#x7A7A;&#x95F4;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-k</td>
+  <td class="xl67" width="87" style="width:65pt">key</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td height="57" class="xl67" width="87" style="height:43.0pt;width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="2" height="80" class="xl69" width="87" style="border-bottom:1.0pt
+  height:60.0pt;border-top:none;width:65pt">getNamesrvConfig</td>
+  <td rowspan="2" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x83B7;&#x53D6;NameServer&#x914D;&#x7F6E;</td>
+  <td class="xl67" width="87" style="width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="4" height="126" class="xl69" width="87" style="border-bottom:1.0pt
+  height:94.0pt;border-top:none;width:65pt">updateNamesrvConfig</td>
+  <td rowspan="4" class="xl72" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x4FEE;&#x6539;NameServer&#x914D;&#x7F6E;</td>
+  <td class="xl67" width="87" style="width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-k</td>
+  <td class="xl67" width="87" style="width:65pt">key</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-v</td>
+  <td class="xl67" width="87" style="width:65pt">value</td>
+ </tr>
+</table>
+
+
+
+
+<h4 id="28-&#x5176;&#x4ED6;"><a name="28-&#x5176;&#x4ED6;" class="anchor-navigation-ex-anchor" href="#28-&#x5176;&#x4ED6;"><i class="fa fa-link" aria-hidden="true"></i></a>2.8 &#x5176;&#x4ED6;</h4>
+<table border="0" cellpadding="0" cellspacing="0" width="714">
+ <col width="177">
+ <col width="175">
+ <col width="177">
+ <col width="185">
+<tr height="23" style="height:17.0pt">
+  <td height="23" class="xl63" width="177" style="height:17.0pt;width:133pt">&#x540D;&#x79F0;</td>
+  <td class="xl64" width="175" style="width:131pt">&#x542B;&#x4E49;</td>
+  <td class="xl64" width="177" style="width:133pt">&#x547D;&#x4EE4;&#x9009;&#x9879;</td>
+  <td class="xl64" width="185" style="width:139pt">&#x8BF4;&#x660E;</td>
+ </tr>
+ <tr height="57" style="height:43.0pt">
+  <td rowspan="2" height="80" class="xl69" width="87" style="border-bottom:1.0pt
+  height:60.0pt;border-top:none;width:65pt">startMonitoring</td>
+  <td rowspan="2" class="xl71" width="87" style="border-bottom:1.0pt
+  border-top:none;width:65pt">&#x5F00;&#x542F;&#x76D1;&#x63A7;&#x8FDB;&#x7A0B;&#xFF0C;&#x76D1;&#x63A7;&#x6D88;&#x606F;&#x8BEF;&#x5220;&#x3001;&#x91CD;&#x8BD5;&#x961F;&#x5217;&#x6D88;&#x606F;&#x6570;&#x7B49;</td>
+  <td class="xl67" width="87" style="width:65pt">-n</td>
+  <td class="xl68" width="87" style="width:65pt">NameServer &#x670D;&#x52A1;&#x5730;&#x5740;&#xFF0C;&#x683C;&#x5F0F; ip:port</td>
+ </tr>
+ <tr height="23" style="height:17.0pt">
+  <td height="23" class="xl67" width="87" style="height:17.0pt;width:65pt">-h</td>
+  <td class="xl68" width="87" style="width:65pt">&#x6253;&#x5370;&#x5E2E;&#x52A9;</td>
+ </tr>
+</table>
+
+
+<h3 id="3---&#x8FD0;&#x7EF4;&#x5E38;&#x89C1;&#x95EE;&#x9898;"><a name="3---&#x8FD0;&#x7EF4;&#x5E38;&#x89C1;&#x95EE;&#x9898;" class="anchor-navigation-ex-anchor" href="#3---&#x8FD0;&#x7EF4;&#x5E38;&#x89C1;&#x95EE;&#x9898;"><i class="fa fa-link" aria-hidden="true"></i></a>3   &#x8FD0;&#x7EF4;&#x5E38;&#x89C1;&#x95EE;&#x9898;</h3>
+<h4 id="31-rocketmq&#x7684;mqadmin&#x547D;&#x4EE4;&#x62A5;&#x9519;&#x95EE;&#x9898;"><a name="31-rocketmq&#x7684;mqadmin&#x547D;&#x4EE4;&#x62A5;&#x9519;&#x95EE;&#x9898;" class="anchor-navigation-ex-anchor" href="#31-rocketmq&#x7684;mqadmin&#x547D;&#x4EE4;&#x62A5;&#x9519;&#x95EE;&#x9898;"><i class="fa fa-link" aria-hidden="true"></i></a>3.1 RocketMQ&#x7684;mqadmin&#x547D;&#x4EE4;&#x62A5;&#x9519;&#x95EE;&#x9898;</h4>
+<blockquote>
+<p> &#x95EE;&#x9898;&#x63CF;&#x8FF0;&#xFF1A;&#x6709;&#x65F6;&#x5019;&#x5728;&#x90E8;&#x7F72;&#x5B8C;RocketMQ&#x96C6;&#x7FA4;&#x540E;&#xFF0C;&#x5C1D;&#x8BD5;&#x6267;&#x884C;&#x201C;mqadmin&#x201D;&#x4E00;&#x4E9B;&#x8FD0;&#x7EF4;&#x547D;&#x4EE4;&#xFF0C;&#x4F1A;&#x51FA;&#x73B0;&#x4E0B;&#x9762;&#x7684;&#x5F02;&#x5E38;&#x4FE1;&#x606F;&#xFF1A;</p>
+<pre><code class="lang-java">org.apache.rocketmq.remoting.exception.RemotingConnectException: connect to &lt;<span class="hljs-keyword">null</span>&gt; failed
+</code></pre>
+</blockquote>
+<p>&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#xFF1A;&#x53EF;&#x4EE5;&#x5728;&#x90E8;&#x7F72;RocketMQ&#x96C6;&#x7FA4;&#x7684;&#x865A;&#x62DF;&#x673A;&#x4E0A;&#x6267;&#x884C;<code>export NAMESRV_ADDR=ip:9876</code>&#xFF08;ip&#x6307;&#x7684;&#x662F;&#x96C6;&#x7FA4;&#x4E2D;&#x90E8;&#x7F72;NameServer&#x7EC4;&#x4EF6;&#x7684;&#x673A;&#x5668;ip&#x5730;&#x5740;&#xFF09;&#x547D;&#x4EE4;&#x4E4B;&#x540E;&#x518D;&#x4F7F;&#x7528;&#x201C;mqadmin&#x201D;&#x7684;&#x76F8;&#x5173;&#x547D;&#x4EE4;&#x8FDB;&#x884C;&#x67E5;&#x8BE2;&#xFF0C;&#x5373;&#x53EF;&#x5F97;&#x5230;&#x7ED3;&#x679C;&#x3002;</p>
+<h4 id="32-rocketmq&#x751F;&#x4EA7;&#x7AEF;&#x548C;&#x6D88;&#x8D39;&#x7AEF;&#x7248;&#x672C;&#x4E0D;&#x4E00;&#x81F4;&#x5BFC;&#x81F4;&#x4E0D;&#x80FD;&#x6B63;&#x5E38;&#x6D88;&#x8D39;&#x7684;&#x95EE;&#x9898;"><a name="32-rocketmq&#x751F;&#x4EA7;&#x7AEF;&#x548C;&#x6D88;&#x8D39;&#x7AEF;&#x7248;&#x672C;&#x4E0D;&#x4E00;&#x81F4;&#x5BFC;&#x81F4;&#x4E0D;&#x80FD;&#x6B63;&#x5E38;&#x6D88;&#x8D39;&#x7684;&#x95EE;&#x9898;" class="anchor-navigation-ex-anchor" href="#32-rocketmq&#x751F;&#x4EA7;&#x7AEF;&#x548C;&#x6D88;&#x8D39;&#x7AEF;&#x7248;&#x672C;&#x4E0D;&#x4E00;&#x81F4;&#x5BFC;&#x81F4;&#x4E0D;&#x80FD;&#x6B63;&#x5E38;&#x6D88;&#x8D39;&#x7684;&#x95EE;&#x9898;"><i class="fa fa-link" aria-hidden="true"></i></a>3.2 RocketMQ&#x751F;&#x4EA7;&#x7AEF;&#x548C;&#x6D88;&#x8D39;&#x7AEF;&#x7248;&#x672C;&#x4E0D;&#x4E00;&#x81F4;&#x5BFC;&#x81F4;&#x4E0D;&#x80FD;&#x6B63;&#x5E38;&#x6D88;&#x8D39;&#x7684;&#x95EE;&#x9898;</h4>
+<blockquote>
+<p>&#x95EE;&#x9898;&#x63CF;&#x8FF0;&#xFF1A;&#x540C;&#x4E00;&#x4E2A;&#x751F;&#x4EA7;&#x7AEF;&#x53D1;&#x51FA;&#x6D88;&#x606F;&#xFF0C;A&#x6D88;&#x8D39;&#x7AEF;&#x53EF;&#x6D88;&#x8D39;&#xFF0C;B&#x6D88;&#x8D39;&#x7AEF;&#x5374;&#x65E0;&#x6CD5;&#x6D88;&#x8D39;&#xFF0C;rocketMQ Console&#x4E2D;&#x51FA;&#x73B0;&#xFF1A;</p>
+<pre><code class="lang-java">Not found the consumer group consume stats, because <span class="hljs-keyword">return</span> offset table is empty, maybe the consumer not consume any message&#x7684;&#x5F02;&#x5E38;&#x6D88;&#x606F;&#x3002;
+</code></pre>
+</blockquote>
+<p>  &#x89E3;&#x51B3;&#x65B9;&#x6848;&#xFF1A;RocketMQ &#x7684;jar&#x5305;&#xFF1A;rocketmq-client&#x7B49;&#x5305;&#x5E94;&#x8BE5;&#x4FDD;&#x6301;&#x751F;&#x4EA7;&#x7AEF;&#xFF0C;&#x6D88;&#x8D39;&#x7AEF;&#x4F7F;&#x7528;&#x76F8;&#x540C;&#x7684;version&#x3002;</p>
+<h4 id="33--&#x65B0;&#x589E;&#x4E00;&#x4E2A;topic&#x7684;&#x6D88;&#x8D39;&#x7EC4;&#x65F6;&#xFF0C;&#x65E0;&#x6CD5;&#x6D88;&#x8D39;&#x5386;&#x53F2;&#x6D88;&#x606F;&#x7684;&#x95EE;&#x9898;"><a name="33--&#x65B0;&#x589E;&#x4E00;&#x4E2A;topic&#x7684;&#x6D88;&#x8D39;&#x7EC4;&#x65F6;&#xFF0C;&#x65E0;&#x6CD5;&#x6D88;&#x8D39;&#x5386;&#x53F2;&#x6D88;&#x606F;&#x7684;&#x95EE;&#x9898;" class="anchor-navigation-ex-anchor" href="#33--&#x65B0;&#x589E;&#x4E00;&#x4E2A;topic&#x7684;&#x6D88;&#x8D39;&#x7EC4;&#x65F6;&#xFF0C;&#x65E0;&#x6CD5;&#x6D88;&#x8D39;&#x5386;&#x53F2;&#x6D88;&#x606F;&#x7684;&#x95EE;&#x9898;"><i class="fa fa-link" aria-hidden="true"></i></a>3.3  &#x65B0;&#x589E;&#x4E00;&#x4E2A;topic&#x7684;&#x6D88;&#x8D39;&#x7EC4;&#x65F6;&#xFF0C;&#x65E0;&#x6CD5;&#x6D88;&#x8D39;&#x5386;&#x53F2;&#x6D88;&#x606F;&#x7684;&#x95EE;&#x9898;</h4>
+<blockquote>
+<p>&#x95EE;&#x9898;&#x63CF;&#x8FF0;&#xFF1A;&#x5F53;&#x540C;&#x4E00;&#x4E2A;topic&#x7684;&#x65B0;&#x589E;&#x6D88;&#x8D39;&#x7EC4;&#x542F;&#x52A8;&#x65F6;&#xFF0C;&#x6D88;&#x8D39;&#x7684;&#x6D88;&#x606F;&#x662F;&#x5F53;&#x524D;&#x7684;offset&#x7684;&#x6D88;&#x606F;&#xFF0C;&#x5E76;&#x672A;&#x83B7;&#x53D6;&#x5386;&#x53F2;&#x6D88;&#x606F;&#x3002;    </p>
+</blockquote>
+<p>&#x89E3;&#x51B3;&#x65B9;&#x6848;&#xFF1A;rocketmq&#x9ED8;&#x8BA4;&#x7B56;&#x7565;&#x662F;&#x4ECE;&#x6D88;&#x606F;&#x961F;&#x5217;&#x5C3E;&#x90E8;&#xFF0C;&#x5373;&#x8DF3;&#x8FC7;&#x5386;&#x53F2;&#x6D88;&#x606F;&#x3002;&#x5982;&#x679C;&#x60F3;&#x6D88;&#x8D39;&#x5386;&#x53F2;&#x6D88;&#x606F;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x8BBE;&#x7F6E;&#xFF1A;<code>org.apache.rocketmq.client.consumer.DefaultMQPushConsumer#setConsumeFromWhere</code>&#x3002;&#x5E38;&#x7528;&#x7684;&#x6709;&#x4EE5;&#x4E0B;&#x4E09;&#x79CD;&#x914D;&#x7F6E;&#xFF1A;</p>
+<ul>
+<li>&#x9ED8;&#x8BA4;&#x914D;&#x7F6E;,&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x8BA2;&#x9605;&#x7EC4;&#x7B2C;&#x4E00;&#x6B21;&#x542F;&#x52A8;&#x4ECE;&#x961F;&#x5217;&#x7684;&#x6700;&#x540E;&#x4F4D;&#x7F6E;&#x5F00;&#x59CB;&#x6D88;&#x8D39;&#xFF0C;&#x540E;&#x7EED;&#x518D;&#x542F;&#x52A8;&#x63A5;&#x7740;&#x4E0A;&#x6B21;&#x6D88;&#x8D39;&#x7684;&#x8FDB;&#x5EA6;&#x5F00;&#x59CB;&#x6D88;&#x8D39;,&#x5373;&#x8DF3;&#x8FC7;&#x5386;&#x53F2;&#x6D88;&#x606F;&#xFF1B;</li>
+</ul>
+<pre><code class="lang-java">consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET);
+</code></pre>
+<ul>
+<li>&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x8BA2;&#x9605;&#x7EC4;&#x7B2C;&#x4E00;&#x6B21;&#x542F;&#x52A8;&#x4ECE;&#x961F;&#x5217;&#x7684;&#x6700;&#x524D;&#x4F4D;&#x7F6E;&#x5F00;&#x59CB;&#x6D88;&#x8D39;&#xFF0C;&#x540E;&#x7EED;&#x518D;&#x542F;&#x52A8;&#x63A5;&#x7740;&#x4E0A;&#x6B21;&#x6D88;&#x8D39;&#x7684;&#x8FDB;&#x5EA6;&#x5F00;&#x59CB;&#x6D88;&#x8D39;,&#x5373;&#x6D88;&#x8D39;Broker&#x672A;&#x8FC7;&#x671F;&#x7684;&#x5386;&#x53F2;&#x6D88;&#x606F;&#xFF1B;</li>
+</ul>
+<pre><code class="lang-java">consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+</code></pre>
+<ul>
+<li>&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x8BA2;&#x9605;&#x7EC4;&#x7B2C;&#x4E00;&#x6B21;&#x542F;&#x52A8;&#x4ECE;&#x6307;&#x5B9A;&#x65F6;&#x95F4;&#x70B9;&#x5F00;&#x59CB;&#x6D88;&#x8D39;&#xFF0C;&#x540E;&#x7EED;&#x518D;&#x542F;&#x52A8;&#x63A5;&#x7740;&#x4E0A;&#x6B21;&#x6D88;&#x8D39;&#x7684;&#x8FDB;&#x5EA6;&#x5F00;&#x59CB;&#x6D88;&#x8D39;&#xFF0C;&#x548C;consumer.setConsumeTimestamp()&#x914D;&#x5408;&#x4F7F;&#x7528;&#xFF0C;&#x9ED8;&#x8BA4;&#x662F;&#x534A;&#x4E2A;&#x5C0F;&#x65F6;&#x4EE5;&#x524D;&#xFF1B;</li>
+</ul>
+<pre><code class="lang-java">consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_TIMESTAMP);
+</code></pre>
+<h4 id="34-&#x5982;&#x4F55;&#x5F00;&#x542F;&#x4ECE;slave&#x8BFB;&#x6570;&#x636E;&#x529F;&#x80FD;"><a name="34-&#x5982;&#x4F55;&#x5F00;&#x542F;&#x4ECE;slave&#x8BFB;&#x6570;&#x636E;&#x529F;&#x80FD;" class="anchor-navigation-ex-anchor" href="#34-&#x5982;&#x4F55;&#x5F00;&#x542F;&#x4ECE;slave&#x8BFB;&#x6570;&#x636E;&#x529F;&#x80FD;"><i class="fa fa-link" aria-hidden="true"></i></a>3.4 &#x5982;&#x4F55;&#x5F00;&#x542F;&#x4ECE;Slave&#x8BFB;&#x6570;&#x636E;&#x529F;&#x80FD;</h4>
+<p>&#x5728;&#x67D0;&#x4E9B;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;Consumer&#x9700;&#x8981;&#x5C06;&#x6D88;&#x8D39;&#x4F4D;&#x70B9;&#x91CD;&#x7F6E;&#x5230;1-2&#x5929;&#x524D;&#xFF0C;&#x8FD9;&#x65F6;&#x5728;&#x5185;&#x5B58;&#x6709;&#x9650;&#x7684;Master Broker&#x4E0A;&#xFF0C;CommitLog&#x4F1A;&#x627F;&#x8F7D;&#x6BD4;&#x8F83;&#x91CD;&#x7684;IO&#x538B;&#x529B;&#xFF0C;&#x5F71;&#x54CD;&#x5230;&#x8BE5;Broker&#x7684;&#x5176;&#x5B83;&#x6D88;&#x606F;&#x7684;&#x8BFB;&#x4E0E;&#x5199;&#x3002;&#x53EF;&#x4EE5;&#x5F00;&#x542F;<code>slaveReadEnable=true</code>&#xFF0C;&#x5F53;Master Broker&#x53D1;&#x73B0;Consumer&#x7684;&#x6D88;&#x8D39;&#x4F4D;&#x70B9;&#x4E0E;CommitLog&#x7684;&#x6700;&#x65B0;&#x503C;&#x7684;&#x5DEE;&#x503C;&#x7684;&#x5BB9;&#x91CF;&#x8D85;&#x8FC7;&#x8BE5;&#x673A;&#x5668;&#x5185;&#x5B58;&#x7684;&#x767E;&#x5206;&#x6BD4;&#xFF08;<code>accessMessageInMemoryMaxRatio=40%</code>&#xFF09;&#xFF0C;&#x4F1A;&#x63A8;&#x8350;Consumer&#x4ECE;Slave Broker&#x4E2D;&#x53BB;&#x8BFB;&#x53D6;&#x6570;&#x636E;&#xFF0C;&#x964D;&#x4F4E;Master Broker&#x7684;IO&#x3002;</p>
+<h4 id="35-&#x6027;&#x80FD;&#x8C03;&#x4F18;&#x95EE;&#x9898;"><a name="35-&#x6027;&#x80FD;&#x8C03;&#x4F18;&#x95EE;&#x9898;" class="anchor-navigation-ex-anchor" href="#35-&#x6027;&#x80FD;&#x8C03;&#x4F18;&#x95EE;&#x9898;"><i class="fa fa-link" aria-hidden="true"></i></a>3.5 &#x6027;&#x80FD;&#x8C03;&#x4F18;&#x95EE;&#x9898;</h4>
+<p>&#x5F02;&#x6B65;&#x5237;&#x76D8;&#x5EFA;&#x8BAE;&#x4F7F;&#x7528;&#x81EA;&#x65CB;&#x9501;&#xFF0C;&#x540C;&#x6B65;&#x5237;&#x76D8;&#x5EFA;&#x8BAE;&#x4F7F;&#x7528;&#x91CD;&#x5165;&#x9501;&#xFF0C;&#x8C03;&#x6574;Broker&#x914D;&#x7F6E;&#x9879;<code>useReentrantLockWhenPutMessage</code>&#xFF0C;&#x9ED8;&#x8BA4;&#x4E3A;false&#xFF1B;&#x5F02;&#x6B65;&#x5237;&#x76D8;&#x5EFA;&#x8BAE;&#x5F00;&#x542F;<code>TransientStorePoolEnable</code>&#xFF1B;&#x5EFA;&#x8BAE;&#x5173;&#x95ED;transferMsgByHeap&#xFF0C;&#x63D0;&#x9AD8;&#x62C9;&#x6D88;&#x606F;&#x6548;&#x7387;&#xFF1B;&#x540C;&#x6B65;&#x5237;&#x76D8;&#x5EFA;&#x8BAE;&#x9002;&#x5F53;&#x589E;&#x5927;<code>sendMessageThreadPoolNums</code>&#xFF0C;&#x5177;&#x4F53;&#x914D;&#x7F6E;&#x9700;&#x8981;&#x7ECF;&#x8FC7;&#x538B;&#x6D4B;&#x3002;</p>
+<h4 id="36-&#x5728;rocketmq&#x4E2D;msgid&#x548C;offsetmsgid&#x7684;&#x542B;&#x4E49;&#x4E0E;&#x533A;&#x522B;"><a name="36-&#x5728;rocketmq&#x4E2D;msgid&#x548C;offsetmsgid&#x7684;&#x542B;&#x4E49;&#x4E0E;&#x533A;&#x522B;" class="anchor-navigation-ex-anchor" href="#36-&#x5728;rocketmq&#x4E2D;msgid&#x548C;offsetmsgid&#x7684;&#x542B;&#x4E49;&#x4E0E;&#x533A;&#x522B;"><i class="fa fa-link" aria-hidden="true"></i></a>3.6 &#x5728;RocketMQ&#x4E2D;msgId&#x548C;offsetMsgId&#x7684;&#x542B;&#x4E49;&#x4E0E;&#x533A;&#x522B;</h4>
+<p>&#x4F7F;&#x7528;RocketMQ&#x5B8C;&#x6210;&#x751F;&#x4EA7;&#x8005;&#x5BA2;&#x6237;&#x7AEF;&#x6D88;&#x606F;&#x53D1;&#x9001;&#x540E;&#xFF0C;&#x901A;&#x5E38;&#x4F1A;&#x770B;&#x5230;&#x5982;&#x4E0B;&#x65E5;&#x5FD7;&#x6253;&#x5370;&#x4FE1;&#x606F;&#xFF1A;</p>
+<pre><code class="lang-java">SendResult [sendStatus=SEND_OK, msgId=<span class="hljs-number">0</span>A42333A0DC818B4AAC246C290FD0000, offsetMsgId=<span class="hljs-number">0</span>A42333A00002A9F000000000134F1F5, messageQueue=MessageQueue [topic=topicTest1, BrokerName=mac.local, queueId=<span class="hljs-number">3</span>], queueOffset=<span class="hljs-number">4</span>]
+</code></pre>
+<ul>
+<li>msgId&#xFF0C;&#x5BF9;&#x4E8E;&#x5BA2;&#x6237;&#x7AEF;&#x6765;&#x8BF4;msgId&#x662F;&#x7531;&#x5BA2;&#x6237;&#x7AEF;producer&#x5B9E;&#x4F8B;&#x7AEF;&#x751F;&#x6210;&#x7684;&#xFF0C;&#x5177;&#x4F53;&#x6765;&#x8BF4;&#xFF0C;&#x8C03;&#x7528;&#x65B9;&#x6CD5;<code>MessageClientIDSetter.createUniqIDBuffer()</code>&#x751F;&#x6210;&#x552F;&#x4E00;&#x7684;Id&#xFF1B;</li>
+<li>offsetMsgId&#xFF0C;offsetMsgId&#x662F;&#x7531;Broker&#x670D;&#x52A1;&#x7AEF;&#x5728;&#x5199;&#x5165;&#x6D88;&#x606F;&#x65F6;&#x751F;&#x6210;&#x7684;&#xFF08;&#x91C7;&#x7528;&#x201D;IP&#x5730;&#x5740;+Port&#x7AEF;&#x53E3;&#x201D;&#x4E0E;&#x201C;CommitLog&#x7684;&#x7269;&#x7406;&#x504F;&#x79FB;&#x91CF;&#x5730;&#x5740;&#x201D;&#x505A;&#x4E86;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x4E32;&#x62FC;&#x63A5;&#xFF09;&#xFF0C;&#x5176;&#x4E2D;offsetMsgId&#x5C31;&#x662F;&#x5728;RocketMQ&#x63A7;&#x5236;&#x53F0;&#x76F4;&#x63A5;&#x8F93;&#x5165;&#x67E5;&#x8BE2;&#x7684;&#x90A3;&#x4E2A;messageId&#x3002;</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="dledger/deploy_guide.html" class="navigation navigation-prev " aria-label="Previous page: 集群部署(Cluster Deployment)">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="javascript:;" class="navigation navigation-next " aria-label="Next page: DefaultMQProducer API Reference">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"集群部署(Operation)","level":"1.12","depth":1,"next":{"title":"DefaultMQProducer API Reference","level":"1.13","depth":1,"path":"client/java/API_Reference_DefaultMQProducer.md","ref":"client/java/API_Reference_DefaultMQProducer.md","articles":[]},"previous":{"title":"集群部署(Cluster Deployment)","level":"1.11","depth":1,"path":"dledger/deploy_guide.md","ref":"dledger/deploy_guide.md","articles":[]},"dir":"ltr"},"config":{"plugins":["3-ba@^0.9.0","anchor-navigation-ex@0.1.8","livereload"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"livereload":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"isRewritePageTitle":true,"isShowTocTitleIcon":true,"tocLevel1Icon":"fa fa-hand-o-right","tocLevel2Icon":"fa fa-hand-o-right","tocLevel3Icon":"fa fa-hand-o-right"},"3-ba":{"configuration":"auto","token":"13766878cde148282622871dd245a973"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"RocketMQ官方","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Apache RocketMQ开发者指南","links":{"sidebar":{"博客首页":"http://www.itmuch.com","RocketMQ官方网站":"http://rocketmq.apache.org"}},"gitbook":"*"},"file":{"path":"operation.md","mtime":"2019-07-23T12:28:03.278Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-03T17:36:58.845Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../static/js/gitbook.js"></script>
+    <script src="../../static/js/theme.js"></script>
+    
+        
+        <script src="../../static/js/plugin.js"></script>
+        
+    
+        
+        <script src="../../static/js/plugin1.js"></script>
+        
+    
+        
+        <script src="../../static/js/search-engine.js"></script>
+        
+    
+        
+        <script src="../../static/js/search.js"></script>
+        
+    
+        
+        <script src="../../static/js/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../static/js/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../static/js/buttons.js"></script>
+        
+    
+        
+        <script src="../../static/js/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

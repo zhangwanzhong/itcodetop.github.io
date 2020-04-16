@@ -1,0 +1,1151 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:42 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Docker,微服务架构,Spring Boot">
+
+
+    <meta name="description" content="Spring Cloud、Docker、微服务架构、Cloud Native相关知识分享。">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content ">
+                    
+
+
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud-sum/feign-multiple-params-2/index.html" target="_blank">如何使用Feign构造多参数的请求</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年07月06日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                
+TIPS
+本文基于Spring Cloud Greenwich SR1，理论上支持Finchley及更高版本。
+
+本节来探讨如何使用Feign构造多参数的请求。笔者以GET及POST请求为例讲解，其他方式（例如DELETE、PUT等）的请求原理相通，读者可自行研究。
+GET请求多参数的URL假设需请求的URL包含多个参数，例如http://microservice-provider-user/get?id=1&amp;amp;username=张三 ，该如何使用Feign构造...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Feign</a> <a class="tag-link" href="javascript:;">Spring Cloud</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud-sum/feign-multiple-params-2/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud-alibaba/ribbon-nacos-weight-cluster/index.html" target="_blank">扩展Ribbon支持Nacos集群配置</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年06月30日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                在Nacos上，支持集群配置。集群是对指定微服务的一种虚拟分类。集群还是比较有用的，例如：
+
+为了容灾，把指定微服务同时部署在两个机房（例如同城多活【其中1个机房崩溃另一个机房还能顶】、异地多活【防止自然灾害，例如地震什么的】），比如南京机房和北京机房。
+调用时，可优先调用同机房的实例，如果同机房没有实例，再跨机房调用。
+
+
+
+当然cluster还有很多其他作用，请各位看客自行脑补，本文将围绕上面描述的场景展开。
+虽然Spring Cloud Alibaba支持集群配置...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud Alibaba</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Ribbon</a> <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="javascript:;">Spring Cloud Alibaba</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud-alibaba/ribbon-nacos-weight-cluster/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud-alibaba/ribbon-nacos-weight/index.html" target="_blank">扩展Ribbon支持Nacos权重的三种方式</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年06月30日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                Nacos支持权重配置，这是个比较实用的功能，例如：
+
+把性能差的机器权重设低，性能好的机器权重设高，让请求优先打到性能高的机器上去；
+某个实例出现异常时，把权重设低，排查问题，问题排查完再把权重恢复；
+想要下线某个实例时，可先将该实例的权重设为0，这样流量就不会打到该实例上了——此时再去关停该实例，这样就能实现优雅下线啦。当然这是为Nacos量身定制的优雅下线方案——Spring Cloud中，要想实现优雅下线还有很多姿势，详见：《实用技巧：Spring Cloud中...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud Alibaba</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Ribbon</a> <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="javascript:;">Spring Cloud Alibaba</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud-alibaba/ribbon-nacos-weight/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a target="_blank" href="../../spring-cloud-alibaba/nacos-ha/index.html">
+                <img class="img-ajax" src="../../static/picture/loading.gif" data-src="../../static/picture/nacos-cluster.png" alt="搭建生产可用的Nacos集群">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud-alibaba/nacos-ha/index.html" target="_blank">搭建生产可用的Nacos集群</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年06月20日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                
+TIPS
+
+本文使用Nacos 1.0.1 + MySQL 8.0，理论兼容Nacos 1.1.3
+
+
+前面部署的是单机版的Nacos Server，这一般不适用于生产。
+本节详细探讨如何搭建一个生产可用的Nacos集群。讨论的内容主要包括：使用MySQL作为存储持久化数据，以及如何搭建Nacos集群。
+一、部署架构图部署架构图如下：
+
+二、安装MySQL数据库生产环境需使用MySQL作为后端存储，因此需要搭建MySQL。生产中，MySQL建议至少主备模式，高可用My...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud Alibaba</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Sentinel</a> <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="javascript:;">Spring Cloud Alibaba</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud-alibaba/nacos-ha/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a target="_blank" href="../../other/idea-mybatis-warning/index.html">
+                <img class="img-ajax" src="../../static/picture/loading.gif" data-src="../../static/picture/idea-mybatis.png" alt="Intellij IDEA中Mybatis Mapper自动注入警告的6种解决方案">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../other/idea-mybatis-warning/index.html" target="_blank">Intellij IDEA中Mybatis Mapper自动注入警告的6种解决方案</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年06月12日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                相信使用Mybaits的小伙伴们一定会经常编写类似如下的代码：
+
+可以看到 userMapper 下有个红色警告。虽然代码本身并没有问题，能正常运行，但有个警告总归有点恶心。本文分析原因，并列出解决该警告的几种方案。
+原因众所周知，IDEA是非常智能的，它可以理解Spring的上下文。然而 UserMapper 这个接口是Mybatis的，IDEA理解不了。
+而 @Autowired 注解，默认情况下要求依赖对象（也就是 userMapper ）必须存在。而IDEA认为...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="../../categories/其他/index.html">其他</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Mybatis</a> <a class="tag-link" href="../../tags/工作/index.html">工作</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../other/idea-mybatis-warning/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud-alibaba/05-sentinel/index.html" target="_blank">Spring Cloud Alibaba系列教程-05-Sentinel入门与整合</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年05月27日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                
+TIPS
+本文基于：
+
+Spring Boot 2.1.5
+Spring Cloud Greenwich.SR1
+Spring Cloud Alibaba 0.9.0
+Nacos 1.0.0
+
+
+Sentinel 是什么？随着微服务的流行，服务和服务之间的稳定性变得越来越重要。Sentinel 以流量为切入点，从流量控制、熔断降级、系统负载保护等多个维度保护服务的稳定性。
+简单来说，Sentinel是一个轻量级的流量控制、熔断降级 Java 库。
+Sentinel 具...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud Alibaba</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Sentinel</a> <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="javascript:;">Spring Cloud Alibaba</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud-alibaba/05-sentinel/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a target="_blank" href="../../awesome/awesome-chrome-plugins/index.html">
+                <img class="img-ajax" src="../../static/picture/loading.gif" data-src="../../static/picture/xpath.gif" alt="推荐10款笔者一直在使用的Chrome提效插件">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../awesome/awesome-chrome-plugins/index.html" target="_blank">推荐10款笔者一直在使用的Chrome提效插件</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年05月10日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                本文推荐的10款插件笔者一直在用，部分插件可能有点冷门，但绝壁是提升效率的好帮手，在我眼里是必备插件。笔者已创建 GitHub仓库 ，欢迎分享、讨论。一起打造最强Chrome插件集。
+1. CrxMouse Chrome™ Gestures作用：高度可自定义的鼠标手势、超级拖拽、鼠标滚轮手势、遥感手势，提升工作效率。
+官方网站：https://crxmouse.com/
+插件主页：https://chrome.google.com/webstore/detail/crx...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="../../categories/其他/index.html">其他</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Awesome</a> <a class="tag-link" href="javascript:;">Chrome</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../awesome/awesome-chrome-plugins/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../work/expect/index.html" target="_blank">MongoDB自动备份全过程实录</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年05月09日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                前段时间，个人小程序 IT牧场 因服务器磁盘空间被占满，导致MongoDB挂了。清理了一些无用的数据后，重启MongoDB，竟然无法启动，一番折腾（20分钟）后，总算修复了。这让我意识到：虽然是个人小项目，但也必须定期备份啊，否则数据丢了很尴尬的说。
+
+碎碎念
+
+我不是MongoDB高手，之所以选择MongoDB，是因为需求不明确——MongoDB很适合不明确需求场景的开发。
+个人对Elasticsearch更熟悉，Elasticsearch也很适合不定需求的业务开发；...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="../../categories/工作/index.html">工作</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">MongoDB</a> <a class="tag-link" href="../../tags/expect/index.html">expect</a> <a class="tag-link" href="../../tags/mongodump/index.html">mongodump</a> <a class="tag-link" href="../../tags/备份/index.html">备份</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../work/expect/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a target="_blank" href="../../advertisment/come-together-wechat/index.html">
+                <img class="img-ajax" src="../../static/picture/loading.gif" data-src="../../static/picture/weixin.png" alt="技术讨论">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../advertisment/come-together-wechat/index.html" target="_blank">技术讨论</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年05月08日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                有童鞋反馈博客没有讨论平台，其实笔者有技术讨论微信群。请加我微信，技术交流，一起进步。暗号：加群。目前已有1000人+。
+本群为技术讨论群，旨在提供良好的技术讨论平台，协助解决大家的技术问题。请自觉遵守群规，严重违规者赠送飞机票：
+
+禁止非技术无关的内容营销(例如：抢票、公众号营销等)
+禁止广告(包括招聘广告)
+禁止灌水、色情、暴力、政治等敏感话题
+
+
+
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="../../categories/其他/index.html">其他</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="../../tags/其他/index.html">其他</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../advertisment/come-together-wechat/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-boot/spring-boot-index.html" target="_blank">Spring Boot系列教程</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年05月08日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                
+Spring Boot 技术讨论微信群：加群导航
+
+本文列出笔者所有Spring Boot相关的文章。目前还比较少，大家可以加我微信 jumping_me 给我提需求。
+
+Spring Boot 2.x监控数据可视化(Actuator + Prometheus + Grafana手把手)
+Spring Boot Banner自定义
+Spring Boot 2动态修改日志级别
+Spring Boot 2实现分布式锁——这才是实现分布式锁的正确姿势！
+Spring Boo...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Boot</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Spring Boot</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-boot/spring-boot-index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+
+
+    <nav class="pagination" role="navigation">
+        <div id="page-nav">
+            <a class="extend prev" rel="prev" href="../3/index.html"><i class="fa fa-angle-left"></i></a><a class="page-number" href="../../index.html">1</a><a class="page-number" href="../2/index.html">2</a><a class="page-number" href="../3/index.html">3</a><span class="page-number current">4</span><a class="page-number" href="../5/index.html">5</a><a class="page-number" href="javascript:;">6</a><span class="space">&hellip;</span><a class="page-number" href="../19/index.html">19</a><a class="extend next" rel="next" href="../5/index.html"><i class="fa fa-angle-right"></i></a>
+        </div>
+    </nav>
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <hr class="divider-hr">
+        <div class="content social">
+            
+                <a href="javascript:;" rel="external nofollow" title="GitHub" target="_blank">
+                    <i class="github fa fa-github"></i>
+                </a>
+            
+                <a href="javascript:;" rel="external nofollow" title="Gitee" target="_blank">
+                    <i class="git fa fa-git"></i>
+                </a>
+            
+                <a href="mailto:eacdy0000@126.com" rel="external nofollow" title="邮箱" target="_blank">
+                    <i class="envelope-o fa fa-envelope-o"></i>
+                </a>
+            
+                <a href="javascript:;" rel="external nofollow" title="慕课网" target="_blank">
+                    <i class="book fa fa-book"></i>
+                </a>
+            
+                <a href="../../atom.html" rel="external nofollow" title="RSS" target="_blank">
+                    <i class="feed fa fa-feed"></i>
+                </a>
+            
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+    
+        <div class="widget">
+            <h3 class="title">标签云</h3>
+            <div class="content tag-cloud">
+                
+                <canvas width="300" height="300" id="tag-cloud-3d">
+                    <a href="javascript:;" style="font-size: 11.54px;">API Gateway</a> <a href="javascript:;" style="font-size: 10.77px;">Actuator</a> <a href="javascript:;" style="font-size: 10px;">Apollo</a> <a href="javascript:;" style="font-size: 10.77px;">Awesome</a> <a href="javascript:;" style="font-size: 10px;">Chrome</a> <a href="javascript:;" style="font-size: 10px;">Confluence</a> <a href="javascript:;" style="font-size: 13.08px;">Consul</a> <a href="javascript:;" style="font-size: 19.23px;">Docker</a> <a href="javascript:;" style="font-size: 16.15px;">Docker Compose</a> <a href="javascript:;" style="font-size: 10.77px;">Dubbo</a> <a href="javascript:;" style="font-size: 10px;">ELK</a> <a href="javascript:;" style="font-size: 15.38px;">Eureka</a> <a href="javascript:;" style="font-size: 16.92px;">Feign</a> <a href="javascript:;" style="font-size: 11.54px;">Git</a> <a href="javascript:;" style="font-size: 15.38px;">Hystrix</a> <a href="javascript:;" style="font-size: 10px;">Hystrix Dashboard</a> <a href="javascript:;" style="font-size: 10px;">IDEA</a> <a href="javascript:;" style="font-size: 10px;">JDK</a> <a href="javascript:;" style="font-size: 10px;">JWT</a> <a href="javascript:;" style="font-size: 10px;">Jenkins</a> <a href="javascript:;" style="font-size: 11.54px;">Kafka</a> <a href="javascript:;" style="font-size: 12.31px;">Kubernetes</a> <a href="javascript:;" style="font-size: 10.77px;">Kubespray</a> <a href="javascript:;" style="font-size: 10px;">Light Security</a> <a href="javascript:;" style="font-size: 10px;">Log4j</a> <a href="javascript:;" style="font-size: 10px;">Logback</a> <a href="javascript:;" style="font-size: 10px;">MQ</a> <a href="javascript:;" style="font-size: 10px;">Maven</a> <a href="javascript:;" style="font-size: 10px;">MongoDB</a> <a href="javascript:;" style="font-size: 10px;">MySQL</a> <a href="javascript:;" style="font-size: 10.77px;">Mybatis</a> <a href="javascript:;" style="font-size: 13.85px;">Nacos</a> <a href="javascript:;" style="font-size: 11.54px;">Nexus</a> <a href="javascript:;" style="font-size: 10.77px;">Nginx</a> <a href="javascript:;" style="font-size: 10px;">PostgreSQL</a> <a href="javascript:;" style="font-size: 10px;">RabbitMQ</a> <a href="javascript:;" style="font-size: 13.08px;">Ribbon</a> <a href="javascript:;" style="font-size: 11.54px;">RocketMQ</a> <a href="javascript:;" style="font-size: 15.38px;">Sentinel</a> <a href="javascript:;" style="font-size: 10px;">SonarQube</a> <a href="javascript:;" style="font-size: 10px;">Sonartype</a> <a href="javascript:;" style="font-size: 10px;">Spring</a> <a href="javascript:;" style="font-size: 16.15px;">Spring Boot</a> <a href="javascript:;" style="font-size: 20px;">Spring Cloud</a> <a href="javascript:;" style="font-size: 18.46px;">Spring Cloud Alibaba</a> <a href="javascript:;" style="font-size: 14.62px;">Spring Cloud Config</a> <a href="javascript:;" style="font-size: 11.54px;">Spring Cloud Consul</a> <a href="javascript:;" style="font-size: 14.62px;">Spring Cloud Gateway</a> <a href="javascript:;" style="font-size: 12.31px;">Spring Cloud Sleuth</a> <a href="javascript:;" style="font-size: 12.31px;">Spring Cloud Stream</a> <a href="javascript:;" style="font-size: 10px;">Spring Integration</a> <a href="javascript:;" style="font-size: 10px;">Swagger</a> <a href="javascript:;" style="font-size: 10px;">Turbine</a> <a href="javascript:;" style="font-size: 12.31px;">Zipkin</a> <a href="javascript:;" style="font-size: 10px;">Zookeeper</a> <a href="javascript:;" style="font-size: 16.15px;">Zuul</a> <a href="../../tags/expect/index.html" style="font-size: 10px;">expect</a> <a href="../../tags/mongodump/index.html" style="font-size: 10px;">mongodump</a> <a href="../../tags/上传/index.html" style="font-size: 10px;">上传</a> <a href="../../tags/其他/index.html" style="font-size: 13.08px;">其他</a> <a href="../../tags/分布式锁/index.html" style="font-size: 10px;">分布式锁</a> <a href="../../tags/备份/index.html" style="font-size: 10px;">备份</a> <a href="../../tags/学习/index.html" style="font-size: 10px;">学习</a> <a href="../../tags/安装教程/index.html" style="font-size: 13.85px;">安装教程</a> <a href="../../tags/工作/index.html" style="font-size: 17.69px;">工作</a> <a href="../../tags/常见问题/index.html" style="font-size: 10px;">常见问题</a> <a href="../../tags/性能/index.html" style="font-size: 10px;">性能</a> <a href="../../tags/总结/index.html" style="font-size: 15.38px;">总结</a> <a href="../../tags/数据库/index.html" style="font-size: 10px;">数据库</a> <a href="../../tags/断路器/index.html" style="font-size: 12.31px;">断路器</a> <a href="../../tags/日志/index.html" style="font-size: 11.54px;">日志</a> <a href="../../tags/服务发现/index.html" style="font-size: 12.31px;">服务发现</a> <a href="../../tags/注册中心/index.html" style="font-size: 12.31px;">注册中心</a> <a href="../../tags/监控/index.html" style="font-size: 10.77px;">监控</a> <a href="../../tags/破解/index.html" style="font-size: 10px;">破解</a> <a href="../../tags/网关/index.html" style="font-size: 11.54px;">网关</a> <a href="../../tags/负载均衡/index.html" style="font-size: 10.77px;">负载均衡</a> <a href="../../tags/超时/index.html" style="font-size: 10px;">超时</a> <a href="../../tags/跨域/index.html" style="font-size: 10px;">跨域</a> <a href="../../tags/邮件/index.html" style="font-size: 10px;">邮件</a> <a href="../../tags/配置中心/index.html" style="font-size: 15.38px;">配置中心</a> <a href="../../tags/重试/index.html" style="font-size: 10px;">重试</a> <a href="../../tags/限流/index.html" style="font-size: 10px;">限流</a>
+                </canvas>
+                
+            </div>
+        </div>
+    
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友情链接</h3>
+        <div class="content friends-link">
+        
+            <a href="javascript:;" class="fa" target="_blank">程序猿DD|翟永超</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">泥瓦匠的博客</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">梁桂钊的博客</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">猿天地</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">二丫讲梵</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">ANOYI轻量级微服务架构</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">python教程</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">京东资深SRE工程师</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">王欣的博客</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">PM的AI知识库</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">李庆林个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+    <script src="../../static/js/tagcanvas.min-d3e34a34636b6f4c81.js"></script>
+    <script>
+        var tagOption = {
+                textColour: '#29afec', // 字体颜色
+                outlineMethod: 'block', // 选中模式
+                outlineColour: '#bbb', // 选中模式的颜色
+                interval: 10 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true ||
+        '', // 选中的标签是否继续滚动
+            frontSelect
+        : true ||
+        '', // 不选标签云后部的标签
+            initial
+        :
+        [0.3, -0.3],
+            depth
+        :
+        0.5,
+            decel
+        :
+        0.95,
+            maxSpeed
+        :
+        0.03,
+            reverse
+        : true ||
+        '', // 是否反向触发
+            fadeIn
+        :
+        500, // 进入动画时间
+            wheelZoom
+        : true ||
+        '', // 是否启用鼠标滚轮
+            zoomMax
+        :
+        1.5,
+            zoomMin
+        :
+        1.0
+        }
+        TagCanvas.Start('tag-cloud-3d', '', tagOption);
+    </script>
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

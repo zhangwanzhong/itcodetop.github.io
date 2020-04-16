@@ -1,0 +1,559 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:39 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="工作,Spring">
+
+
+    <meta name="description" content="今天同事遇到了一个离奇的ArrayIndexOutOfBoundsException，找我协助定位，定位的过程很有意思，故而记录一下。
+
+先按时序复盘一下
+项目原先可正常运行。
+
+没有修改任何依赖的情况下，从另一个项目移植了工具类BeanValidationUtil 后，报如下异常：
+1234...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>一个离奇的ArrayIndexOutOfBoundsException异常的排查过程 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一个离奇的ArrayIndexOutOfBoundsException异常的排查过程">
+            
+                一个离奇的ArrayIndexOutOfBoundsException异常的排查过程
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="../../categories/工作/index.html">工作</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Spring</a> <a class="tag-link" href="../../tags/工作/index.html">工作</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/12/06</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#先按时序复盘一下"><span class="toc-text">先按时序复盘一下</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#造成异常的工具类"><span class="toc-text">造成异常的工具类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结果确认"><span class="toc-text">结果确认</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#反思"><span class="toc-text">反思</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>今天同事遇到了一个离奇的ArrayIndexOutOfBoundsException，找我协助定位，定位的过程很有意思，故而记录一下。</p>
+<a id="more"></a>
+<h2 id="先按时序复盘一下"><a href="#先按时序复盘一下" class="headerlink" title="先按时序复盘一下"></a>先按时序复盘一下</h2><ul>
+<li><p>项目原先可正常运行。</p>
+</li>
+<li><p>没有修改任何依赖的情况下，从另一个项目移植了工具类<code>BeanValidationUtil</code> 后，报如下异常：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:<span class="number">307</span>) | Context initialization failed</span><br><span class="line">org.springframework.beans.factory.BeanDefinitionStoreException: Failed to readcandidate component class: file [/Users/xxxxxxxxx/BeanValidationUtil.class];nested exception is java.lang.ArrayIndexOutOfBoundsException: 48959</span><br><span class="line">   atorg.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.findCandidateComponents(ClassPathScanningCandidateComponentProvider.java:<span class="number">260</span>)</span><br><span class="line">   atorg.springframework.context.annotation.ClassPathBeanDefinitionScanner.doScan(ClassPathBeanDefinitionScanner.java:<span class="number">242</span>)</span><br><span class="line">   atorg.springframework.context.annotation.ComponentScanBeanDefinitionParser.parse(ComponentScanBeanDefinitionParser.java:<span class="number">84</span>)</span><br><span class="line">   atorg.springframework.beans.factory.xml.NamespaceHandlerSupport.parse(NamespaceHandlerSupport.java:<span class="number">73</span>)</span><br><span class="line">   atorg.springframework.beans.factory.xml.BeanDefinitionParserDelegate.parseCustomElement(BeanDefinitionParserDelegate.java:<span class="number">1419</span>)</span><br><span class="line">   atorg.springframework.beans.factory.xml.BeanDefinitionParserDelegate.parseCustomElement(BeanDefinitionParserDelegate.java:<span class="number">1409</span>)</span><br><span class="line">   atorg.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:<span class="number">184</span>)</span><br><span class="line">   atorg.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.doRegisterBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:<span class="number">140</span>)</span><br><span class="line">   atorg.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.registerBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:<span class="number">111</span>)</span><br><span class="line">   atorg.springframework.beans.factory.xml.XmlBeanDefinitionReader.registerBeanDefinitions(XmlBeanDefinitionReader.java:<span class="number">493</span>)</span><br><span class="line">   atorg.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:<span class="number">390</span>)</span><br><span class="line">   atorg.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:<span class="number">334</span>)</span><br><span class="line">   atorg.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:<span class="number">302</span>)</span><br><span class="line">   atorg.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:<span class="number">174</span>)</span><br><span class="line">   atorg.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:<span class="number">209</span>)</span><br><span class="line">   atorg.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:<span class="number">180</span>)</span><br><span class="line">   atorg.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:<span class="number">125</span>)</span><br><span class="line">   atorg.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:<span class="number">94</span>)</span><br><span class="line">   atorg.springframework.context.support.AbstractRefreshableApplicationContext.refreshBeanFactory(AbstractRefreshableApplicationContext.java:<span class="number">131</span>)</span><br><span class="line">   atorg.springframework.context.support.AbstractApplicationContext.obtainFreshBeanFactory(AbstractApplicationContext.java:<span class="number">522</span>)</span><br><span class="line">   atorg.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:<span class="number">436</span>)</span><br><span class="line">   atorg.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:<span class="number">384</span>)</span><br><span class="line">   atorg.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:<span class="number">283</span>)</span><br><span class="line">   atorg.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:<span class="number">111</span>)</span><br><span class="line">   atorg.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:<span class="number">5135</span>)</span><br><span class="line">   atorg.apache.catalina.core.StandardContext.startInternal(StandardContext.java:<span class="number">5658</span>)</span><br><span class="line">   at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:<span class="number">145</span>)</span><br><span class="line">   atorg.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:<span class="number">1015</span>)</span><br><span class="line">   at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:<span class="number">991</span>)</span><br><span class="line">   at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:<span class="number">652</span>)</span><br><span class="line">   at org.apache.catalina.startup.HostConfig.manageApp(HostConfig.java:<span class="number">2015</span>)</span><br><span class="line">   at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">   atsun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">62</span>)</span><br><span class="line">   atsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">43</span>)</span><br><span class="line">   at java.lang.reflect.Method.invoke(Method.java:<span class="number">498</span>)</span><br><span class="line">   atorg.apache.tomcat.util.modeler.BaseModelMBean.invoke(BaseModelMBean.java:<span class="number">301</span>)</span><br><span class="line">   atcom.sun.jmx.interceptor.DefaultMBeanServerInterceptor.invoke(DefaultMBeanServerInterceptor.java:<span class="number">819</span>)</span><br><span class="line">   atcom.sun.jmx.mbeanserver.JmxMBeanServer.invoke(JmxMBeanServer.java:<span class="number">801</span>)</span><br><span class="line">   atorg.apache.catalina.mbeans.MBeanFactory.createContext(MBeanFactory.java:<span class="number">789</span>)</span><br><span class="line">   atorg.apache.catalina.mbeans.MBeanFactory.createStandardContext(MBeanFactory.java:<span class="number">573</span>)</span><br><span class="line">   at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">   atsun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">62</span>)</span><br><span class="line">   atsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">43</span>)</span><br><span class="line">   at java.lang.reflect.Method.invoke(Method.java:<span class="number">498</span>)</span><br><span class="line">   atorg.apache.tomcat.util.modeler.BaseModelMBean.invoke(BaseModelMBean.java:<span class="number">301</span>)</span><br><span class="line">   atcom.sun.jmx.interceptor.DefaultMBeanServerInterceptor.invoke(DefaultMBeanServerInterceptor.java:<span class="number">819</span>)</span><br><span class="line">   atcom.sun.jmx.mbeanserver.JmxMBeanServer.invoke(JmxMBeanServer.java:<span class="number">801</span>)</span><br><span class="line">   atjavax.management.remote.rmi.RMIConnectionImpl.doOperation(RMIConnectionImpl.java:<span class="number">1468</span>)</span><br><span class="line">   atjavax.management.remote.rmi.RMIConnectionImpl.access$<span class="number">300</span>(RMIConnectionImpl.java:<span class="number">76</span>)</span><br><span class="line">   atjavax.management.remote.rmi.RMIConnectionImpl$PrivilegedOperation.run(RMIConnectionImpl.java:<span class="number">1309</span>)</span><br><span class="line">   atjavax.management.remote.rmi.RMIConnectionImpl.doPrivilegedOperation(RMIConnectionImpl.java:<span class="number">1401</span>)</span><br><span class="line">   atjavax.management.remote.rmi.RMIConnectionImpl.invoke(RMIConnectionImpl.java:<span class="number">829</span>)</span><br><span class="line">   at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">   atsun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">62</span>)</span><br><span class="line">   atsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">43</span>)</span><br><span class="line">   at java.lang.reflect.Method.invoke(Method.java:<span class="number">498</span>)</span><br><span class="line">   at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:<span class="number">324</span>)</span><br><span class="line">   at sun.rmi.transport.Transport$<span class="number">1</span>.run(Transport.java:<span class="number">200</span>)</span><br><span class="line">   at sun.rmi.transport.Transport$<span class="number">1</span>.run(Transport.java:<span class="number">197</span>)</span><br><span class="line">   at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">   at sun.rmi.transport.Transport.serviceCall(Transport.java:<span class="number">196</span>)</span><br><span class="line">   atsun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:<span class="number">568</span>)</span><br><span class="line">   atsun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:<span class="number">826</span>)</span><br><span class="line">   atsun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$<span class="number">0</span>(TCPTransport.java:<span class="number">683</span>)</span><br><span class="line">   at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">   atsun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:<span class="number">682</span>)</span><br><span class="line">   atjava.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:<span class="number">1142</span>)</span><br><span class="line">   atjava.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:<span class="number">617</span>)</span><br><span class="line">   at java.lang.Thread.run(Thread.java:<span class="number">745</span>)</span><br><span class="line">Caused by: java.lang.ArrayIndexOutOfBoundsException: <span class="number">48959</span></span><br><span class="line">   at org.springframework.asm.ClassReader.readUnsignedShort(UnknownSource)</span><br><span class="line">   at org.springframework.asm.ClassReader.accept(Unknown Source)</span><br><span class="line">   at org.springframework.asm.ClassReader.accept(Unknown Source)</span><br><span class="line">   at org.springframework.core.type.classreading.SimpleMetadataReader.&lt;init&gt;(SimpleMetadataReader.java:<span class="number">54</span>)</span><br><span class="line">   atorg.springframework.core.type.classreading.SimpleMetadataReaderFactory.getMetadataReader(SimpleMetadataReaderFactory.java:<span class="number">80</span>)</span><br><span class="line">   atorg.springframework.core.type.classreading.CachingMetadataReaderFactory.getMetadataReader(CachingMetadataReaderFactory.java:<span class="number">101</span>)</span><br><span class="line">   atorg.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.findCandidateComponents(ClassPathScanningCandidateComponentProvider.java:<span class="number">236</span>)</span><br><span class="line">   ... <span class="number">68</span> more</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="造成异常的工具类"><a href="#造成异常的工具类" class="headerlink" title="造成异常的工具类"></a>造成异常的工具类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* JSR349 Bean Validation工具类</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* <span class="doctag">@author</span> limu.zl</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BeanValidationUtil</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 验证失败时抛出ConstraintViolationException</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> object 待验证对象</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> groups 验证group</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">validateWithException</span><span class="params">(Object object, Class&lt;?&gt;... groups)</span> </span>&#123;</span><br><span class="line">       ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();</span><br><span class="line"></span><br><span class="line">       <span class="comment">// 国际化，强制用中文，ref：https://docs.oracle.com/javase/tutorial/i18n/locale/create.html</span></span><br><span class="line">       Locale locale = <span class="keyword">new</span> Locale.Builder().setLanguage(<span class="string">"zh"</span>).setRegion(<span class="string">"CN"</span>).build();</span><br><span class="line"></span><br><span class="line">       <span class="comment">// 国际化，指定语言，ref：https://www.ibm.com/developerworks/cn/java/j-cn-hibernate-validator/index.html</span></span><br><span class="line">       MessageInterpolator interpolator = newLocalizedMessageInterpolator(validatorFactory.getMessageInterpolator(), locale);</span><br><span class="line"></span><br><span class="line">       Validator classValidator = validatorFactory.usingContext()</span><br><span class="line">               .messageInterpolator(interpolator)</span><br><span class="line">               .getValidator();</span><br><span class="line"></span><br><span class="line">       Set&lt;ConstraintViolation&lt;Object&gt;&gt; constraintViolations =classValidator.validate(object, groups);</span><br><span class="line">       <span class="keyword">if</span> (!constraintViolations.isEmpty()) &#123;</span><br><span class="line">           String messages = constraintViolations.stream()</span><br><span class="line">                   .filter(t -&gt; t <span class="keyword">instanceof</span> ConstraintViolationImpl)</span><br><span class="line">                   .map(t -&gt; &#123;</span><br><span class="line">                       ConstraintViolationImpl t1 = (ConstraintViolationImpl) t;</span><br><span class="line">                       <span class="keyword">return</span> String.format(<span class="string">"出问题的字段：%s，问题：%s"</span>,t1.getPropertyPath(), t1.getMessage());</span><br><span class="line">                   &#125;)</span><br><span class="line">                   .collect(Collectors.toList())</span><br><span class="line">                   .toString();</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(messages);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>如代码所示，<code>BeanValidationUtil</code> 是个工具类，根本不在Spring容器上下文里，但异常栈却报到Spring的包里去了。</p>
+<ul>
+<li>由于项目没有修改依赖，所以包冲突问题不太可能出现（这个项目原先也使用JSR349做Bean Validation），而且冲突的话异常应该是NoClassDefFoundError之类的异常。</li>
+<li>尝试降低Hibernate Validation的版本到4.x，故障依旧。</li>
+<li>百度、谷歌类似异常，无果。</li>
+</ul>
+<p>经过20分钟的源码定位也没找到问题所在，于是我尝试逐步删除BeanValidationUtil的代码。发现当把lambda语法删光之后，项目就能正常启动了。</p>
+<p>突然灵光一现，问同事 ： “这TM是不是个非常古老的项目啊？”</p>
+<p>同事：“对啊，四五年了吧……”</p>
+<p><strong>于是分析了下pom.xml，发现用的是Spring 3 。隐约记得Spring 3不完全兼容JDK8，这个类中使用了Java 8的语法，所以导致了问题。</strong></p>
+<h2 id="结果确认"><a href="#结果确认" class="headerlink" title="结果确认"></a>结果确认</h2><p>既然猜测是Spring 3和Java 8不兼容导致，故而在搜索时，将关键词改为：<code>spring 3 java 8 ArrayIndexOutOfBoundsException</code> ，果然印证了自己的想法。</p>
+<ul>
+<li><a href="javascript:;" target="_blank" rel="noopener">ArrayOutOfBoundsException on Bean creation while using Java 8 constructs</a></li>
+<li><a href="javascript:;" target="_blank" rel="noopener">Spring BeanDefinitionStoreExcept-nested exception is java.lang.ArrayIndexOutOfBoundsException: 53804</a></li>
+</ul>
+<h2 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h2><p>犯了经验主义错误，基于Spring 3的项目已经三四年没有见过了（Dubbo不算，哈哈哈。因为Dubbo当初的版本虽然依赖了Spring 3，但其实实际项目一般都会exclude掉，换上Spring 4），一直以为是个Spring 4的项目，没有从Spring版本与JDK的兼容性的方向上去考虑。</p>
+<p>浪费了半小时。</p>
+
+        <h2>相关文章</h2><ul><li><a href="../git-sum/index.html">盘点Git的那些冷门玩法</a></li><li><a href="../../work-sum-log4j-to-logback/index.html">将应用的log4j换成logback</a></li><li><a href="../../other/idea-mybatis-warning/index.html">Intellij IDEA中Mybatis Mapper自动注入警告的6种解决方案</a></li><li><a href="../../other/doc-generate/index.html">分享：如何生成漂亮的静态文档说明页</a></li><li><a href="../../other/mybatis-optional-support/index.html">我最喜欢的Mybatis 3.5新特性——Optional支持</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">一个离奇的ArrayIndexOutOfBoundsException异常的排查过程</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../../spring-cloud-sum/how-to-unregister-service-in-eureka/index.html" class="pre-post btn btn-default" title="实用技巧：Spring Cloud中，如何优雅下线微服务？">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">实用技巧：Spring Cloud中，如何优雅下线微服务？</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../spring-cloud-sum/feign-hystrix/index.html" class="next-post btn btn-default" title="生产技巧：Feign如何控制Hystrix的启停、超时、熔断？">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">生产技巧：Feign如何控制Hystrix的启停、超时、熔断？</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link current" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

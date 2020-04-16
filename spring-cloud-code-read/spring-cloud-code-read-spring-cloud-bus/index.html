@@ -1,0 +1,550 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:40 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,配置中心">
+
+
+    <meta name="description" content="如果同一微服务的多个实例使用的端口相同，当配置修改时，使用Spring Cloud Bus不会刷新全部实例的配置。此时需要配置各个实例的spring.application.index为不同的值。下面我们来分析一下原因。
+
+在Spring Cloud Config上有这么一段：
+Applica...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>解决Spring Cloud Bus不刷新所有节点的问题及理解&quot;Application Context ID must be unique&quot; | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="解决Spring Cloud Bus不刷新所有节点的问题及理解&quot;Application Context ID must be unique&quot;">
+            
+                解决Spring Cloud Bus不刷新所有节点的问题及理解&quot;Application Context ID must be unique&quot;
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="../../tags/配置中心/index.html">配置中心</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/12/05</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Application-Context-ID-must-be-unique"><span class="toc-text">Application Context ID must be unique</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>如果同一微服务的多个实例使用的端口相同，当配置修改时，使用Spring Cloud Bus不会刷新全部实例的配置。此时需要配置各个实例的spring.application.index为不同的值。下面我们来分析一下原因。</p>
+<a id="more"></a>
+<p>在Spring Cloud Config上有这么一段：</p>
+<h2 id="Application-Context-ID-must-be-unique"><a href="#Application-Context-ID-must-be-unique" class="headerlink" title="Application Context ID must be unique"></a>Application Context ID must be unique</h2><p>The bus tries to eliminate processing an event twice, once from the original <code>ApplicationEvent</code> and once from the queue. To do this, it checks the sending application context id againts the current application context id. If multiple instances of a service have the same application context id, events will not be processed. Running on a local machine, each service will be on a different port and that will be part of the application context id. Cloud Foundry supplies an index to differentiate. To ensure that the application context id is the unique, set<code>spring.application.index</code> to something unique for each instance of a service. For example, in lattice, set<code>spring.application.index=${INSTANCE_INDEX}</code> in application.properties (or bootstrap.properties if using configserver).</p>
+<p>这段话的意思，大致上是说如果相同微服务的多个实例，使用的是相同的端口时，需要配置<code>spring.application.index</code> 属性，本文来分析一下为什么。</p>
+<p>(1) 我们知道定位Spring Boot的问题，往往可以从配置开始。按照这个思路，先找到spring.application.index 所在的类ContextIdApplicationContextInitializer。至于怎么找到的，可以看这里：<a href="javascript:;" target="_blank" rel="noopener">http://docs.spring.io/spring-boot/docs/1.4.2.RELEASE/reference/htmlsingle/#common-application-properties</a> ，搜索spring.application.index即可。</p>
+<p>(2) 在<code>org.springframework.boot.context.ContextIdApplicationContextInitializer</code> 类的getApplicationId() 方法中，有类似以下的内容：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">getApplicationId</span><span class="params">(ConfigurableEnvironment environment)</span> </span>&#123;</span><br><span class="line">  String name = environment.resolvePlaceholders(<span class="keyword">this</span>.name);</span><br><span class="line">  String index = environment.resolvePlaceholders(INDEX_PATTERN);</span><br><span class="line">  String profiles = StringUtils</span><br><span class="line">      .arrayToCommaDelimitedString(environment.getActiveProfiles());</span><br><span class="line">  <span class="keyword">if</span> (StringUtils.hasText(profiles)) &#123;</span><br><span class="line">    name = name + <span class="string">":"</span> + profiles;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="string">"null"</span>.equals(index)) &#123;</span><br><span class="line">    name = name + <span class="string">":"</span> + index;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，name的表达式如下：</p>
+<p><code>${spring.application.name:${vcap.application.name:${spring.config.name:application}}}</code> ，也就是配置的<code>spring.application.name</code> （以主流方式为例，当然也可能是spring.config.name）。 </p>
+<p>而index的表达式是：</p>
+<p><code>${vcap.application.instance_index:${spring.application.index:${server.port:${PORT:null}}}}</code></p>
+<p>也就是如果什么都不配置，就取server.port。</p>
+<p>综上，如果什么都不配置，那么getApplicationId返回的是<code>${spring.application.name}:${server.port}</code></p>
+<p>(3) 在Spring Cloud Bus中的<code>org.springframework.cloud.bus.ServiceMatcher</code> 有以下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isFromSelf</span><span class="params">(RemoteApplicationEvent event)</span> </span>&#123;</span><br><span class="line">  String originService = event.getOriginService();</span><br><span class="line">  String serviceId = getServiceId();</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.matcher.match(originService, serviceId);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isForSelf</span><span class="params">(RemoteApplicationEvent event)</span> </span>&#123;</span><br><span class="line">  String destinationService = event.getDestinationService();</span><br><span class="line">  <span class="keyword">return</span> (destinationService == <span class="keyword">null</span> || destinationService.trim().isEmpty() || <span class="keyword">this</span>.matcher</span><br><span class="line">      .match(destinationService, getServiceId()));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getServiceId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.context.getId();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从代码可知，如果什么都不设置，并且相同微服务的多个实例使用的是相同的端口的话，那么isFromSelf将会返回true。</p>
+<p>(4) 在org.springframework.cloud.bus.BusAutoConfiguration.acceptRemote(RemoteApplicationEvent)中的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@StreamListener</span>(SpringCloudBusClient.INPUT)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">acceptRemote</span><span class="params">(RemoteApplicationEvent event)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (event <span class="keyword">instanceof</span> AckRemoteApplicationEvent) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.bus.getTrace().isEnabled() &amp;&amp; !<span class="keyword">this</span>.serviceMatcher.isFromSelf(event)</span><br><span class="line">        &amp;&amp; <span class="keyword">this</span>.applicationEventPublisher != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>.applicationEventPublisher.publishEvent(event);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// If it's an ACK we are finished processing at this point</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.serviceMatcher.isForSelf(event)</span><br><span class="line">      &amp;&amp; <span class="keyword">this</span>.applicationEventPublisher != <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.serviceMatcher.isFromSelf(event)) &#123;</span><br><span class="line">      <span class="keyword">this</span>.applicationEventPublisher.publishEvent(event);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.bus.getAck().isEnabled()) &#123;</span><br><span class="line">      AckRemoteApplicationEvent ack = <span class="keyword">new</span> AckRemoteApplicationEvent(<span class="keyword">this</span>,</span><br><span class="line">          <span class="keyword">this</span>.serviceMatcher.getServiceId(),</span><br><span class="line">          <span class="keyword">this</span>.bus.getAck().getDestinationService(),</span><br><span class="line">          event.getDestinationService(), event.getId(), event.getClass());</span><br><span class="line">      <span class="keyword">this</span>.cloudBusOutboundChannel</span><br><span class="line">          .send(MessageBuilder.withPayload(ack).build());</span><br><span class="line">      <span class="keyword">this</span>.applicationEventPublisher.publishEvent(ack);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.bus.getTrace().isEnabled() &amp;&amp; <span class="keyword">this</span>.applicationEventPublisher != <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="comment">// We are set to register sent events so publish it for local consumption,</span></span><br><span class="line">    <span class="comment">// irrespective of the origin</span></span><br><span class="line">    <span class="keyword">this</span>.applicationEventPublisher.publishEvent(<span class="keyword">new</span> SentApplicationEvent(<span class="keyword">this</span>,</span><br><span class="line">        event.getOriginService(), event.getDestinationService(),</span><br><span class="line">        event.getId(), event.getClass()));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到这段代码，原因已经一目了然了。</p>
+<p>Github上的相关issue：<a href="javascript:;" target="_blank" rel="noopener">https://github.com/spring-cloud/spring-cloud-bus/issues/18</a> 。</p>
+
+        <h2>相关文章</h2><ul><li><a href="../../spring-cloud/config-server-encrypt-decrypt/index.html">Config Server——配置内容的加密与解密</a></li><li><a href="../../spring-cloud/finchley-20/index.html">跟我学Spring Cloud（Finchley版）-20-Spring Cloud Config-Git仓库配置详解</a></li><li><a href="../../spring-cloud/finchley-19/index.html">跟我学Spring Cloud（Finchley版）-19-配置中心-Spring Cloud Config</a></li><li><a href="../../spring-cloud/finchley-21/index.html">跟我学Spring Cloud（Finchley版）-21-Spring Cloud Config-配置属性加解密</a></li><li><a href="../../spring-cloud/finchley-22/index.html">跟我学Spring Cloud（Finchley版）-22-Spring Cloud Config-配置动态刷新</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">解决Spring Cloud Bus不刷新所有节点的问题及理解"Application Context ID must be unique"</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../../docker-compose-eureka-ha/index.html" class="pre-post btn btn-default" title="Docker容器双向联通与高可用的Eureka Server">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Docker容器双向联通与高可用的Eureka Server</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../work-sum-log4j-to-logback/index.html" class="next-post btn btn-default" title="将应用的log4j换成logback">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">将应用的log4j换成logback</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

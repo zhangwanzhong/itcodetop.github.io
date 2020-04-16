@@ -1,0 +1,516 @@
+
+<!DOCTYPE HTML>
+<html lang="">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>消息轨迹指南(Message Trace) · Apache RocketMQ开发者指南</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="RocketMQ官方">
+        
+        
+    
+    <link rel="stylesheet" href="../../../static/css/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../../static/css/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../static/css/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../static/css/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../static/css/website1.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    
+
+    
+    <link rel="next" href="../acl/user_guide.html">
+    
+    
+    <link rel="prev" href="../best_practice.html">
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search">
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+    
+        
+        <li>
+            <a href="../../../index.html" target="_blank" class="custom-link">博客首页</a>
+        </li>
+    
+        
+        <li>
+            <a href="javascript:;" target="_blank" class="custom-link">RocketMQ官方网站</a>
+        </li>
+    
+    
+
+    
+    <li class="divider"></li>
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../../rocketmq.html">
+            
+                    
+                    README
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../concept.html">
+            
+                <a href="../concept.html">
+            
+                    
+                    概念(Concept)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../features.html">
+            
+                <a href="../features.html">
+            
+                    
+                    特性(Features)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../architecture.html">
+            
+                <a href="../architecture.html">
+            
+                    
+                    架构(Architecture)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../design.html">
+            
+                <a href="../design.html">
+            
+                    
+                    设计(Design)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../RocketMQ_Example.html">
+            
+                <a href="javascript:;">
+            
+                    
+                    样例(Example)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../best_practice.html">
+            
+                <a href="../best_practice.html">
+            
+                    
+                    最佳实践（Best Practice）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.8" data-path="user_guide.html">
+            
+                <a href="">
+            
+                    
+                    消息轨迹指南(Message Trace)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../acl/user_guide.html">
+            
+                <a href="../acl/user_guide.html">
+            
+                    
+                    权限管理(Auth Management)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="../dledger/quick_start.html">
+            
+                <a href="../dledger/quick_start.html">
+            
+                    
+                    Dledger快速搭建(Quick Start)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" data-path="../dledger/deploy_guide.html">
+            
+                <a href="../dledger/deploy_guide.html">
+            
+                    
+                    集群部署(Cluster Deployment)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" data-path="../operation.html">
+            
+                <a href="../operation.html">
+            
+                    
+                    集群部署(Operation)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" data-path="../client/java/API_Reference_DefaultMQProducer.html">
+            
+                <a href="javascript:;">
+            
+                    
+                    DefaultMQProducer API Reference
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="javascript:;" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../../rocketmq.html">消息轨迹指南(Message Trace)</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><a href="#&#x6D88;&#x606F;&#x8F68;&#x8FF9;">1. &#x6D88;&#x606F;&#x8F68;&#x8FF9;</a></li><ul><li><a href="#1-&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x5173;&#x952E;&#x5C5E;&#x6027;">1.1. 1. &#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x5173;&#x952E;&#x5C5E;&#x6027;</a></li><li><a href="#2-&#x652F;&#x6301;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;">1.2. 2. &#x652F;&#x6301;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;</a></li><ul><li><a href="#21-broker&#x7AEF;&#x914D;&#x7F6E;&#x6587;&#x4EF6;">1.2.1. 2.1 Broker&#x7AEF;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</a></li><li><a href="#22-&#x666E;&#x901A;&#x6A21;&#x5F0F;">1.2.2. 2.2 &#x666E;&#x901A;&#x6A21;&#x5F0F;</a></li><li><a href="#23-&#x7269;&#x7406;io&#x9694;&#x79BB;&#x6A21;&#x5F0F;">1.2.3. 2.3 &#x7269;&#x7406;IO&#x9694;&#x79BB;&#x6A21;&#x5F0F;</a></li><li><a href="#24-&#x542F;&#x52A8;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;broker">1.2.4. 2.4 &#x542F;&#x52A8;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;Broker</a></li></ul><li><a href="#3-&#x4FDD;&#x5B58;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;topic&#x5B9A;&#x4E49;">1.3. 3. &#x4FDD;&#x5B58;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;Topic&#x5B9A;&#x4E49;</a></li><ul><li><a href="#31-&#x7CFB;&#x7EDF;&#x7EA7;&#x7684;tracetopic">1.3.1. 3.1 &#x7CFB;&#x7EDF;&#x7EA7;&#x7684;TraceTopic</a></li><li><a href="#32-&#x7528;&#x6237;&#x81EA;&#x5B9A;&#x4E49;&#x7684;tracetopic">1.3.2. 3.2 &#x7528;&#x6237;&#x81EA;&#x5B9A;&#x4E49;&#x7684;TraceTopic</a></li></ul><li><a href="#4-&#x652F;&#x6301;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;client&#x5BA2;&#x6237;&#x7AEF;&#x5B9E;&#x8DF5;">1.4. 4. &#x652F;&#x6301;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;Client&#x5BA2;&#x6237;&#x7AEF;&#x5B9E;&#x8DF5;</a></li><ul><li><a href="#41-&#x53D1;&#x9001;&#x6D88;&#x606F;&#x65F6;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;">1.4.1. 4.1 &#x53D1;&#x9001;&#x6D88;&#x606F;&#x65F6;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;</a></li><li><a href="#42-&#x8BA2;&#x9605;&#x6D88;&#x606F;&#x65F6;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;">1.4.2. 4.2 &#x8BA2;&#x9605;&#x6D88;&#x606F;&#x65F6;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;</a></li><li><a href="#43-&#x652F;&#x6301;&#x81EA;&#x5B9A;&#x4E49;&#x5B58;&#x50A8;&#x6D88;&#x606F;&#x8F68;&#x8FF9;topic">1.4.3. 4.3 &#x652F;&#x6301;&#x81EA;&#x5B9A;&#x4E49;&#x5B58;&#x50A8;&#x6D88;&#x606F;&#x8F68;&#x8FF9;Topic</a></li></ul></ul></ul></div><a href="#&#x6D88;&#x606F;&#x8F68;&#x8FF9;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="&#x6D88;&#x606F;&#x8F68;&#x8FF9;"><a name="&#x6D88;&#x606F;&#x8F68;&#x8FF9;" class="anchor-navigation-ex-anchor" href="#&#x6D88;&#x606F;&#x8F68;&#x8FF9;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x6D88;&#x606F;&#x8F68;&#x8FF9;</h1>
+<hr>
+<h2 id="1-&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x5173;&#x952E;&#x5C5E;&#x6027;"><a name="1-&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x5173;&#x952E;&#x5C5E;&#x6027;" class="anchor-navigation-ex-anchor" href="#1-&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x5173;&#x952E;&#x5C5E;&#x6027;"><i class="fa fa-link" aria-hidden="true"></i></a>1.1. 1. &#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x5173;&#x952E;&#x5C5E;&#x6027;</h2>
+<table>
+<thead>
+<tr>
+<th>Producer&#x7AEF;</th>
+<th>Consumer&#x7AEF;</th>
+<th>Broker&#x7AEF;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&#x751F;&#x4EA7;&#x5B9E;&#x4F8B;&#x4FE1;&#x606F;</td>
+<td>&#x6D88;&#x8D39;&#x5B9E;&#x4F8B;&#x4FE1;&#x606F;</td>
+<td>&#x6D88;&#x606F;&#x7684;Topic</td>
+</tr>
+<tr>
+<td>&#x53D1;&#x9001;&#x6D88;&#x606F;&#x65F6;&#x95F4;</td>
+<td>&#x6295;&#x9012;&#x65F6;&#x95F4;,&#x6295;&#x9012;&#x8F6E;&#x6B21;</td>
+<td>&#x6D88;&#x606F;&#x5B58;&#x50A8;&#x4F4D;&#x7F6E;</td>
+</tr>
+<tr>
+<td>&#x6D88;&#x606F;&#x662F;&#x5426;&#x53D1;&#x9001;&#x6210;&#x529F;</td>
+<td>&#x6D88;&#x606F;&#x662F;&#x5426;&#x6D88;&#x8D39;&#x6210;&#x529F;</td>
+<td>&#x6D88;&#x606F;&#x7684;Key&#x503C;</td>
+</tr>
+<tr>
+<td>&#x53D1;&#x9001;&#x8017;&#x65F6;</td>
+<td>&#x6D88;&#x8D39;&#x8017;&#x65F6;</td>
+<td>&#x6D88;&#x606F;&#x7684;Tag&#x503C;</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-&#x652F;&#x6301;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;"><a name="2-&#x652F;&#x6301;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;" class="anchor-navigation-ex-anchor" href="#2-&#x652F;&#x6301;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;"><i class="fa fa-link" aria-hidden="true"></i></a>1.2. 2. &#x652F;&#x6301;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;</h2>
+<h3 id="21-broker&#x7AEF;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"><a name="21-broker&#x7AEF;&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="anchor-navigation-ex-anchor" href="#21-broker&#x7AEF;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"><i class="fa fa-link" aria-hidden="true"></i></a>1.2.1. 2.1 Broker&#x7AEF;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</h3>
+<p>&#x8FD9;&#x91CC;&#x8D34;&#x51FA;Broker&#x7AEF;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7279;&#x6027;&#x7684;properties&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x5185;&#x5BB9;&#xFF1A;</p>
+<pre><code>brokerClusterName=DefaultCluster
+brokerName=broker-a
+brokerId=0
+deleteWhen=04
+fileReservedTime=48
+brokerRole=ASYNC_MASTER
+flushDiskType=ASYNC_FLUSH
+storePathRootDir=/data/rocketmq/rootdir-a-m
+storePathCommitLog=/data/rocketmq/commitlog-a-m
+autoCreateSubscriptionGroup=true
+## if msg tracing is open,the flag will be true
+traceTopicEnable=true
+listenPort=10911
+brokerIP1=XX.XX.XX.XX1
+namesrvAddr=XX.XX.XX.XX:9876
+</code></pre><h3 id="22-&#x666E;&#x901A;&#x6A21;&#x5F0F;"><a name="22-&#x666E;&#x901A;&#x6A21;&#x5F0F;" class="anchor-navigation-ex-anchor" href="#22-&#x666E;&#x901A;&#x6A21;&#x5F0F;"><i class="fa fa-link" aria-hidden="true"></i></a>1.2.2. 2.2 &#x666E;&#x901A;&#x6A21;&#x5F0F;</h3>
+<p>RocketMQ&#x96C6;&#x7FA4;&#x4E2D;&#x6BCF;&#x4E00;&#x4E2A;Broker&#x8282;&#x70B9;&#x5747;&#x7528;&#x4E8E;&#x5B58;&#x50A8;Client&#x7AEF;&#x6536;&#x96C6;&#x5E76;&#x53D1;&#x9001;&#x8FC7;&#x6765;&#x7684;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x5BF9;&#x4E8E;RocketMQ&#x96C6;&#x7FA4;&#x4E2D;&#x7684;Broker&#x8282;&#x70B9;&#x6570;&#x91CF;&#x5E76;&#x65E0;&#x8981;&#x6C42;&#x548C;&#x9650;&#x5236;&#x3002;</p>
+<h3 id="23-&#x7269;&#x7406;io&#x9694;&#x79BB;&#x6A21;&#x5F0F;"><a name="23-&#x7269;&#x7406;io&#x9694;&#x79BB;&#x6A21;&#x5F0F;" class="anchor-navigation-ex-anchor" href="#23-&#x7269;&#x7406;io&#x9694;&#x79BB;&#x6A21;&#x5F0F;"><i class="fa fa-link" aria-hidden="true"></i></a>1.2.3. 2.3 &#x7269;&#x7406;IO&#x9694;&#x79BB;&#x6A21;&#x5F0F;</h3>
+<p>&#x5BF9;&#x4E8E;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x91CF;&#x8F83;&#x5927;&#x7684;&#x573A;&#x666F;&#xFF0C;&#x53EF;&#x4EE5;&#x5728;RocketMQ&#x96C6;&#x7FA4;&#x4E2D;&#x9009;&#x62E9;&#x5176;&#x4E2D;&#x4E00;&#x4E2A;Broker&#x8282;&#x70B9;&#x4E13;&#x7528;&#x4E8E;&#x5B58;&#x50A8;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#xFF0C;&#x4F7F;&#x5F97;&#x7528;&#x6237;&#x666E;&#x901A;&#x7684;&#x6D88;&#x606F;&#x6570;&#x636E;&#x4E0E;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x7684;&#x7269;&#x7406;IO&#x5B8C;&#x5168;&#x9694;&#x79BB;&#xFF0C;&#x4E92;&#x4E0D;&#x5F71;&#x54CD;&#x3002;&#x5728;&#x8BE5;&#x6A21;&#x5F0F;&#x4E0B;&#xFF0C;RockeMQ&#x96C6;&#x7FA4;&#x4E2D;&#x81F3;&#x5C11;&#x6709;&#x4E24;&#x4E2A;Broker&#x8282;&#x70B9;&#xFF0C;&#x5176;&#x4E2D;&#x4E00;&#x4E2A;Broker&#x8282;&#x70B9;&#x5B9A;&#x4E49;&#x4E3A;&#x5B58;&#x50A8;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x7684;&#x670D;&#x52A1;&#x7AEF;&#x3002;</p>
+<h3 id="24-&#x542F;&#x52A8;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;broker"><a name="24-&#x542F;&#x52A8;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;broker" class="anchor-navigation-ex-anchor" href="#24-&#x542F;&#x52A8;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;broker"><i class="fa fa-link" aria-hidden="true"></i></a>1.2.4. 2.4 &#x542F;&#x52A8;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;Broker</h3>
+<p><code>nohup sh mqbroker -c ../conf/2m-noslave/broker-a.properties &amp;</code></p>
+<h2 id="3-&#x4FDD;&#x5B58;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;topic&#x5B9A;&#x4E49;"><a name="3-&#x4FDD;&#x5B58;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;topic&#x5B9A;&#x4E49;" class="anchor-navigation-ex-anchor" href="#3-&#x4FDD;&#x5B58;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;topic&#x5B9A;&#x4E49;"><i class="fa fa-link" aria-hidden="true"></i></a>1.3. 3. &#x4FDD;&#x5B58;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;Topic&#x5B9A;&#x4E49;</h2>
+<p>RocketMQ&#x7684;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7279;&#x6027;&#x652F;&#x6301;&#x4E24;&#x79CD;&#x5B58;&#x50A8;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x7684;&#x65B9;&#x5F0F;&#xFF1A;</p>
+<h3 id="31-&#x7CFB;&#x7EDF;&#x7EA7;&#x7684;tracetopic"><a name="31-&#x7CFB;&#x7EDF;&#x7EA7;&#x7684;tracetopic" class="anchor-navigation-ex-anchor" href="#31-&#x7CFB;&#x7EDF;&#x7EA7;&#x7684;tracetopic"><i class="fa fa-link" aria-hidden="true"></i></a>1.3.1. 3.1 &#x7CFB;&#x7EDF;&#x7EA7;&#x7684;TraceTopic</h3>
+<p>&#x5728;&#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x662F;&#x5B58;&#x50A8;&#x4E8E;&#x7CFB;&#x7EDF;&#x7EA7;&#x7684;TraceTopic&#x4E2D;(&#x5176;&#x540D;&#x79F0;&#x4E3A;&#xFF1A;<strong>RMQ_SYS_TRACE_TOPIC</strong>)&#x3002;&#x8BE5;Topic&#x5728;Broker&#x8282;&#x70B9;&#x542F;&#x52A8;&#x65F6;&#xFF0C;&#x4F1A;&#x81EA;&#x52A8;&#x521B;&#x5EFA;&#x51FA;&#x6765;&#xFF08;&#x5982;&#x4E0A;&#x6240;&#x53D9;&#xFF0C;&#x9700;&#x8981;&#x5728;Broker&#x7AEF;&#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x4E2D;&#x5C06;<strong>traceTopicEnable</strong>&#x7684;&#x5F00;&#x5173;&#x53D8;&#x91CF;&#x8BBE;&#x7F6E;&#x4E3A;<strong>true</strong>&#xFF09;&#x3002;</p>
+<h3 id="32-&#x7528;&#x6237;&#x81EA;&#x5B9A;&#x4E49;&#x7684;tracetopic"><a name="32-&#x7528;&#x6237;&#x81EA;&#x5B9A;&#x4E49;&#x7684;tracetopic" class="anchor-navigation-ex-anchor" href="#32-&#x7528;&#x6237;&#x81EA;&#x5B9A;&#x4E49;&#x7684;tracetopic"><i class="fa fa-link" aria-hidden="true"></i></a>1.3.2. 3.2 &#x7528;&#x6237;&#x81EA;&#x5B9A;&#x4E49;&#x7684;TraceTopic</h3>
+<p>&#x5982;&#x679C;&#x7528;&#x6237;&#x4E0D;&#x51C6;&#x5907;&#x5C06;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x4E8E;&#x7CFB;&#x7EDF;&#x7EA7;&#x7684;&#x9ED8;&#x8BA4;TraceTopic&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x81EA;&#x5DF1;&#x5B9A;&#x4E49;&#x5E76;&#x521B;&#x5EFA;&#x7528;&#x6237;&#x7EA7;&#x7684;Topic&#x6765;&#x4FDD;&#x5B58;&#x8F68;&#x8FF9;&#xFF08;&#x5373;&#x4E3A;&#x521B;&#x5EFA;&#x666E;&#x901A;&#x7684;Topic&#x7528;&#x4E8E;&#x4FDD;&#x5B58;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#xFF09;&#x3002;&#x4E0B;&#x9762;&#x4E00;&#x8282;&#x4F1A;&#x4ECB;&#x7ECD;Client&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x63A5;&#x53E3;&#x5982;&#x4F55;&#x652F;&#x6301;&#x7528;&#x6237;&#x81EA;&#x5B9A;&#x4E49;&#x7684;TraceTopic&#x3002;</p>
+<h2 id="4-&#x652F;&#x6301;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;client&#x5BA2;&#x6237;&#x7AEF;&#x5B9E;&#x8DF5;"><a name="4-&#x652F;&#x6301;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;client&#x5BA2;&#x6237;&#x7AEF;&#x5B9E;&#x8DF5;" class="anchor-navigation-ex-anchor" href="#4-&#x652F;&#x6301;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;client&#x5BA2;&#x6237;&#x7AEF;&#x5B9E;&#x8DF5;"><i class="fa fa-link" aria-hidden="true"></i></a>1.4. 4. &#x652F;&#x6301;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7684;Client&#x5BA2;&#x6237;&#x7AEF;&#x5B9E;&#x8DF5;</h2>
+<p>&#x4E3A;&#x4E86;&#x5C3D;&#x53EF;&#x80FD;&#x5730;&#x51CF;&#x5C11;&#x7528;&#x6237;&#x4E1A;&#x52A1;&#x7CFB;&#x7EDF;&#x4F7F;&#x7528;RocketMQ&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x7279;&#x6027;&#x7684;&#x6539;&#x9020;&#x5DE5;&#x4F5C;&#x91CF;&#xFF0C;&#x4F5C;&#x8005;&#x5728;&#x8BBE;&#x8BA1;&#x65F6;&#x5019;&#x91C7;&#x7528;&#x5BF9;&#x539F;&#x6765;&#x63A5;&#x53E3;&#x589E;&#x52A0;&#x4E00;&#x4E2A;&#x5F00;&#x5173;&#x53C2;&#x6570;(<strong>enableMsgTrace</strong>)&#x6765;&#x5B9E;&#x73B0;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x662F;&#x5426;&#x5F00;&#x542F;&#xFF1B;&#x5E76;&#x65B0;&#x589E;&#x4E00;&#x4E2A;&#x81EA;&#x5B9A;&#x4E49;&#x53C2;(<strong>customizedTraceTopic</strong>)&#x6570;&#x6765;&#x5B9E;&#x73B0;&#x7528;&#x6237;&#x5B58;&#x50A8;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#x6570;&#x636E;&#x81F3;&#x81EA;&#x5DF1;&#x521B;&#x5EFA;&#x7684;&#x7528;&#x6237;&#x7EA7;Topic&#x3002;</p>
+<h3 id="41-&#x53D1;&#x9001;&#x6D88;&#x606F;&#x65F6;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;"><a name="41-&#x53D1;&#x9001;&#x6D88;&#x606F;&#x65F6;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;" class="anchor-navigation-ex-anchor" href="#41-&#x53D1;&#x9001;&#x6D88;&#x606F;&#x65F6;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;"><i class="fa fa-link" aria-hidden="true"></i></a>1.4.1. 4.1 &#x53D1;&#x9001;&#x6D88;&#x606F;&#x65F6;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;</h3>
+<pre><code>        DefaultMQProducer producer = new DefaultMQProducer(&quot;ProducerGroupName&quot;,true);
+        producer.setNamesrvAddr(&quot;XX.XX.XX.XX1&quot;);
+        producer.start();
+            try {
+                {
+                    Message msg = new Message(&quot;TopicTest&quot;,
+                        &quot;TagA&quot;,
+                        &quot;OrderID188&quot;,
+                        &quot;Hello world&quot;.getBytes(RemotingHelper.DEFAULT_CHARSET));
+                    SendResult sendResult = producer.send(msg);
+                    System.out.printf(&quot;%s%n&quot;, sendResult);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+</code></pre><h3 id="42-&#x8BA2;&#x9605;&#x6D88;&#x606F;&#x65F6;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;"><a name="42-&#x8BA2;&#x9605;&#x6D88;&#x606F;&#x65F6;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;" class="anchor-navigation-ex-anchor" href="#42-&#x8BA2;&#x9605;&#x6D88;&#x606F;&#x65F6;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;"><i class="fa fa-link" aria-hidden="true"></i></a>1.4.2. 4.2 &#x8BA2;&#x9605;&#x6D88;&#x606F;&#x65F6;&#x5F00;&#x542F;&#x6D88;&#x606F;&#x8F68;&#x8FF9;</h3>
+<pre><code>        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(&quot;CID_JODIE_1&quot;,true);
+        consumer.subscribe(&quot;TopicTest&quot;, &quot;*&quot;);
+        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+        consumer.setConsumeTimestamp(&quot;20181109221800&quot;);
+        consumer.registerMessageListener(new MessageListenerConcurrently() {
+            @Override
+            public ConsumeConcurrentlyStatus consumeMessage(List&lt;MessageExt&gt; msgs, ConsumeConcurrentlyContext context) {
+                System.out.printf(&quot;%s Receive New Messages: %s %n&quot;, Thread.currentThread().getName(), msgs);
+                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+            }
+        });
+        consumer.start();
+        System.out.printf(&quot;Consumer Started.%n&quot;);
+</code></pre><h3 id="43-&#x652F;&#x6301;&#x81EA;&#x5B9A;&#x4E49;&#x5B58;&#x50A8;&#x6D88;&#x606F;&#x8F68;&#x8FF9;topic"><a name="43-&#x652F;&#x6301;&#x81EA;&#x5B9A;&#x4E49;&#x5B58;&#x50A8;&#x6D88;&#x606F;&#x8F68;&#x8FF9;topic" class="anchor-navigation-ex-anchor" href="#43-&#x652F;&#x6301;&#x81EA;&#x5B9A;&#x4E49;&#x5B58;&#x50A8;&#x6D88;&#x606F;&#x8F68;&#x8FF9;topic"><i class="fa fa-link" aria-hidden="true"></i></a>1.4.3. 4.3 &#x652F;&#x6301;&#x81EA;&#x5B9A;&#x4E49;&#x5B58;&#x50A8;&#x6D88;&#x606F;&#x8F68;&#x8FF9;Topic</h3>
+<p>&#x5728;&#x4E0A;&#x9762;&#x7684;&#x53D1;&#x9001;&#x548C;&#x8BA2;&#x9605;&#x6D88;&#x606F;&#x65F6;&#x5019;&#x5206;&#x522B;&#x5C06;DefaultMQProducer&#x548C;DefaultMQPushConsumer&#x5B9E;&#x4F8B;&#x7684;&#x521D;&#x59CB;&#x5316;&#x4FEE;&#x6539;&#x4E3A;&#x5982;&#x4E0B;&#x5373;&#x53EF;&#x652F;&#x6301;&#x81EA;&#x5B9A;&#x4E49;&#x5B58;&#x50A8;&#x6D88;&#x606F;&#x8F68;&#x8FF9;Topic&#x3002;</p>
+<pre><code>        ##&#x5176;&#x4E2D;Topic_test11111&#x9700;&#x8981;&#x7528;&#x6237;&#x81EA;&#x5DF1;&#x9884;&#x5148;&#x521B;&#x5EFA;&#xFF0C;&#x6765;&#x4FDD;&#x5B58;&#x6D88;&#x606F;&#x8F68;&#x8FF9;&#xFF1B;
+        DefaultMQProducer producer = new DefaultMQProducer(&quot;ProducerGroupName&quot;,true,&quot;Topic_test11111&quot;);
+        ......
+
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(&quot;CID_JODIE_1&quot;,true,&quot;Topic_test11111&quot;);
+        ......
+</code></pre>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../best_practice.html" class="navigation navigation-prev " aria-label="Previous page: 最佳实践（Best Practice）">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../acl/user_guide.html" class="navigation navigation-next " aria-label="Next page: 权限管理(Auth Management)">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"消息轨迹指南(Message Trace)","level":"1.8","depth":1,"next":{"title":"权限管理(Auth Management)","level":"1.9","depth":1,"path":"acl/user_guide.md","ref":"acl/user_guide.md","articles":[]},"previous":{"title":"最佳实践（Best Practice）","level":"1.7","depth":1,"path":"best_practice.md","ref":"best_practice.md","articles":[]},"dir":"ltr"},"config":{"plugins":["3-ba@^0.9.0","anchor-navigation-ex@0.1.8","livereload"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"livereload":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"isRewritePageTitle":true,"isShowTocTitleIcon":true,"tocLevel1Icon":"fa fa-hand-o-right","tocLevel2Icon":"fa fa-hand-o-right","tocLevel3Icon":"fa fa-hand-o-right"},"3-ba":{"configuration":"auto","token":"13766878cde148282622871dd245a973"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"RocketMQ官方","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Apache RocketMQ开发者指南","links":{"sidebar":{"博客首页":"http://www.itmuch.com","RocketMQ官方网站":"http://rocketmq.apache.org"}},"gitbook":"*"},"file":{"path":"msg_trace/user_guide.md","mtime":"2019-07-23T12:28:03.278Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-03T17:36:58.845Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../../static/js/gitbook.js"></script>
+    <script src="../../../static/js/theme.js"></script>
+    
+        
+        <script src="../../../static/js/plugin.js"></script>
+        
+    
+        
+        <script src="../../../static/js/plugin1.js"></script>
+        
+    
+        
+        <script src="../../../static/js/search-engine.js"></script>
+        
+    
+        
+        <script src="../../../static/js/search.js"></script>
+        
+    
+        
+        <script src="../../../static/js/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../../static/js/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../../static/js/buttons.js"></script>
+        
+    
+        
+        <script src="../../../static/js/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

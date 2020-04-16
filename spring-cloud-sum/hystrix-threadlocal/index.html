@@ -1,0 +1,604 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:40 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Hystrix">
+
+
+    <meta name="description" content="目前，Spring Cloud已在南京公司推广开来，不仅如此，深圳那边近期也要基于Spring Cloud新开微服务了。
+于是，领导要求我出一套基于Spring Cloud的快速开发脚手架（近期开源）。在编写脚手架的过程中，也顺带总结一下以前在项目中遇到的问题：
+
+使用Hystrix时，如何传...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>实用技巧：Hystrix传播ThreadLocal对象（两种方案） | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="实用技巧：Hystrix传播ThreadLocal对象（两种方案）">
+            
+                实用技巧：Hystrix传播ThreadLocal对象（两种方案）
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Hystrix</a> <a class="tag-link" href="javascript:;">Spring Cloud</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/12/05</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引子"><span class="toc-text">引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#现实很骨感"><span class="toc-text">现实很骨感</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案一：调整隔离策略"><span class="toc-text">解决方案一：调整隔离策略</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Thread-or-Semaphore"><span class="toc-text">Thread or Semaphore</span></a></li></ol></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案二：自定义并发策略"><span class="toc-text">解决方案二：自定义并发策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#编写自定义并发策略"><span class="toc-text">编写自定义并发策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新的问题"><span class="toc-text">新的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pull-Request"><span class="toc-text">Pull Request</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#灵感来自"><span class="toc-text">灵感来自</span></a></li>
+        </div>
+    </div>
+
+
+        <p>目前，Spring Cloud已在南京公司推广开来，不仅如此，深圳那边近期也要基于Spring Cloud新开微服务了。</p>
+<p>于是，领导要求我出一套基于Spring Cloud的快速开发脚手架（近期开源）。在编写脚手架的过程中，也顺带总结一下以前在项目中遇到的问题：</p>
+<blockquote>
+<p>使用Hystrix时，如何传播ThreadLocal对象？</p>
+</blockquote>
+<p>我们知道，Hystrix有隔离策略：THREAD以及SEMAPHORE。</p>
+<blockquote>
+<p>如果你不知道Hystrix的隔离策略，可以阅读我的书籍《Spring Cloud与Docker微服务架构实战》，或者参考文档：<a href="javascript:;" target="_blank" rel="noopener">https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationstrategy</a> </p>
+</blockquote>
+<a id="more"></a>
+<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>当隔离策略为 <code>THREAD</code> 时，是没办法拿到 <code>ThreadLocal</code> 中的值的。</p>
+<p>举个例子，使用Feign调用某个远程API，这个远程API需要传递一个Header，这个Header是动态的，跟你的HttpRequest相关，我们选择编写一个拦截器来实现Header的传递（当然也可以在Feign Client接口的方法上加<code>RequestHeader</code> ）。</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KeycloakRequestInterceptor</span> <span class="keyword">implements</span> <span class="title">RequestInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String AUTHORIZATION_HEADER = <span class="string">"Authorization"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(RequestTemplate template)</span> </span>&#123;</span><br><span class="line">        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();</span><br><span class="line">        Principal principal = attributes.getRequest().getUserPrincipal();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (principal != <span class="keyword">null</span> &amp;&amp; principal <span class="keyword">instanceof</span> KeycloakPrincipal) &#123;</span><br><span class="line">            KeycloakSecurityContext keycloakSecurityContext = ((KeycloakPrincipal) principal)</span><br><span class="line">                    .getKeycloakSecurityContext();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (keycloakSecurityContext <span class="keyword">instanceof</span> RefreshableKeycloakSecurityContext) &#123;</span><br><span class="line">                RefreshableKeycloakSecurityContext.class.cast(keycloakSecurityContext)</span><br><span class="line">                        .refreshExpiredToken(<span class="keyword">true</span>);</span><br><span class="line">                template.header(AUTHORIZATION_HEADER, <span class="string">"Bearer "</span> + keycloakSecurityContext.getTokenString());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 否则啥都不干</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你可能不知道Keycloak是什么，不过没有关系，相信这段代码并不难阅读，该拦截器做了几件事：</p>
+<ul>
+<li>使用 <code>RequestContextHolder.getRequestAttributes()</code> 静态方法获得Request。</li>
+<li>从Request获得当前用户的身份，然后使用Keycloak的API拿到Token，并扔到Header里。</li>
+<li>这样，Feign使用这个拦截器时，就会用你这个Header去请求了。</li>
+</ul>
+<blockquote>
+<p>注：Keycloak是一个非常容易上手，并且功能强大的单点认证平台。</p>
+</blockquote>
+<h2 id="现实很骨感"><a href="#现实很骨感" class="headerlink" title="现实很骨感"></a>现实很骨感</h2><p>以上代码可完美运行——但仅限于Feign不开启Hystrix支持时。</p>
+<blockquote>
+<p>注：Spring Cloud Dalston以及更高版可使用 <code>feign.hystrix.enabled=true</code> 为Feign开启Hystrix支持。</p>
+</blockquote>
+<p>当Feign开启Hystrix支持时，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();</span><br></pre></td></tr></table></figure>
+<p>是 <code>null</code> 。</p>
+<p>原因在于，Hystrix的默认隔离策略是<code>THREAD</code> 。而 <code>RequestContextHolder</code> 源码中，使用了两个血淋淋的<code>ThreadLocal</code> 。</p>
+<h2 id="解决方案一：调整隔离策略"><a href="#解决方案一：调整隔离策略" class="headerlink" title="解决方案一：调整隔离策略"></a>解决方案一：调整隔离策略</h2><p>将隔离策略设为SEMAPHORE即可：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">hystrix.command.default.execution.isolation.strategy:</span> <span class="string">SEMAPHORE</span></span><br></pre></td></tr></table></figure>
+<p>这样配置后，Feign可以正常工作。</p>
+<p>但该方案不是特别好。<strong>原因是Hystrix官方强烈建议使用THREAD作为隔离策略！</strong> 参考文档：</p>
+<blockquote>
+<h5 id="Thread-or-Semaphore"><a href="#Thread-or-Semaphore" class="headerlink" title="Thread or Semaphore"></a>Thread or Semaphore</h5><p>The default, and the recommended setting, is to run <code>HystrixCommand</code>s using thread isolation (<code>THREAD</code>) and <code>HystrixObservableCommand</code>s using semaphore isolation (<code>SEMAPHORE</code>).</p>
+<p>Commands executed in threads have an extra layer of protection against latencies beyond what network timeouts can offer.</p>
+<p>Generally the only time you should use semaphore isolation for <code>HystrixCommand</code>s is when the call is so high volume (hundreds per second, per instance) that the overhead of separate threads is too high; this typically only applies to non-network calls.</p>
+</blockquote>
+<p>于是，那么有没有更好的方案呢？</p>
+<h2 id="解决方案二：自定义并发策略"><a href="#解决方案二：自定义并发策略" class="headerlink" title="解决方案二：自定义并发策略"></a>解决方案二：自定义并发策略</h2><p>既然Hystrix不太建议使用SEMAPHORE作为隔离策略，那么是否有其他方案呢？答案是自定义并发策略，目前，Spring Cloud Sleuth以及Spring Security都通过该方式传递 <code>ThreadLocal</code> 对象。</p>
+<p>下面我们来编写自定义的并发策略。</p>
+<h3 id="编写自定义并发策略"><a href="#编写自定义并发策略" class="headerlink" title="编写自定义并发策略"></a>编写自定义并发策略</h3><p>编写自定义并发策略比较简单，只需编写一个类，让其继承<code>HystrixConcurrencyStrategy</code> ，并重写<code>wrapCallable</code> 方法即可。</p>
+<p>代码示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestAttributeHystrixConcurrencyStrategy</span> <span class="keyword">extends</span> <span class="title">HystrixConcurrencyStrategy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Log log = LogFactory.getLog(RequestHystrixConcurrencyStrategy.class);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RequestHystrixConcurrencyStrategy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        HystrixPlugins.reset();</span><br><span class="line">        HystrixPlugins.getInstance().registerConcurrencyStrategy(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">Callable&lt;T&gt; <span class="title">wrapCallable</span><span class="params">(Callable&lt;T&gt; callable)</span> </span>&#123;</span><br><span class="line">        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> WrappedCallable&lt;&gt;(callable, requestAttributes);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">WrappedCallable</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> Callable&lt;T&gt; target;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> RequestAttributes requestAttributes;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">WrappedCallable</span><span class="params">(Callable&lt;T&gt; target, RequestAttributes requestAttributes)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.target = target;</span><br><span class="line">            <span class="keyword">this</span>.requestAttributes = requestAttributes;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> T <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                RequestContextHolder.setRequestAttributes(requestAttributes);</span><br><span class="line">                <span class="keyword">return</span> target.call();</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                RequestContextHolder.resetRequestAttributes();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如代码所示，我们编写了一个<code>RequestHystrixConcurrencyStrategy</code> ，在其中：</p>
+<ul>
+<li><code>wrapCallable</code> 方法拿到 <code>RequestContextHolder.getRequestAttributes()</code> ，也就是我们想传播的对象；</li>
+<li>在 <code>WrappedCallable</code> 类中，我们将要传播的对象作为成员变量，并在其中的call方法中，为静态方法设值。</li>
+<li>这样，在Hystrix包裹的方法中，就可以使用<code>RequestContextHolder.getRequestAttributes()</code> 获取到相关属性——也就是说，可以拿到<code>RequestContextHolder</code> 中的<code>ThreadLocal</code> 属性。</li>
+</ul>
+<p>经过测试，代码能正常工作。</p>
+<h3 id="新的问题"><a href="#新的问题" class="headerlink" title="新的问题"></a>新的问题</h3><p>至此，我们已经实现了<code>ThreadLocal</code> 属性的传递，然而Hystrix<strong>只允许有一个并发策略</strong>！这意味着——如果不做任何处理，Sleuth、Spring Security将无法正常拿到上下文！（上文说过，目前Sleuth、Spring Security都是通过自定义并发策略的方式来传递ThreadLocal对象的。）</p>
+<p>如何解决这个问题呢？</p>
+<p>我们知道，Spring Cloud中，Spring Cloud Security与Spring Cloud Sleuth是可以共存的！我们不妨参考下Sleuth以及Spring Security的实现：</p>
+<ul>
+<li>Sleuth：<code>org.springframework.cloud.sleuth.instrument.hystrix.SleuthHystrixConcurrencyStrategy</code> </li>
+<li>Spring Security：<code>org.springframework.cloud.netflix.hystrix.security.SecurityContextConcurrencyStrategy</code> </li>
+</ul>
+<p>阅读完后，你将恍然大悟——于是，我们可以模仿它们的写法，改写上文编写的并发策略：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestAttributeHystrixConcurrencyStrategy</span> <span class="keyword">extends</span> <span class="title">HystrixConcurrencyStrategy</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Log log = LogFactory.getLog(RequestAttributeHystrixConcurrencyStrategy.class);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> HystrixConcurrencyStrategy delegate;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">RequestAttributeHystrixConcurrencyStrategy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">this</span>.delegate = HystrixPlugins.getInstance().getConcurrencyStrategy();</span><br><span class="line">			<span class="keyword">if</span> (<span class="keyword">this</span>.delegate <span class="keyword">instanceof</span> RequestAttributeHystrixConcurrencyStrategy) &#123;</span><br><span class="line">				<span class="comment">// Welcome to singleton hell...</span></span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			HystrixCommandExecutionHook commandExecutionHook = HystrixPlugins</span><br><span class="line">					.getInstance().getCommandExecutionHook();</span><br><span class="line">			HystrixEventNotifier eventNotifier = HystrixPlugins.getInstance()</span><br><span class="line">					.getEventNotifier();</span><br><span class="line">			HystrixMetricsPublisher metricsPublisher = HystrixPlugins.getInstance()</span><br><span class="line">					.getMetricsPublisher();</span><br><span class="line">			HystrixPropertiesStrategy propertiesStrategy = HystrixPlugins.getInstance()</span><br><span class="line">					.getPropertiesStrategy();</span><br><span class="line">			<span class="keyword">this</span>.logCurrentStateOfHystrixPlugins(eventNotifier, metricsPublisher,</span><br><span class="line">					propertiesStrategy);</span><br><span class="line">			HystrixPlugins.reset();</span><br><span class="line">			HystrixPlugins.getInstance().registerConcurrencyStrategy(<span class="keyword">this</span>);</span><br><span class="line">			HystrixPlugins.getInstance()</span><br><span class="line">					.registerCommandExecutionHook(commandExecutionHook);</span><br><span class="line">			HystrixPlugins.getInstance().registerEventNotifier(eventNotifier);</span><br><span class="line">			HystrixPlugins.getInstance().registerMetricsPublisher(metricsPublisher);</span><br><span class="line">			HystrixPlugins.getInstance().registerPropertiesStrategy(propertiesStrategy);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			log.error(<span class="string">"Failed to register Sleuth Hystrix Concurrency Strategy"</span>, e);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">logCurrentStateOfHystrixPlugins</span><span class="params">(HystrixEventNotifier eventNotifier,</span></span></span><br><span class="line"><span class="function"><span class="params">			HystrixMetricsPublisher metricsPublisher,</span></span></span><br><span class="line"><span class="function"><span class="params">			HystrixPropertiesStrategy propertiesStrategy)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (log.isDebugEnabled()) &#123;</span><br><span class="line">			log.debug(<span class="string">"Current Hystrix plugins configuration is ["</span></span><br><span class="line">					+ <span class="string">"concurrencyStrategy ["</span> + <span class="keyword">this</span>.delegate + <span class="string">"],"</span> + <span class="string">"eventNotifier ["</span></span><br><span class="line">					+ eventNotifier + <span class="string">"],"</span> + <span class="string">"metricPublisher ["</span> + metricsPublisher + <span class="string">"],"</span></span><br><span class="line">					+ <span class="string">"propertiesStrategy ["</span> + propertiesStrategy + <span class="string">"],"</span> + <span class="string">"]"</span>);</span><br><span class="line">			log.debug(<span class="string">"Registering Sleuth Hystrix Concurrency Strategy."</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> &lt;T&gt; <span class="function">Callable&lt;T&gt; <span class="title">wrapCallable</span><span class="params">(Callable&lt;T&gt; callable)</span> </span>&#123;</span><br><span class="line">		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> WrappedCallable&lt;&gt;(callable, requestAttributes);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ThreadPoolExecutor <span class="title">getThreadPool</span><span class="params">(HystrixThreadPoolKey threadPoolKey,</span></span></span><br><span class="line"><span class="function"><span class="params">			HystrixProperty&lt;Integer&gt; corePoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">			HystrixProperty&lt;Integer&gt; maximumPoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">			HystrixProperty&lt;Integer&gt; keepAliveTime, TimeUnit unit,</span></span></span><br><span class="line"><span class="function"><span class="params">			BlockingQueue&lt;Runnable&gt; workQueue)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.delegate.getThreadPool(threadPoolKey, corePoolSize, maximumPoolSize,</span><br><span class="line">				keepAliveTime, unit, workQueue);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ThreadPoolExecutor <span class="title">getThreadPool</span><span class="params">(HystrixThreadPoolKey threadPoolKey,</span></span></span><br><span class="line"><span class="function"><span class="params">			HystrixThreadPoolProperties threadPoolProperties)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.delegate.getThreadPool(threadPoolKey, threadPoolProperties);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> BlockingQueue&lt;Runnable&gt; <span class="title">getBlockingQueue</span><span class="params">(<span class="keyword">int</span> maxQueueSize)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.delegate.getBlockingQueue(maxQueueSize);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> &lt;T&gt; <span class="function">HystrixRequestVariable&lt;T&gt; <span class="title">getRequestVariable</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">			HystrixRequestVariableLifecycle&lt;T&gt; rv)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.delegate.getRequestVariable(rv);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">WrappedCallable</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">private</span> <span class="keyword">final</span> Callable&lt;T&gt; target;</span><br><span class="line">		<span class="keyword">private</span> <span class="keyword">final</span> RequestAttributes requestAttributes;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="title">WrappedCallable</span><span class="params">(Callable&lt;T&gt; target, RequestAttributes requestAttributes)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.target = target;</span><br><span class="line">			<span class="keyword">this</span>.requestAttributes = requestAttributes;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> T <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				RequestContextHolder.setRequestAttributes(requestAttributes);</span><br><span class="line">				<span class="keyword">return</span> target.call();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">finally</span> &#123;</span><br><span class="line">				RequestContextHolder.resetRequestAttributes();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单讲解下：</p>
+<ul>
+<li>将现有的并发策略作为新并发策略的成员变量</li>
+<li>在新并发策略中，返回现有并发策略的线程池、Queue。</li>
+</ul>
+<h2 id="Pull-Request"><a href="#Pull-Request" class="headerlink" title="Pull Request"></a>Pull Request</h2><p>笔者已将该实现方式Pull Request：<a href="javascript:;" target="_blank" rel="noopener">https://github.com/spring-cloud/spring-cloud-netflix/pull/2509</a> ，希望官方能够接纳，也希望在不久的将来，能够更舒服、更爽地使用Spring Cloud。</p>
+<p>PS. Pull Request的代码跟博客中的代码略有区别，有少量简单的优化，主要是增加了一个开关。</p>
+<h2 id="灵感来自"><a href="#灵感来自" class="headerlink" title="灵感来自"></a>灵感来自</h2><ul>
+<li><a href="javascript:;" target="_blank" rel="noopener">https://stackoverflow.com/questions/34062900/forward-a-request-header-with-a-feign-client-requestinterceptor</a></li>
+<li><a href="javascript:;" target="_blank" rel="noopener">https://stackoverflow.com/questions/34719809/unreachable-security-context-using-feign-requestinterceptor</a></li>
+<li><a href="javascript:;" target="_blank" rel="noopener">https://github.com/spring-cloud/spring-cloud-netflix/pull/1379</a></li>
+<li><a href="javascript:;" target="_blank" rel="noopener">https://github.com/Writtscher/kanoon</a></li>
+</ul>
+
+        <h2>相关文章</h2><ul><li><a href="../../spring-cloud-feign-ribbon-first-request-fail/index.html">Spring Cloud中，如何解决Feign/Ribbon第一次请求失败的问题？</a></li><li><a href="../../spring-cloud-alibaba-migration/spring-cloud-alibaba-2/index.html">Spring Cloud Alibaba迁移指南2：一行代码从Hystrix迁移到Sentinel</a></li><li><a href="../../spring-cloud/finchley-12/index.html">跟我学Spring Cloud（Finchley版）-12-微服务容错三板斧</a></li><li><a href="../../spring-cloud/finchley-13/index.html">跟我学Spring Cloud（Finchley版）-13-通用方式使用Hystrix</a></li><li><a href="../../spring-cloud/finchley-14/index.html">跟我学Spring Cloud（Finchley版）-14-Feign使用Hystrix</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">实用技巧：Hystrix传播ThreadLocal对象（两种方案）</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../spring-cloud-concurrent/index.html" class="pre-post btn btn-default" title="Spring Cloud各组件调优参数">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Spring Cloud各组件调优参数</span>
+        </a>
+    
+    
+        <a target="_blank" href="../spring-cloud-feign-upload/index.html" class="next-post btn btn-default" title="使用Spring Cloud Feign上传文件">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">使用Spring Cloud Feign上传文件</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

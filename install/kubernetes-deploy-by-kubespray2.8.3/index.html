@@ -1,0 +1,694 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:39 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Docker,Kubernetes,Kubespray">
+
+
+    <meta name="description" content="Kubernetes的安装部署是难中之难，每个版本安装方式都略有区别。笔者一直想找一种支持多平台 、相对简单 、适用于生产环境 的部署方案。经过一段时间的调研，有如下几种解决方案进入笔者视野：
+
+
+
+部署方案
+优点
+缺点
+
+
+
+
+Kubeadm
+官方出品
+部署较麻烦、不够透明
+
+
+Kubesp...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>使用Kubespray 2.8.3部署生产可用的Kubernetes集群（1.12.5） | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="使用Kubespray 2.8.3部署生产可用的Kubernetes集群（1.12.5）">
+            
+                使用Kubespray 2.8.3部署生产可用的Kubernetes集群（1.12.5）
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Kubernetes</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Docker</a> <a class="tag-link" href="javascript:;">Kubernetes</a> <a class="tag-link" href="javascript:;">Kubespray</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/03/03</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#主机规划"><span class="toc-text">主机规划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关闭selinux"><span class="toc-text">关闭selinux</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络配置"><span class="toc-text">网络配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#在master机器上"><span class="toc-text">在master机器上</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在node机器上"><span class="toc-text">在node机器上</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#【可选】关闭防火墙"><span class="toc-text">【可选】关闭防火墙</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在ansible-client机器上安装必备软件"><span class="toc-text">在ansible-client机器上安装必备软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在ansible-client机器上配置免密登录其他机器"><span class="toc-text">在ansible-client机器上配置免密登录其他机器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成ssh公钥和私钥"><span class="toc-text">生成ssh公钥和私钥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#建立ssh单向通道"><span class="toc-text">建立ssh单向通道</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在ansible-client机器上安装kubespray"><span class="toc-text">在ansible-client机器上安装kubespray</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#验证"><span class="toc-text">验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#验证1：查看Node状态"><span class="toc-text">验证1：查看Node状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#验证2：部署一个NGINX"><span class="toc-text">验证2：部署一个NGINX</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#卸载Kubespray"><span class="toc-text">卸载Kubespray</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文档："><span class="toc-text">参考文档：</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>Kubernetes的安装部署是难中之难，每个版本安装方式都略有区别。笔者一直想找一种<code>支持多平台</code> 、<code>相对简单</code> 、<code>适用于生产环境</code> 的部署方案。经过一段时间的调研，有如下几种解决方案进入笔者视野：</p>
+<table>
+<thead>
+<tr>
+<th>部署方案</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="javascript:;" target="_blank" rel="noopener">Kubeadm</a></td>
+<td>官方出品</td>
+<td>部署较麻烦、不够透明</td>
+</tr>
+<tr>
+<td><a href="javascript:;" target="_blank" rel="noopener">Kubespray</a></td>
+<td>官方出品、部署较简单、懂Ansible就能上手</td>
+<td>不够透明</td>
+</tr>
+<tr>
+<td><a href="javascript:;" target="_blank" rel="noopener">RKE</a></td>
+<td>部署较简单、需要花一些时间了解RKE的cluster.yml配置文件</td>
+<td>不够透明</td>
+</tr>
+<tr>
+<td>手动部署 <a href="javascript:;" target="_blank" rel="noopener">第三方操作文档</a></td>
+<td>完全透明、可配置、便于理解K8s各组件之间的关系</td>
+<td>部署非常麻烦，容易出错</td>
+</tr>
+</tbody>
+</table>
+<p>其他诸如Kops之类的方案，由于无法跨平台，或者其他因素，被我pass了。</p>
+<p>最终，笔者决定使用Kubespray部署Kubernetes集群。<strong>也希望大家能够一起讨论，总结出更加好的部署方案</strong>。</p>
+<p>废话不多说，以下是操作步骤。</p>
+<a id="more"></a>
+<blockquote>
+<p>注：撰写本文时，笔者临时租赁了几台海外阿里云机器，所以不存在无法连接gcr.io的问题。如果您的服务器在国内，请：</p>
+<ul>
+<li>考虑科学上网</li>
+<li>修改Kubespray中的gcr地址，改为其他仓库地址，例如阿里云镜像地址（修改<code>roles/download/defaults/main.yml</code> 即可）</li>
+<li>先弄个海外环境，安装完Kubernetes后，将镜像<code>docker save</code> 下来，再到国内的服务器上<code>docker load</code> 。</li>
+</ul>
+</blockquote>
+<h2 id="主机规划"><a href="#主机规划" class="headerlink" title="主机规划"></a>主机规划</h2><table>
+<thead>
+<tr>
+<th>IP</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>172.21.240.64</td>
+<td>ansible-client</td>
+</tr>
+<tr>
+<td>172.21.240.65</td>
+<td>master,node</td>
+</tr>
+<tr>
+<td>172.21.240.66</td>
+<td>master,node</td>
+</tr>
+<tr>
+<td>172.21.240.67</td>
+<td>node</td>
+</tr>
+<tr>
+<td>172.21.240.68</td>
+<td>node</td>
+</tr>
+<tr>
+<td>172.21.240.69</td>
+<td>node</td>
+</tr>
+</tbody>
+</table>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="关闭selinux"><a href="#关闭selinux" class="headerlink" title="关闭selinux"></a>关闭selinux</h3><p>所有机器都必须关闭selinux，执行如下命令即可。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">~]# setenforce 0</span><br><span class="line">~]# sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux</span><br></pre></td></tr></table></figure>
+<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><h4 id="在master机器上"><a href="#在master机器上" class="headerlink" title="在master机器上"></a>在master机器上</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">~]# firewall-cmd --permanent --add-port=6443/tcp</span><br><span class="line">~]# firewall-cmd --permanent --add-port=2379-2380/tcp</span><br><span class="line">~]# firewall-cmd --permanent --add-port=10250/tcp</span><br><span class="line">~]# firewall-cmd --permanent --add-port=10251/tcp</span><br><span class="line">~]# firewall-cmd --permanent --add-port=10252/tcp</span><br><span class="line">~]# firewall-cmd --permanent --add-port=10255/tcp</span><br><span class="line">~]# firewall-cmd --reload</span><br><span class="line">~]# modprobe br_netfilter</span><br><span class="line">~]# echo '1' &gt; /proc/sys/net/bridge/bridge-nf-call-iptables</span><br><span class="line">~]# sysctl -w net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
+<p>如果关闭了防火墙，则只需执行最下面三行。</p>
+<h4 id="在node机器上"><a href="#在node机器上" class="headerlink" title="在node机器上"></a>在node机器上</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">~]# firewall-cmd --permanent --add-port=10250/tcp</span><br><span class="line">~]# firewall-cmd --permanent --add-port=10255/tcp</span><br><span class="line">~]# firewall-cmd --permanent --add-port=30000-32767/tcp</span><br><span class="line">~]# firewall-cmd --permanent --add-port=6783/tcp</span><br><span class="line">~]# firewall-cmd  --reload</span><br><span class="line">~]# modprobe br_netfilter</span><br><span class="line">~]# echo '1' &gt; /proc/sys/net/bridge/bridge-nf-call-iptables</span><br><span class="line">~]# sysctl -w net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
+<p>如果关闭了防火墙，则只需执行最下面两行。</p>
+<h4 id="【可选】关闭防火墙"><a href="#【可选】关闭防火墙" class="headerlink" title="【可选】关闭防火墙"></a>【可选】关闭防火墙</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld</span><br></pre></td></tr></table></figure>
+<h2 id="在ansible-client机器上安装必备软件"><a href="#在ansible-client机器上安装必备软件" class="headerlink" title="在ansible-client机器上安装必备软件"></a>在ansible-client机器上安装必备软件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 安装epel源</span><br><span class="line">~]# sudo yum install -y epel-release</span><br><span class="line"><span class="meta">#</span> 安装ansible</span><br><span class="line">~]# sudo yum install -y ansible</span><br><span class="line"><span class="meta">#</span> 安装Python 3.6</span><br><span class="line">~]# sudo yum install –y python36</span><br></pre></td></tr></table></figure>
+<h2 id="在ansible-client机器上配置免密登录其他机器"><a href="#在ansible-client机器上配置免密登录其他机器" class="headerlink" title="在ansible-client机器上配置免密登录其他机器"></a>在ansible-client机器上配置免密登录其他机器</h2><h3 id="生成ssh公钥和私钥"><a href="#生成ssh公钥和私钥" class="headerlink" title="生成ssh公钥和私钥"></a>生成ssh公钥和私钥</h3><p>在ansible-cilent机器上执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~]# ssh-keygen</span><br></pre></td></tr></table></figure>
+<p>然后三次回车，生成ssh公钥和私钥。</p>
+<h3 id="建立ssh单向通道"><a href="#建立ssh单向通道" class="headerlink" title="建立ssh单向通道"></a>建立ssh单向通道</h3><p>在ansible-cilent机器上执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">~]# ssh-copy-id root@172.21.240.65		#将公钥分发给88机器</span><br><span class="line">~]# ssh-copy-id root@172.21.240.66</span><br><span class="line">~]# ssh-copy-id root@172.21.240.67</span><br><span class="line">~]# ssh-copy-id root@172.21.240.68</span><br><span class="line">~]# ssh-copy-id root@172.21.240.69</span><br></pre></td></tr></table></figure>
+<h2 id="在ansible-client机器上安装kubespray"><a href="#在ansible-client机器上安装kubespray" class="headerlink" title="在ansible-client机器上安装kubespray"></a>在ansible-client机器上安装kubespray</h2><ul>
+<li><p>下载kubespray</p>
+<blockquote>
+<p><strong>TIPS</strong>：</p>
+<ul>
+<li>笔者撰写本文时，最新的RELEASE是2.8.3，RELEASE版本下载地址：<a href="javascript:;" target="_blank" rel="noopener">https://github.com/kubernetes-incubator/kubespray/releases</a>）</li>
+<li><strong>强烈大家使用RELEASE分支进行部署，特别是在生产环境</strong>！Master分支不一定能部署成功，近日有童鞋无法成功部署就是因为使用的Master分支。</li>
+</ul>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">~]# git clone https://github.com/kubernetes-incubator/kubespray.git</span><br><span class="line">~]# cd kubespray</span><br><span class="line">~]# git checkout v2.8.3</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装kubespray需要的包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~]# sudo pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拷贝<code>inventory/sample</code> ，命名为<code>inventory/mycluster</code> ，mycluster可以改为其他你喜欢的名字</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -rfp inventory/sample inventory/mycluster</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用inventory_builder，初始化inventory文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">~]# declare -a IPS=(172.21.240.65 172.21.240.66 172.21.240.67 172.21.240.68 172.21.240.69)</span><br><span class="line">~]# CONFIG_FILE=inventory/mycluster/hosts.ini python36 contrib/inventory_builder/inventory.py $&#123;IPS[@]&#125;</span><br></pre></td></tr></table></figure>
+<p>此时，会看到<code>inventory/mycluster/host.ini</code> 文件内容类似如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[all]</span></span><br><span class="line">node1    ansible_host=172.21.240.65 ip=172.21.240.65</span><br><span class="line">node2    ansible_host=172.21.240.66 ip=172.21.240.66</span><br><span class="line">node3    ansible_host=172.21.240.67 ip=172.21.240.67</span><br><span class="line">node4    ansible_host=172.21.240.68 ip=172.21.240.68</span><br><span class="line">node5    ansible_host=172.21.240.69 ip=172.21.240.69</span><br><span class="line"></span><br><span class="line"><span class="section">[kube-master]</span></span><br><span class="line">node1    </span><br><span class="line">node2    </span><br><span class="line"></span><br><span class="line"><span class="section">[etcd]</span></span><br><span class="line">node1    </span><br><span class="line">node2    </span><br><span class="line">node3    </span><br><span class="line"></span><br><span class="line"><span class="section">[kube-node]</span></span><br><span class="line">node1    </span><br><span class="line">node2    </span><br><span class="line">node3    </span><br><span class="line">node4    </span><br><span class="line">node5    </span><br><span class="line"></span><br><span class="line"><span class="section">[k8s-cluster:children]</span></span><br><span class="line">kube-master      </span><br><span class="line">kube-node        </span><br><span class="line"></span><br><span class="line"><span class="section">[calico-rr]</span></span><br><span class="line"></span><br><span class="line"><span class="section">[vault]</span></span><br><span class="line">node1    </span><br><span class="line">node2    </span><br><span class="line">node3</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用ansible playbook部署kubespray</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~]# ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root cluster.yml</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>等待大概20分钟左右，Kubernetes即可安装完毕。</p>
+</li>
+</ul>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><h3 id="验证1：查看Node状态"><a href="#验证1：查看Node状态" class="headerlink" title="验证1：查看Node状态"></a>验证1：查看Node状态</h3><p>主要是验证各个Node是否正常。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">]#</span> kubectl get nodes</span><br><span class="line">NAME    STATUS   ROLES         AGE     VERSION</span><br><span class="line">node1   Ready    master,node   8m41s   v1.12.5</span><br><span class="line">node2   Ready    master,node   7m32s   v1.12.5</span><br><span class="line">node3   Ready    node          6m59s   v1.12.5</span><br><span class="line">node4   Ready    node          6m59s   v1.12.5</span><br><span class="line">node5   Ready    node          6m59s   v1.12.5</span><br></pre></td></tr></table></figure>
+<p>每个node都是ready的，说明OK。</p>
+<h3 id="验证2：部署一个NGINX"><a href="#验证2：部署一个NGINX" class="headerlink" title="验证2：部署一个NGINX"></a>验证2：部署一个NGINX</h3><p>主要是验证网络等是否正常，步骤如下。</p>
+<ul>
+<li><p>在Master所在节点（本文使用的是<code>172.21.240.66</code> ），准备一个名为<code>nginx.yaml</code> 的文件，内容如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">nginx-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">NodePort</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line">    <span class="comment"># 协议：</span></span><br><span class="line"><span class="attr">    - protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="comment"># service的端口，随便写</span></span><br><span class="line"><span class="attr">      port:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">      targetPort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">      nodePort:</span> <span class="number">32000</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">nginx-deployment</span></span><br><span class="line">  <span class="comment"># 描述Deployment的标签，让Deployment变得可读</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  replicas:</span> <span class="number">3</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line">    <span class="comment"># label selector 标签选择器，他会找到带有app: nginx的所有pod</span></span><br><span class="line"><span class="attr">    matchLabels:</span></span><br><span class="line"><span class="attr">      app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">  template:</span></span><br><span class="line">    <span class="comment"># Pod模板开始</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line">      <span class="comment"># 定义这些pod带有哪些标签</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">    spec:</span></span><br><span class="line"><span class="attr">      containers:</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">          image:</span> <span class="attr">nginx:1.7.9</span></span><br><span class="line"><span class="attr">          ports:</span></span><br><span class="line"><span class="attr">            - containerPort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在该文件所在目录执行如下命令创建Service以及Deployment</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f nginx.yaml</span><br></pre></td></tr></table></figure>
+<p>如内容所示，该NGINX以NodePort方式暴露到Kubernetes集群外部，端口为32000。</p>
+</li>
+<li><p>执行如下命令验证：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 查看nginx服务详情</span><br><span class="line">~]# kubectl get svc nginx-service</span><br><span class="line">NAME            TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE</span><br><span class="line">nginx-service   NodePort   10.233.59.132   &lt;none&gt;        80:32000/TCP   4m56s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 访问测试，如果能够正常返回NGINX首页，说明正常</span><br><span class="line">~]# curl 172.21.240.66:32000</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="卸载Kubespray"><a href="#卸载Kubespray" class="headerlink" title="卸载Kubespray"></a>卸载Kubespray</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">]#</span> ansible-playbook -i inventory/mycluster/hosts.ini reset.yml</span><br></pre></td></tr></table></figure>
+<h2 id="参考文档："><a href="#参考文档：" class="headerlink" title="参考文档："></a>参考文档：</h2><ul>
+<li><p>Kubespray – 10 Simple Steps for Installing a Production-Ready, Multi-Master HA Kubernetes Cluster：<a href="javascript:;" target="_blank" rel="noopener">https://dzone.com/articles/kubespray-10-simple-steps-for-installing-a-product</a>  </p>
+<blockquote>
+<p><strong>TIPS</strong>：主要参考文档，里面还讲解了Kubespray的一些配置、可能会遇到的问题及解决方案等。</p>
+</blockquote>
+</li>
+<li><p>使用Kubespray 部署kubernetes 高可用集群：<a href="javascript:;" target="_blank" rel="noopener">https://yq.aliyun.com/articles/505382</a></p>
+</li>
+<li><p>kubespray(ansible)自动化安装k8s集群：<a href="javascript:;" target="_blank" rel="noopener">https://www.cnblogs.com/iiiiher/p/8128184.html</a> / <a href="javascript:;" target="_blank" rel="noopener">https://www.jianshu.com/p/d8bee7c8a1e6</a></p>
+<blockquote>
+<p><strong>TIPS</strong>：里面有将如何替换gcr镜像为国内镜像</p>
+</blockquote>
+</li>
+<li><p>Installing Kubernetes On-premises/Cloud Providers with Kubespray:<a href="javascript:;" target="_blank" rel="noopener">https://kubernetes.io/docs/setup/custom-cloud/kubespray/</a></p>
+</li>
+</ul>
+
+        <h2>相关文章</h2><ul><li><a href="../../docker/kubernetes-deploy-by-kubespray/index.html">使用Kubespray部署生产可用的Kubernetes集群（1.11.2）</a></li><li><a href="../../docker/00-docker-lession-index.html">Docker系列教程</a></li><li><a href="../../docker/16-docker-network-command/index.html">Docker系列教程16-network命令</a></li><li><a href="../../docker/03-docker-mirror/index.html">Docker系列教程03-配置镜像加速器</a></li><li><a href="../../docker/04-docker-command-images/index.html">Docker系列教程04-Docker镜像常用命令</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">使用Kubespray 2.8.3部署生产可用的Kubernetes集群（1.12.5）</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../../spring-cloud/finchley-23/index.html" class="pre-post btn btn-default" title="跟我学Spring Cloud（Finchley版）-23-Spring Cloud Config高可用">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">跟我学Spring Cloud（Finchley版）-23-Spring Cloud Config高可用</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../spring-cloud-alibaba/01-nacos-install/index.html" class="next-post btn btn-default" title="Spring Cloud Alibaba系列教程-01-Nacos安装与启停">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Spring Cloud Alibaba系列教程-01-Nacos安装与启停</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

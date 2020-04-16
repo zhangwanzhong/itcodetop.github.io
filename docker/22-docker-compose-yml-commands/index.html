@@ -1,0 +1,564 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:39 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Docker,Docker Compose">
+
+
+    <meta name="description" content="docker-compose.yml是Compose的默认模板文件。该文件有多种写法，例如Version 1 file format、Version 2 file format、Version 2.1 file format、Version 3 file format等。其中，Version ...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Docker系列教程22-docker-compose.yml常用命令 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Docker系列教程22-docker-compose.yml常用命令">
+            
+                Docker系列教程22-docker-compose.yml常用命令
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Docker</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Docker</a> <a class="tag-link" href="javascript:;">Docker Compose</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/05/08</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-build"><span class="toc-text">(1) build</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-command"><span class="toc-text">(2) command</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-dns"><span class="toc-text">(3) dns</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-dns-search"><span class="toc-text">(4) dns_search</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-environment"><span class="toc-text">(5) environment</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-env-file"><span class="toc-text">(6) env_file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-expose"><span class="toc-text">(7) expose</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-external-links"><span class="toc-text">(8) external_links</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-image"><span class="toc-text">(9) image</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-links"><span class="toc-text">(10) links</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-networks"><span class="toc-text">(11) networks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-network-mode"><span class="toc-text">(12) network_mode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-ports"><span class="toc-text">(13) ports</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-volumes"><span class="toc-text">(14) volumes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-volumes-from"><span class="toc-text">(15) volumes_from</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TIPS"><span class="toc-text">TIPS</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>docker-compose.yml是Compose的默认模板文件。该文件有多种写法，例如Version 1 file format、Version 2 file format、Version 2.1 file format、Version 3 file format等。其中，Version 1 file format将逐步被被弃用；Version 2.x及Version 3.x基本兼容，是未来的趋势。考虑到目前业界的使用情况，本节只讨论Version 2 file format下的常用命令。</p>
+<a id="more"></a>
+<h2 id="1-build"><a href="#1-build" class="headerlink" title="(1) build"></a>(1) build</h2><p>配置构建时的选项，Compose会利用它自动构建镜像。build的值可以是一个路径，例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">build:</span> <span class="string">./dir</span></span><br></pre></td></tr></table></figure>
+<p>也可以是一个对象，用于指定Dockerfile和参数，例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line"><span class="attr">  context:</span> <span class="string">./dir</span></span><br><span class="line"><span class="attr">  dockerfile:</span> <span class="string">Dockerfile-alternate</span></span><br><span class="line"><span class="attr">  args:</span></span><br><span class="line"><span class="attr">    buildno:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-command"><a href="#2-command" class="headerlink" title="(2) command"></a>(2) command</h2><p>覆盖容器启动后默认执行的命令。示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">command:</span> <span class="string">bundle</span> <span class="string">exec</span> <span class="string">thin</span> <span class="bullet">-p</span> <span class="number">3000</span></span><br></pre></td></tr></table></figure>
+<p>也可以是一个list，类似于Dockerfile中的CMD指令，格式如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">command:</span> <span class="string">[bundle,</span> <span class="string">exec,</span> <span class="string">thin,</span> <span class="bullet">-p,</span> <span class="number">3000</span><span class="string">]</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-dns"><a href="#3-dns" class="headerlink" title="(3) dns"></a>(3) dns</h2><p>配置dns服务器。可以是一个值，也可以是一个列表。示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dns:</span> <span class="number">8.8</span><span class="number">.8</span><span class="number">.8</span></span><br><span class="line"><span class="attr">dns:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="number">8.8</span><span class="number">.8</span><span class="number">.8</span></span><br><span class="line"><span class="bullet">  -</span> <span class="number">9.9</span><span class="number">.9</span><span class="number">.9</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-dns-search"><a href="#4-dns-search" class="headerlink" title="(4) dns_search"></a>(4) dns_search</h2><p>配置DNS的搜索域名，可以是一个值，也可以是一个列表。示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dns_search:</span> <span class="string">example.com</span></span><br><span class="line"><span class="attr">dns_search:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">dc1.example.com</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">dc2.example.com</span></span><br></pre></td></tr></table></figure>
+<h2 id="5-environment"><a href="#5-environment" class="headerlink" title="(5) environment"></a>(5) environment</h2><p>环境变量设置，可使用数组或字典两种方式。示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">environment:</span></span><br><span class="line"><span class="attr">  RACK_ENV:</span> <span class="string">development</span></span><br><span class="line"><span class="attr">  SHOW:</span> <span class="string">'true'</span></span><br><span class="line"><span class="attr">  SESSION_SECRET:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">environment:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">RACK_ENV=development</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">SHOW=true</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">SESSION_SECRET</span></span><br></pre></td></tr></table></figure>
+<h2 id="6-env-file"><a href="#6-env-file" class="headerlink" title="(6) env_file"></a>(6) env_file</h2><p>从文件中获取环境变量，可指定一个文件路径或路径列表。如果通过 <code>docker-compose -f FILE</code> 指定了Compose文件，那么env_file中的路径是Compose文件所在目录的相对路径。使用environment指定的环境变量会覆盖env_file指定的环境变量。示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">env_file:</span> <span class="string">.env</span></span><br><span class="line"></span><br><span class="line"><span class="attr">env_file:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">./common.env</span>   <span class="comment"># 共用</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">./apps/web.env</span> <span class="comment"># web用</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">/opt/secrets.env</span> <span class="comment"># 密码用</span></span><br></pre></td></tr></table></figure>
+<h2 id="7-expose"><a href="#7-expose" class="headerlink" title="(7) expose"></a>(7) expose</h2><p>暴露端口，只将端口暴露给连接的服务，而不暴露给宿主机。示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">expose:</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">"3000"</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">"8000"</span></span><br></pre></td></tr></table></figure>
+<h2 id="8-external-links"><a href="#8-external-links" class="headerlink" title="(8) external_links"></a>(8) external_links</h2><p>连接到docker-compose.yml外部的容器，甚至并非Compose管理的容器，特别是提供共享或公共服务的容器。格式跟links类似，例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">external_links:</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">redis_1</span></span><br><span class="line"><span class="attr"> - project_db_1:</span><span class="string">mysql</span></span><br><span class="line"><span class="attr"> - project_db_1:</span><span class="string">postgresql</span></span><br></pre></td></tr></table></figure>
+<h2 id="9-image"><a href="#9-image" class="headerlink" title="(9) image"></a>(9) image</h2><p>指定镜像名称或镜像id，如果本地不存在该镜像，Compose会尝试下载该镜像。</p>
+<p>示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">image:</span> <span class="string">java</span></span><br></pre></td></tr></table></figure>
+<h2 id="10-links"><a href="#10-links" class="headerlink" title="(10) links"></a>(10) links</h2><p>连接到其他服务的容器。可以指定服务名称和服务别名（ <code>SERVICE:ALIAS</code> ），也可只指定服务名称。例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">web:</span></span><br><span class="line"><span class="attr">  links:</span></span><br><span class="line"><span class="bullet">   -</span> <span class="string">db</span></span><br><span class="line"><span class="attr">   - db:</span><span class="string">database</span></span><br><span class="line"><span class="bullet">   -</span> <span class="string">redis</span></span><br></pre></td></tr></table></figure>
+<h2 id="11-networks"><a href="#11-networks" class="headerlink" title="(11) networks"></a>(11) networks</h2><p>详见本书《Docker Compose网络设置》一节。</p>
+<h2 id="12-network-mode"><a href="#12-network-mode" class="headerlink" title="(12) network_mode"></a>(12) network_mode</h2><p>设置网络模式。示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">network_mode:</span> <span class="string">"bridge"</span></span><br><span class="line"><span class="attr">network_mode:</span> <span class="string">"host"</span></span><br><span class="line"><span class="attr">network_mode:</span> <span class="string">"none"</span></span><br><span class="line"><span class="attr">network_mode:</span> <span class="string">"service:[service name]"</span></span><br><span class="line"><span class="attr">network_mode:</span> <span class="string">"container:[container name/id]"</span></span><br></pre></td></tr></table></figure>
+<h2 id="13-ports"><a href="#13-ports" class="headerlink" title="(13) ports"></a>(13) ports</h2><p>暴露端口信息，可使用<code>HOST:CONTAINER</code> 的格式，也可只指定容器端口（此时宿主机将会随机选择端口），类似于<code>docker run -p</code> 。</p>
+<p>需要注意的是，当使用<code>HOST:CONTAINER</code> 格式映射端口时，容器端口小于60将会得到错误的接口，因为yaml会把<code>xx:yy</code> 的数字解析为60进制。因此，建议使用字符串的形式。示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ports:</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">"3000"</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">"3000-3005"</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">"8000:8000"</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">"9090-9091:8080-8081"</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">"49100:22"</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">"127.0.0.1:8001:8001"</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">"127.0.0.1:5000-5010:5000-5010"</span></span><br></pre></td></tr></table></figure>
+<h2 id="14-volumes"><a href="#14-volumes" class="headerlink" title="(14) volumes"></a>(14) volumes</h2><p>卷挂载路径设置。可以设置宿主机路径 （<code>HOST:CONTAINER</code>） ，也可指定访问模式 （<code>HOST:CONTAINER:ro</code>）。示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="comment"># Just specify a path and let the Engine create a volume</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">/var/lib/mysql</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Specify an absolute path mapping</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">/opt/data:/var/lib/mysql</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Path on the host, relative to the Compose file</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">./cache:/tmp/cache</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># User-relative path</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">~/configs:/etc/configs/:ro</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Named volume</span></span><br><span class="line"><span class="attr">  - datavolume:</span><span class="string">/var/lib/mysql</span></span><br></pre></td></tr></table></figure>
+<h2 id="15-volumes-from"><a href="#15-volumes-from" class="headerlink" title="(15) volumes_from"></a>(15) volumes_from</h2><p>从另一个服务或容器挂载卷。可指定只读（ro）或读写（rw），默认是读写（rw）。示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes_from:</span></span><br><span class="line"><span class="bullet"> -</span> <span class="string">service_name</span></span><br><span class="line"><span class="attr"> - service_name:</span><span class="string">ro</span></span><br><span class="line"><span class="attr"> - container:</span><span class="string">container_name</span></span><br><span class="line"><span class="attr"> - container:</span><span class="attr">container_name:rw</span></span><br></pre></td></tr></table></figure>
+<h2 id="TIPS"><a href="#TIPS" class="headerlink" title="TIPS"></a>TIPS</h2><p>(1) docker-compose.yml还有很多其他命令，比如depends_on、pid、devices等。限于篇幅，笔者仅挑选常用的命令进行讲解，其他命令不作赘述。感兴趣的读者们可参考官方文档：<a href="javascript:;" target="_blank" rel="noopener">https://docs.docker.com/compose/compose-file/</a> 。</p>
+
+        <h2>相关文章</h2><ul><li><a href="../20-docker-compose-install/index.html">Docker系列教程20-安装Docker Compose</a></li><li><a href="../26-docker-compose-controller-startup-order/index.html">Docker系列教程26-Docker Compose控制服务启动顺序</a></li><li><a href="../23-docker-compose-commands/index.html">Docker系列教程23-docker-compose常用命令</a></li><li><a href="../27-docker-compose-in-production/index.html">Docker系列教程27-在生产环境中使用Docker Compose</a></li><li><a href="../25-docker-compose-wordpress/index.html">Docker系列教程25-练习：使用Docker Compose编排WordPress博客</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">Docker系列教程22-docker-compose.yml常用命令</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../23-docker-compose-commands/index.html" class="pre-post btn btn-default" title="Docker系列教程23-docker-compose常用命令">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Docker系列教程23-docker-compose常用命令</span>
+        </a>
+    
+    
+        <a target="_blank" href="../21-docker-compose-quick-start/index.html" class="next-post btn btn-default" title="Docker系列教程21-Docker Compose快速入门">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Docker系列教程21-Docker Compose快速入门</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

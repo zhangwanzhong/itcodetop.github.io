@@ -1,0 +1,574 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:39 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="其他">
+
+
+    <meta name="description" content="技术干货小程序：IT牧场 正式上线啦！废话不多说，先上图：
+
+定位：分享个人学习笔记与技术成长心得。
+特点：完全免费，用积分兑换，即可下载干货笔记！积分也非常好赚，随便点点就OK了，没什么心智负担。
+目标：助力程序猿成长成为……高端一点的程序猿（这么说会不会有点贱，明明自己都还没高端起来，哈哈...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>我的技术干货小程序正式上线啦！ | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="我的技术干货小程序正式上线啦！">
+            
+                我的技术干货小程序正式上线啦！
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="../../categories/其他/index.html">其他</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="../../tags/其他/index.html">其他</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/12/20</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Timeline"><span class="toc-text">Timeline</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动机·契机"><span class="toc-text">动机·契机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动机·发散"><span class="toc-text">动机·发散</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开搞"><span class="toc-text">开搞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#规划"><span class="toc-text">规划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#来，让我们变得高端"><span class="toc-text">来，让我们变得高端</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>技术干货小程序：<code>IT牧场</code> 正式上线啦！废话不多说，先上图：</p>
+<p><img src="../../static/picture/show.png" alt="IT牧场小程序尊容"></p>
+<p><strong>定位</strong>：分享个人学习笔记与技术成长心得。</p>
+<p><strong>特点</strong>：完全免费，用积分兑换，即可下载干货笔记！积分也非常好赚，随便点点就OK了，没什么心智负担。</p>
+<p><strong>目标</strong>：助力程序猿成长成为……高端一点的程序猿（这么说会不会有点贱，明明自己都还没高端起来，哈哈哈……）</p>
+<h2 id="Timeline"><a href="#Timeline" class="headerlink" title="Timeline"></a>Timeline</h2><p>严格来说，<code>IT牧场</code> 小程序是在12月13日正式上线的，但这个版本是非常粗糙的：界面丑、功能烂，代码也很恶心（撸得太随便了），所以只在自己的微信小群里小规模测试了下。</p>
+<p>正式上线就算是12月21日吧……这天女儿生日，算是送给自己的礼物（这里又有点贱了，明明是女儿生日，送自己什么礼物……但是送女儿礼物这玩意儿我感觉太假，因为跟她毛的关系都没有，而且她连话都不会说，拿需要这玩意儿…况且，我也不希望她将来女承父业。）</p>
+<h2 id="动机·契机"><a href="#动机·契机" class="headerlink" title="动机·契机"></a>动机·契机</h2><p>起源于12月6日前后，一位<strong>技术非常好的</strong>同事问了我一系列Maven相关的问题，问题都有那么一点<strong>Low比</strong>……</p>
+<p>在给他解决完后，我就直言不讳了：“你这个Maven学得有点差啊…和你平时的水平不大一样啊…感觉像是在和实习生在聊天。”（原谅我就是这么直，这里绝对没有鄙视实习生的意思，只是在复原当时场景）。</p>
+<p>他笑着说：“哈哈，我没有学过Maven，之前都是靠拷贝粘贴。”</p>
+<p>我说：“哦，Maven有三大核心：依赖、仓库、生命周期与插件。要不我把我的Maven学习笔记共享给你吧？”</p>
+<p>他说：“那敢情好！”</p>
+<p>然后我就共享给他了。他看过之后，说：“不错不错，很系统。不过能不能传到百度云？”</p>
+<blockquote>
+<p>注1：我司的电脑是有传说中的监控的，公司电脑里的文件被传出都会受到监控。所以他希望我直接传到百度云，然后他可以直接用自己电脑下载，免得引起不必要的麻烦。</p>
+<p>注2：我司其实还是非常开明的，虽然有监控，但其实员工不会有明显的感知，体验非常好。而且原则上讲，纯粹的技术文档传到自己机器上也不算违规，但问题是，万一被查水表可能会有废话，搞不好还得证明什么鬼的（这个都是我们的臆想，不代表公司意志）。于是这位兄弟本着多一事不如少一事的原则，以及表现良好的价值观及职业素养，希望我传百度云。总之呢，平心而论，阿里是一个开明、包容的公司。</p>
+</blockquote>
+<h2 id="动机·发散"><a href="#动机·发散" class="headerlink" title="动机·发散"></a>动机·发散</h2><p>于是我回宿舍后，就传百度云了。</p>
+<p>传完转念一想，我有N多笔记（30+部吧，我也没数过……）——<strong>都是非常完善的笔记，知识体系很全面的——没办法，我学习就是这么系统</strong>。然而，这些笔记对我而言意义已经不大了——知识只要映射到我脑子里，笔记本身对我个人来说就不再产生价值了——除了偶尔有问题的时候速查一下以及跳槽前复习一下细节，没别的了。</p>
+<p><strong>那么，不如把这些笔记开源出去？也不枉N多夜晚学习以及总结出来的成果啊！</strong>要不写个博客啥的？这TM至少可以写300篇啊！！！可是我不喜欢做重复的事情……复制…排版…粘贴…发博客…发公众号…想想都蛋疼，蛋疼的同时还浪费生命…更可怕的是，<strong>很多人压根不尊重原创，我的博客被很多人转载，但往往不贴来源出处</strong>……（或许未来没有存货了，我可能会把笔记共享到公众号，但是我还有40+篇素材没有发布啊……）</p>
+<p>晚上我就想，要不搞个小程序玩玩，分享笔记的同事还能练手一下Vue。</p>
+<blockquote>
+<p>TIPS：分享原则：分享毕生所学，不藏私、不阉割，用真实的态度做分享。</p>
+</blockquote>
+<h2 id="开搞"><a href="#开搞" class="headerlink" title="开搞"></a>开搞</h2><p>于是我就开搞啦。花了2天时间技术调研，3天时间编码，12月11日发布了。但是12月12日没审核通过，于是12月12日再次发布，12月13日审核通过了。</p>
+<p>再后来，单纯的分享素材终究有限……我也得学习啊。于是又做了投稿……也就是现在大家可以看到的版本。</p>
+<blockquote>
+<p>TIPS：已经有几个童鞋问我：你们阿里不应该很忙吗？怎么还有时间写这个？</p>
+<p>考虑到还会有人问相同的问题，这里统一回答：我从晚上十点开始写，写到晚上三点。我的身体适应能力很好，我可以持续地工作，而且不会觉得累，知道忙完才会废掉。</p>
+</blockquote>
+<h2 id="规划"><a href="#规划" class="headerlink" title="规划"></a>规划</h2><ul>
+<li>[P0] 完善提建议意见，一起完善小程序；</li>
+<li>[P0]求稿，满足更多技术同行的需求；</li>
+<li>[P1]兑换实体书；</li>
+<li>[P2 待定] 15分钟<strong>看遍业界</strong>栏目，助你拓宽技术视野、洞悉行业动态。不过还没怎么规划好，有实现难度，但很牛逼的就是了；</li>
+</ul>
+<p>P0的应该就在元旦之前搞定。</p>
+<h2 id="来，让我们变得高端"><a href="#来，让我们变得高端" class="headerlink" title="来，让我们变得高端"></a>来，让我们变得高端</h2><p><strong>如果你对技术有追求</strong>，并且想成长成为一个高端的程序猿，例如成长为一个像我一样傻逼、逗逼以及装逼的阿里技术专家，可以扫下面的小程序码关注。</p>
+<p><strong>如果你对技术没有追求</strong>，请出门左转。</p>
+<p><strong>如果你的技术已经超越了我，或者对技术有足够的热情</strong>，请帮忙投稿，我会感激你的。不仅我，我全家，以及加入小程序的所有兄弟都会感谢你。</p>
+<p><strong>如果你觉得我的小程序好</strong>，请转发给你的技术朋友，让他和你一起成长。</p>
+<p><strong>如果你觉得我的小程序很烂</strong>，请在拉黑他之前，把小程序转发给你技术领域的仇敌，恶心死他。</p>
+<p>Come On！扫我！</p>
+<p><img src="../../static/picture/xuanchuan.png" alt="IT牧场小程序码"></p>
+
+        <h2>相关文章</h2><ul><li><a href="../come-together-wechat/index.html">技术讨论</a></li><li><a href="../../other/sonar/index.html">手把手使用SonarQube分析、改善项目代码质量</a></li><li><a href="../../other/tucao/index.html">一点作为原创作者的心声……</a></li><li><a href="../../other/welfare/index.html">福利</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">我的技术干货小程序正式上线啦！</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../../work/install-software-without-network-in-linux/index.html" class="pre-post btn btn-default" title="实用技巧：教你如何在没有网络的Linux机器上快速安装软件">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">实用技巧：教你如何在没有网络的Linux机器上快速安装软件</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../work/our-cloud-platform-tools/index.html" class="next-post btn btn-default" title="分享我司基于K8s & Spring Cloud的私有云技术选型！">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">分享我司基于K8s & Spring Cloud的私有云技术选型！</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link current" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

@@ -1,0 +1,566 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:38 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Spring Cloud Alibaba,Sentinel">
+
+
+    <meta name="description" content="本文实现基于拉模式的Alibaba Sentinel规则持久化。
+一、拉模式架构
+
+TIPS
+图片来自官方。
+引用自 https://github.com/alibaba/Sentinel/wiki/在生产环境中使用-Sentinel 
+
+二、原理简述
+FileRefreshableDataS...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Alibaba Sentinel 规则持久化-拉模式-手把手教程【基于文件】 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Alibaba Sentinel 规则持久化-拉模式-手把手教程【基于文件】">
+            
+                Alibaba Sentinel 规则持久化-拉模式-手把手教程【基于文件】
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud Alibaba</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Sentinel</a> <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="javascript:;">Spring Cloud Alibaba</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/07/15</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、拉模式架构"><span class="toc-text">一、拉模式架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、原理简述"><span class="toc-text">二、原理简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、编写"><span class="toc-text">三、编写</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-加依赖"><span class="toc-text">3.1 加依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-写代码"><span class="toc-text">3.2 写代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-配置"><span class="toc-text">3.3 配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、优缺点分析"><span class="toc-text">四、优缺点分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、你可能会有的疑问"><span class="toc-text">五、你可能会有的疑问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六、参考文档"><span class="toc-text">六、参考文档</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>本文实现基于拉模式的Alibaba Sentinel规则持久化。</p>
+<h2 id="一、拉模式架构"><a href="#一、拉模式架构" class="headerlink" title="一、拉模式架构"></a>一、拉模式架构</h2><p><img src="../../static/picture/sentinel-pull.png" alt=""></p>
+<blockquote>
+<p><strong>TIPS</strong></p>
+<p>图片来自官方。</p>
+<p>引用自 <code>https://github.com/alibaba/Sentinel/wiki/在生产环境中使用-Sentinel</code> </p>
+</blockquote>
+<h2 id="二、原理简述"><a href="#二、原理简述" class="headerlink" title="二、原理简述"></a>二、原理简述</h2><ul>
+<li>FileRefreshableDataSource <strong>定时</strong>从指定文件中读取规则JSON文件【图中的本地文件】，如果发现文件发生变化，就更新规则缓存。</li>
+<li>FileWritableDataSource 接收控制台规则推送，并根据配置，修改规则JSON文件【图中的本地文件】。</li>
+</ul>
+<h2 id="三、编写"><a href="#三、编写" class="headerlink" title="三、编写"></a>三、编写</h2><p>修改Spring Cloud Alibaba微服务。</p>
+<h3 id="3-1-加依赖"><a href="#3-1-加依赖" class="headerlink" title="3.1 加依赖"></a>3.1 加依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.csp<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>sentinel-datasource-extension<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-2-写代码"><a href="#3-2-写代码" class="headerlink" title="3.2 写代码"></a>3.2 写代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 拉模式规则持久化</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> itmuch.com</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileDataSourceInit</span> <span class="keyword">implements</span> <span class="title">InitFunc</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// TIPS: 如果你对这个路径不喜欢，可修改为你喜欢的路径</span></span><br><span class="line">        String ruleDir = System.getProperty(<span class="string">"user.home"</span>) + <span class="string">"/sentinel/rules"</span>;</span><br><span class="line">        String flowRulePath = ruleDir + <span class="string">"/flow-rule.json"</span>;</span><br><span class="line">        String degradeRulePath = ruleDir + <span class="string">"/degrade-rule.json"</span>;</span><br><span class="line">        String systemRulePath = ruleDir + <span class="string">"/system-rule.json"</span>;</span><br><span class="line">        String authorityRulePath = ruleDir + <span class="string">"/authority-rule.json"</span>;</span><br><span class="line">        String paramFlowRulePath = ruleDir + <span class="string">"/param-flow-rule.json"</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.mkdirIfNotExits(ruleDir);</span><br><span class="line">        <span class="keyword">this</span>.createFileIfNotExits(flowRulePath);</span><br><span class="line">        <span class="keyword">this</span>.createFileIfNotExits(degradeRulePath);</span><br><span class="line">        <span class="keyword">this</span>.createFileIfNotExits(systemRulePath);</span><br><span class="line">        <span class="keyword">this</span>.createFileIfNotExits(authorityRulePath);</span><br><span class="line">        <span class="keyword">this</span>.createFileIfNotExits(paramFlowRulePath);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 流控规则</span></span><br><span class="line">        ReadableDataSource&lt;String, List&lt;FlowRule&gt;&gt; flowRuleRDS = <span class="keyword">new</span> FileRefreshableDataSource&lt;&gt;(</span><br><span class="line">            flowRulePath,</span><br><span class="line">            flowRuleListParser</span><br><span class="line">        );</span><br><span class="line">        <span class="comment">// 将可读数据源注册至FlowRuleManager</span></span><br><span class="line">        <span class="comment">// 这样当规则文件发生变化时，就会更新规则到内存</span></span><br><span class="line">        FlowRuleManager.register2Property(flowRuleRDS.getProperty());</span><br><span class="line">        WritableDataSource&lt;List&lt;FlowRule&gt;&gt; flowRuleWDS = <span class="keyword">new</span> FileWritableDataSource&lt;&gt;(</span><br><span class="line">            flowRulePath,</span><br><span class="line">            <span class="keyword">this</span>::encodeJson</span><br><span class="line">        );</span><br><span class="line">        <span class="comment">// 将可写数据源注册至transport模块的WritableDataSourceRegistry中</span></span><br><span class="line">        <span class="comment">// 这样收到控制台推送的规则时，Sentinel会先更新到内存，然后将规则写入到文件中</span></span><br><span class="line">        WritableDataSourceRegistry.registerFlowDataSource(flowRuleWDS);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 降级规则</span></span><br><span class="line">        ReadableDataSource&lt;String, List&lt;DegradeRule&gt;&gt; degradeRuleRDS = <span class="keyword">new</span> FileRefreshableDataSource&lt;&gt;(</span><br><span class="line">            degradeRulePath,</span><br><span class="line">            degradeRuleListParser</span><br><span class="line">        );</span><br><span class="line">        DegradeRuleManager.register2Property(degradeRuleRDS.getProperty());</span><br><span class="line">        WritableDataSource&lt;List&lt;DegradeRule&gt;&gt; degradeRuleWDS = <span class="keyword">new</span> FileWritableDataSource&lt;&gt;(</span><br><span class="line">            degradeRulePath,</span><br><span class="line">            <span class="keyword">this</span>::encodeJson</span><br><span class="line">        );</span><br><span class="line">        WritableDataSourceRegistry.registerDegradeDataSource(degradeRuleWDS);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 系统规则</span></span><br><span class="line">        ReadableDataSource&lt;String, List&lt;SystemRule&gt;&gt; systemRuleRDS = <span class="keyword">new</span> FileRefreshableDataSource&lt;&gt;(</span><br><span class="line">            systemRulePath,</span><br><span class="line">            systemRuleListParser</span><br><span class="line">        );</span><br><span class="line">        SystemRuleManager.register2Property(systemRuleRDS.getProperty());</span><br><span class="line">        WritableDataSource&lt;List&lt;SystemRule&gt;&gt; systemRuleWDS = <span class="keyword">new</span> FileWritableDataSource&lt;&gt;(</span><br><span class="line">            systemRulePath,</span><br><span class="line">            <span class="keyword">this</span>::encodeJson</span><br><span class="line">        );</span><br><span class="line">        WritableDataSourceRegistry.registerSystemDataSource(systemRuleWDS);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 授权规则</span></span><br><span class="line">        ReadableDataSource&lt;String, List&lt;AuthorityRule&gt;&gt; authorityRuleRDS = <span class="keyword">new</span> FileRefreshableDataSource&lt;&gt;(</span><br><span class="line">            authorityRulePath,</span><br><span class="line">            authorityRuleListParser</span><br><span class="line">        );</span><br><span class="line">        AuthorityRuleManager.register2Property(authorityRuleRDS.getProperty());</span><br><span class="line">        WritableDataSource&lt;List&lt;AuthorityRule&gt;&gt; authorityRuleWDS = <span class="keyword">new</span> FileWritableDataSource&lt;&gt;(</span><br><span class="line">            authorityRulePath,</span><br><span class="line">            <span class="keyword">this</span>::encodeJson</span><br><span class="line">        );</span><br><span class="line">        WritableDataSourceRegistry.registerAuthorityDataSource(authorityRuleWDS);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 热点参数规则</span></span><br><span class="line">        ReadableDataSource&lt;String, List&lt;ParamFlowRule&gt;&gt; paramFlowRuleRDS = <span class="keyword">new</span> FileRefreshableDataSource&lt;&gt;(</span><br><span class="line">            paramFlowRulePath,</span><br><span class="line">            paramFlowRuleListParser</span><br><span class="line">        );</span><br><span class="line">        ParamFlowRuleManager.register2Property(paramFlowRuleRDS.getProperty());</span><br><span class="line">        WritableDataSource&lt;List&lt;ParamFlowRule&gt;&gt; paramFlowRuleWDS = <span class="keyword">new</span> FileWritableDataSource&lt;&gt;(</span><br><span class="line">            paramFlowRulePath,</span><br><span class="line">            <span class="keyword">this</span>::encodeJson</span><br><span class="line">        );</span><br><span class="line">        ModifyParamFlowRulesCommandHandler.setWritableDataSource(paramFlowRuleWDS);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Converter&lt;String, List&lt;FlowRule&gt;&gt; flowRuleListParser = source -&gt; JSON.parseObject(</span><br><span class="line">        source,</span><br><span class="line">        <span class="keyword">new</span> TypeReference&lt;List&lt;FlowRule&gt;&gt;() &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">private</span> Converter&lt;String, List&lt;DegradeRule&gt;&gt; degradeRuleListParser = source -&gt; JSON.parseObject(</span><br><span class="line">        source,</span><br><span class="line">        <span class="keyword">new</span> TypeReference&lt;List&lt;DegradeRule&gt;&gt;() &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">private</span> Converter&lt;String, List&lt;SystemRule&gt;&gt; systemRuleListParser = source -&gt; JSON.parseObject(</span><br><span class="line">        source,</span><br><span class="line">        <span class="keyword">new</span> TypeReference&lt;List&lt;SystemRule&gt;&gt;() &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Converter&lt;String, List&lt;AuthorityRule&gt;&gt; authorityRuleListParser = source -&gt; JSON.parseObject(</span><br><span class="line">        source,</span><br><span class="line">        <span class="keyword">new</span> TypeReference&lt;List&lt;AuthorityRule&gt;&gt;() &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Converter&lt;String, List&lt;ParamFlowRule&gt;&gt; paramFlowRuleListParser = source -&gt; JSON.parseObject(</span><br><span class="line">        source,</span><br><span class="line">        <span class="keyword">new</span> TypeReference&lt;List&lt;ParamFlowRule&gt;&gt;() &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mkdirIfNotExits</span><span class="params">(String filePath)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line">        <span class="keyword">if</span> (!file.exists()) &#123;</span><br><span class="line">            file.mkdirs();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">createFileIfNotExits</span><span class="params">(String filePath)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line">        <span class="keyword">if</span> (!file.exists()) &#123;</span><br><span class="line">            file.createNewFile();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> &lt;T&gt; <span class="function">String <span class="title">encodeJson</span><span class="params">(T t)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> JSON.toJSONString(t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-配置"><a href="#3-3-配置" class="headerlink" title="3.3 配置"></a>3.3 配置</h3><p>在项目的 <code>resources/META-INF/services</code> 目录下创建文件，名为 <code>com.alibaba.csp.sentinel.init.InitFunc</code> ，内容为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 改成上面FileDataSourceInit的包名类名全路径即可。</span><br><span class="line">com.itmuch.contentcenter.FileDataSourceInit</span><br></pre></td></tr></table></figure>
+<h2 id="四、优缺点分析"><a href="#四、优缺点分析" class="headerlink" title="四、优缺点分析"></a>四、优缺点分析</h2><ul>
+<li>优点<ul>
+<li>简单易懂</li>
+<li>没有多余依赖（比如配置中心、缓存等）</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>由于规则是用 FileRefreshableDataSource 定时更新的，所以规则更新会有延迟。如果FileRefreshableDataSource定时时间过大，可能长时间延迟；如果FileRefreshableDataSource过小，又会影响性能；</li>
+<li>规则存储在本地文件，如果有一天需要迁移微服务，那么需要把规则文件一起迁移，否则规则会丢失。</li>
+</ul>
+</li>
+</ul>
+<h2 id="五、你可能会有的疑问"><a href="#五、你可能会有的疑问" class="headerlink" title="五、你可能会有的疑问"></a>五、你可能会有的疑问</h2><p>Spring Cloud Alibaba不是提供了如下配置了吗？为什么要全部自己写呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring.cloud.sentinel.datasource.ds1.file.file=classpath: degraderule.json</span><br><span class="line">spring.cloud.sentinel.datasource.ds1.file.rule-type=flow</span><br><span class="line"></span><br><span class="line">#spring.cloud.sentinel.datasource.ds1.file.file=classpath: flowrule.json</span><br><span class="line">#spring.cloud.sentinel.datasource.ds1.file.data-type=custom</span><br><span class="line">#spring.cloud.sentinel.datasource.ds1.file.converter-class=com.alibaba.cloud.examples.JsonFlowRuleListConverter</span><br><span class="line">#spring.cloud.sentinel.datasource.ds1.file.rule-type=flow</span><br></pre></td></tr></table></figure>
+<p>关于这个问题，可以看我提的Issue：<a href="javascript:;" target="_blank" rel="noopener">https://github.com/alibaba/spring-cloud-alibaba/issues/756</a></p>
+<h2 id="六、参考文档"><a href="#六、参考文档" class="headerlink" title="六、参考文档"></a>六、参考文档</h2><p><code>https://github.com/alibaba/Sentinel/wiki/在生产环境中使用-Sentinel#pull模式</code> </p>
+
+        <h2>相关文章</h2><ul><li><a href="../sentinel-configuration-rule/index.html">Alibaba Sentinel 规则参数总结</a></li><li><a href="../../spring-cloud-alibaba-migration/spring-cloud-alibaba-2/index.html">Spring Cloud Alibaba迁移指南2：一行代码从Hystrix迁移到Sentinel</a></li><li><a href="../sentinel-rules-persistence-push-mode-using-nacos/index.html">Alibaba Sentinel规则持久化-推模式-手把手教程【基于Nacos】</a></li><li><a href="../05-sentinel/index.html">Spring Cloud Alibaba系列教程-05-Sentinel入门与整合</a></li><li><a href="../sentinel-config-properties/index.html">Alibaba Sentinel 配置项总结</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">Alibaba Sentinel 规则持久化-拉模式-手把手教程【基于文件】</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../sentinel-rules-persistence-push-mode-using-nacos/index.html" class="pre-post btn btn-default" title="Alibaba Sentinel规则持久化-推模式-手把手教程【基于Nacos】">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Alibaba Sentinel规则持久化-推模式-手把手教程【基于Nacos】</span>
+        </a>
+    
+    
+        <a target="_blank" href="../sentinel-resoure-annotation/index.html" class="next-post btn btn-default" title="SentinelResource注解 属性总结">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SentinelResource注解 属性总结</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

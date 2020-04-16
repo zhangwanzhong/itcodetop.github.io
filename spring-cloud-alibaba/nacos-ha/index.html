@@ -1,0 +1,607 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:38 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Spring Cloud Alibaba,Sentinel">
+
+
+    <meta name="description" content="
+TIPS
+
+本文使用Nacos 1.0.1 + MySQL 8.0，理论兼容Nacos 1.1.3
+
+
+前面部署的是单机版的Nacos Server，这一般不适用于生产。
+本节详细探讨如何搭建一个生产可用的Nacos集群。讨论的内容主要包括：使用MySQL作为存储持久化数据，以及如何搭建Na...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>搭建生产可用的Nacos集群 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="搭建生产可用的Nacos集群">
+            
+                搭建生产可用的Nacos集群
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud Alibaba</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Sentinel</a> <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="javascript:;">Spring Cloud Alibaba</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/06/20</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、部署架构图"><span class="toc-text">一、部署架构图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、安装MySQL数据库"><span class="toc-text">二、安装MySQL数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-导入初始化脚本"><span class="toc-text">2.1 导入初始化脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-配置数据库连接"><span class="toc-text">2.2 配置数据库连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-对于MySQL-8-0"><span class="toc-text">2.3 对于MySQL 8.0</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、主机规划"><span class="toc-text">三、主机规划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、开始搭建"><span class="toc-text">四、开始搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、配置代理服务器"><span class="toc-text">五、配置代理服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-安装NGINX"><span class="toc-text">5.1 安装NGINX</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-配置NGINX"><span class="toc-text">5.2 配置NGINX</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六、测试"><span class="toc-text">六、测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#七、优化-amp-最佳实践"><span class="toc-text">七、优化&amp;最佳实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#八、Spring-Cloud-Alibaba连接Nacos集群"><span class="toc-text">八、Spring Cloud Alibaba连接Nacos集群</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#九、参考文档"><span class="toc-text">九、参考文档</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <blockquote>
+<p><strong>TIPS</strong></p>
+<ul>
+<li>本文使用Nacos 1.0.1 + MySQL 8.0，理论兼容Nacos 1.1.3</li>
+</ul>
+</blockquote>
+<p>前面部署的是单机版的Nacos Server，这一般不适用于生产。</p>
+<p>本节详细探讨如何搭建一个生产可用的Nacos集群。讨论的内容主要包括：使用MySQL作为存储持久化数据，以及如何搭建Nacos集群。</p>
+<h2 id="一、部署架构图"><a href="#一、部署架构图" class="headerlink" title="一、部署架构图"></a>一、部署架构图</h2><p>部署架构图如下：</p>
+<p><img src="../../static/picture/nacos-cluster.png" alt="Nacos HA"></p>
+<h2 id="二、安装MySQL数据库"><a href="#二、安装MySQL数据库" class="headerlink" title="二、安装MySQL数据库"></a>二、安装MySQL数据库</h2><p>生产环境需使用MySQL作为后端存储，因此需要搭建MySQL。生产中，MySQL建议至少主备模式，高可用MySQL更佳。</p>
+<ul>
+<li>高可用MySQL搭建方案有很多（例如MMM、MHA、<a href="javascript:;" target="_blank" rel="noopener">Galera Cluster</a>、<a href="javascript:;" target="_blank" rel="noopener">MySQL NDB Cluster</a>、<a href="javascript:;" target="_blank" rel="noopener">MySQL InnoDB Cluster</a> 以及 <a href="javascript:;" target="_blank" rel="noopener">Group Replication</a> 等），不同方案搭建方式不同。所以MySQL集群的搭建本文就不赘述了，请同学们自行百度。</li>
+<li>常见高可用方案对比可参考 <a href="javascript:;" target="_blank" rel="noopener">《MySQL高可用方案选型参考》</a></li>
+</ul>
+<p><strong>注：建议使用MySQL 5.6.5+</strong></p>
+<h3 id="2-1-导入初始化脚本"><a href="#2-1-导入初始化脚本" class="headerlink" title="2.1 导入初始化脚本"></a>2.1 导入初始化脚本</h3><p>找到 <code>conf/nacos-mysql.sql</code> ，将其导入到数据库中。</p>
+<h3 id="2-2-配置数据库连接"><a href="#2-2-配置数据库连接" class="headerlink" title="2.2 配置数据库连接"></a>2.2 配置数据库连接</h3><p>找到 <code>conf/application.properties</code> ，添加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 表明用MySQL作为后端存储</span><br><span class="line">spring.datasource.platform=mysql</span><br><span class="line"></span><br><span class="line"># 有几个数据库实例</span><br><span class="line">db.num=2</span><br><span class="line"></span><br><span class="line"># 第1个实例的地址</span><br><span class="line">db.url.0=jdbc:mysql://11.162.196.16:3306/nacos_devtest?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true</span><br><span class="line"># 第2个实例的地址</span><br><span class="line">db.url.1=jdbc:mysql://11.163.152.9:3306/nacos_devtest?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true</span><br><span class="line">db.user=nacos_devtest</span><br><span class="line">db.password=nacos</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-对于MySQL-8-0"><a href="#2-3-对于MySQL-8-0" class="headerlink" title="2.3 对于MySQL 8.0"></a>2.3 对于MySQL 8.0</h3><p>Nacos 1.0.1内置的connector是 <code>mysql-connector-java-5.1.34</code> ，该connector无法连MySQL 8.0。还好Nacos提供了插件机制，可以支持MySQL 8.0+。方法如下：</p>
+<ul>
+<li>在上面操作的基础上，下载支持MySQL 8.0的connector，例如：<code>mysql-connector-java-8.0.16</code> 。下载地址：<a href="javascript:;" target="_blank" rel="noopener">点我下载</a> </li>
+<li>在Nacos的 <code>plugins</code> 目录下创建 <code>mysql</code> 目录，并将下载的connector扔到该目录即可。</li>
+</ul>
+<h2 id="三、主机规划"><a href="#三、主机规划" class="headerlink" title="三、主机规划"></a>三、主机规划</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">节点</th>
+<th style="text-align:left">端口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">127.0.0.1</td>
+<td style="text-align:left">8848</td>
+</tr>
+<tr>
+<td style="text-align:left">127.0.0.1</td>
+<td style="text-align:left">8849</td>
+</tr>
+<tr>
+<td style="text-align:left">127.0.0.1</td>
+<td style="text-align:left">8850</td>
+</tr>
+</tbody>
+</table>
+<p>复制三份Nacos安装包，将 <code>conf/application.properties</code> 中的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server.port=8848</span><br></pre></td></tr></table></figure>
+<p>分别改为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server.port=8848</span><br><span class="line">server.port=8849</span><br><span class="line">server.port=8850</span><br></pre></td></tr></table></figure>
+<h2 id="四、开始搭建"><a href="#四、开始搭建" class="headerlink" title="四、开始搭建"></a>四、开始搭建</h2><ul>
+<li><p>找到 <code>conf/cluster.conf.example</code> ，将其改名为 <code>conf/cluster.conf</code> ，并将内容改为类似如下，即：以<code>ip:端口</code> 的形式列出Nacos集群中所有实例的地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># ip:port</span><br><span class="line">127.0.0.1:8848</span><br><span class="line">127.0.0.1:8849</span><br><span class="line">127.0.0.1:8850</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动所有Nacos实例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh startup.sh</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="五、配置代理服务器"><a href="#五、配置代理服务器" class="headerlink" title="五、配置代理服务器"></a>五、配置代理服务器</h2><h3 id="5-1-安装NGINX"><a href="#5-1-安装NGINX" class="headerlink" title="5.1 安装NGINX"></a>5.1 安装NGINX</h3><ul>
+<li>NGINX各系统安装说明详见 <a href="javascript:;" target="_blank" rel="noopener">官方文档</a></li>
+<li>NGINX高可用搭建说明详见 <a href="javascript:;" target="_blank" rel="noopener">官方文档</a></li>
+</ul>
+<h3 id="5-2-配置NGINX"><a href="#5-2-配置NGINX" class="headerlink" title="5.2 配置NGINX"></a>5.2 配置NGINX</h3><p>为NGINX添加如下配置（对于Linux操作系统，如在安装NGINX时未自定义目录，则可在 <code>/etc/nginx/conf.d</code> 新建文件，命名为 <code>nacos.conf</code> ，内容如下；同时删除 <code>default.conf</code>即可）：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> nacos &#123;</span><br><span class="line">  <span class="attribute">server</span> <span class="number">127.0.0.1:8848</span>;</span><br><span class="line">  <span class="attribute">server</span> <span class="number">127.0.0.1:8849</span>;</span><br><span class="line">  <span class="attribute">server</span> <span class="number">127.0.0.1:8850</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">  <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">  <span class="attribute">server_name</span>  localhost;</span><br><span class="line">  <span class="attribute">location</span> /nacos/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://nacos/nacos/;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="六、测试"><a href="#六、测试" class="headerlink" title="六、测试"></a>六、测试</h2><p>访问 <code>http://localhost/nacos</code> 可看到Nacos的登录页，登录后即可正常使用Nacos。</p>
+<h2 id="七、优化-amp-最佳实践"><a href="#七、优化-amp-最佳实践" class="headerlink" title="七、优化&amp;最佳实践"></a>七、优化&amp;最佳实践</h2><ul>
+<li>实际项目中，<strong>建议为Nacos绑定一个域名</strong>（域名解析 &amp; 修改NGINX配置的server_name），这样即使未来Nacos Server需要迁移，也无需修改Nacos Client端的配置；</li>
+<li>本文为了演示方便，将所有实例部署在了一台机器中；实际项目中，<strong>请将Nacos部署在不同机器中</strong>，从而实现更好的容灾与隔离</li>
+</ul>
+<h2 id="八、Spring-Cloud-Alibaba连接Nacos集群"><a href="#八、Spring-Cloud-Alibaba连接Nacos集群" class="headerlink" title="八、Spring Cloud Alibaba连接Nacos集群"></a>八、Spring Cloud Alibaba连接Nacos集群</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    nacos:</span></span><br><span class="line"><span class="attr">      discovery:</span></span><br><span class="line"><span class="attr">        server-addr:</span> <span class="string">nginx绑定的域名:80</span></span><br></pre></td></tr></table></figure>
+<p>例如：<code>localhost:80</code></p>
+<h2 id="九、参考文档"><a href="#九、参考文档" class="headerlink" title="九、参考文档"></a>九、参考文档</h2><ul>
+<li><a href="javascript:;" target="_blank" rel="noopener">集群部署说明</a></li>
+</ul>
+
+        <h2>相关文章</h2><ul><li><a href="../../spring-cloud-alibaba-migration/spring-cloud-alibaba-2/index.html">Spring Cloud Alibaba迁移指南2：一行代码从Hystrix迁移到Sentinel</a></li><li><a href="../05-sentinel/index.html">Spring Cloud Alibaba系列教程-05-Sentinel入门与整合</a></li><li><a href="../sentinel-configuration-rule/index.html">Alibaba Sentinel 规则参数总结</a></li><li><a href="../sentinel-rules-persistence-pull-mode/index.html">Alibaba Sentinel 规则持久化-拉模式-手把手教程【基于文件】</a></li><li><a href="../sentinel-resoure-annotation/index.html">SentinelResource注解 属性总结</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">搭建生产可用的Nacos集群</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../ribbon-nacos-weight/index.html" class="pre-post btn btn-default" title="扩展Ribbon支持Nacos权重的三种方式">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">扩展Ribbon支持Nacos权重的三种方式</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../other/idea-mybatis-warning/index.html" class="next-post btn btn-default" title="Intellij IDEA中Mybatis Mapper自动注入警告的6种解决方案">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Intellij IDEA中Mybatis Mapper自动注入警告的6种解决方案</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

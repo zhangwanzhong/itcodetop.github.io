@@ -1,0 +1,577 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:40 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="工作,Git">
+
+
+    <meta name="description" content="笔者需实现多个Git仓库数据的同步，大致是从一个远程的Git仓库同步代码到公司内部的GitLab仓库。经过调研，笔者将目光瞄准开源的GitLab Mirrors。
+GitLab自带镜像功能，不过本文并未使用：https://gitlab.com/help/workflow/repository...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>使用GitLab Mirrors同步Git仓库 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="使用GitLab Mirrors同步Git仓库">
+            
+                使用GitLab Mirrors同步Git仓库
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="../../categories/工作/index.html">工作</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Git</a> <a class="tag-link" href="../../tags/工作/index.html">工作</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/09/12</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-安装Git"><span class="toc-text">1 安装Git</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-安装GitLab-Mirrors所需软件"><span class="toc-text">2 安装GitLab Mirrors所需软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-创建GitLab管理员账户并创建Group"><span class="toc-text">3 创建GitLab管理员账户并创建Group</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-创建一个系统用户，并生成SSH-key"><span class="toc-text">4 创建一个系统用户，并生成SSH key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-为GitLab（镜像仓库）、GitHub（原始仓库）配置免密码登录"><span class="toc-text">5 为GitLab（镜像仓库）、GitHub（原始仓库）配置免密码登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-设置private-token"><span class="toc-text">6 设置private token</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-创建本地仓库路径"><span class="toc-text">7 创建本地仓库路径</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-配置GitLab-Mirrors"><span class="toc-text">8 配置GitLab Mirrors</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-镜像仓库"><span class="toc-text">9 镜像仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文档"><span class="toc-text">参考文档</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>笔者需实现多个Git仓库数据的同步，大致是从一个远程的Git仓库同步代码到公司内部的GitLab仓库。经过调研，笔者将目光瞄准开源的GitLab Mirrors。</p>
+<p>GitLab自带镜像功能，不过本文并未使用：<a href="javascript:;" target="_blank" rel="noopener">https://gitlab.com/help/workflow/repository_mirroring.md</a></p>
+<p>GitLab Mirrors功能比较强大，可实现各种格式向Git的镜像，例如：Bazaar, Git, Mercurial, Subversion。</p>
+<p>GitLab Mirrors的GitHub地址：<a href="javascript:;" target="_blank" rel="noopener">https://github.com/samrocketman/gitlab-mirrors</a> ，有兴趣的小伙伴可前往详细了解。</p>
+<p>下面笔者将步骤记录一下。为描述方便，笔者使用如下契约：</p>
+<ul>
+<li>使用GitHub模拟远程Git仓库；</li>
+<li>使用GitLab模拟公司内部的Git仓库。</li>
+</ul>
+<p>下面将围绕如何将一个GitHub仓库同步GitLab展开。</p>
+<a id="more"></a>
+<h2 id="1-安装Git"><a href="#1-安装Git" class="headerlink" title="1 安装Git"></a>1 安装Git</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install git</span><br></pre></td></tr></table></figure>
+<h2 id="2-安装GitLab-Mirrors所需软件"><a href="#2-安装GitLab-Mirrors所需软件" class="headerlink" title="2 安装GitLab Mirrors所需软件"></a>2 安装GitLab Mirrors所需软件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum install python-setuptools</span><br><span class="line">git clone https://github.com/alexvh/python-gitlab3.git</span><br><span class="line">cd python-gitlab3</span><br><span class="line">git checkout v0.5.4</span><br><span class="line">python setup.py install</span><br></pre></td></tr></table></figure>
+<p>笔者机器上执行如上命令即可。大家如果安装python-gitlab3后，执行gitmirror依然报错，可参考该文档安装其他软件<a href="javascript:;" target="_blank" rel="noopener">https://github.com/samrocketman/gitlab-mirrors/blob/master/docs/prerequisites.md</a></p>
+<h2 id="3-创建GitLab管理员账户并创建Group"><a href="#3-创建GitLab管理员账户并创建Group" class="headerlink" title="3 创建GitLab管理员账户并创建Group"></a>3 创建GitLab管理员账户并创建Group</h2><ul>
+<li>登录GitLab</li>
+<li>创建一个用户</li>
+<li>为该用户赋予管理员权限。简单起见，笔者使用<code>root</code> 这个GitLab的内置账户。</li>
+<li>在GitLab创建一个Group</li>
+</ul>
+<h2 id="4-创建一个系统用户，并生成SSH-key"><a href="#4-创建一个系统用户，并生成SSH-key" class="headerlink" title="4 创建一个系统用户，并生成SSH key"></a>4 创建一个系统用户，并生成SSH key</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">adduser gitmirror	# 创建用户gitmirror</span><br><span class="line">su - gitmirror		# 切换到用户gitmirror</span><br><span class="line">ssh-keygen			# 生成SSH key，一路输入Enter键即可</span><br></pre></td></tr></table></figure>
+<h2 id="5-为GitLab（镜像仓库）、GitHub（原始仓库）配置免密码登录"><a href="#5-为GitLab（镜像仓库）、GitHub（原始仓库）配置免密码登录" class="headerlink" title="5 为GitLab（镜像仓库）、GitHub（原始仓库）配置免密码登录"></a>5 为GitLab（镜像仓库）、GitHub（原始仓库）配置免密码登录</h2><p>找到<code>~/.ssh/id_rsa.pub</code> ：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">more /home/gitmirror/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+<p>将内容贴到GitLab以及GitHub，方法比较简单，登录后找到SSH key的选项，然后粘贴即可。</p>
+<p>执行如下命令，确保SSH key添加成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br><span class="line">ssh -T git@localhost</span><br></pre></td></tr></table></figure>
+<p>如配置无误，会看到<code>xxxx Success xxxx</code> 的文字。</p>
+<h2 id="6-设置private-token"><a href="#6-设置private-token" class="headerlink" title="6 设置private token"></a>6 设置private token</h2><p>访问 <a href="javascript:;" target="_blank" rel="noopener">http://localhost/profile/account</a> （即：GitLab的账户设置地址），找到private token项，复制其中的private token值，贴到<code>~/private_token</code> 文件中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">su - gitmirror</span><br><span class="line">cd ~</span><br><span class="line">touch private_token</span><br><span class="line"><span class="meta">#</span> 粘贴private token中的内容</span><br></pre></td></tr></table></figure>
+<h2 id="7-创建本地仓库路径"><a href="#7-创建本地仓库路径" class="headerlink" title="7 创建本地仓库路径"></a>7 创建本地仓库路径</h2><p>GitLab Mirrors会将GitHub上的代码clone到本地，默认是<code>~/repositories</code> ，因此我们得创建该目录。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">mkdir repositories</span><br></pre></td></tr></table></figure>
+<h2 id="8-配置GitLab-Mirrors"><a href="#8-配置GitLab-Mirrors" class="headerlink" title="8 配置GitLab Mirrors"></a>8 配置GitLab Mirrors</h2><p>下载gitlab-mirrors项目</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/samrocketman/gitlab-mirrors.git</span><br><span class="line">cd gitlab-mirrors</span><br><span class="line">chmod 755 *.sh</span><br><span class="line">cp config.sh.SAMPLE config.sh</span><br></pre></td></tr></table></figure>
+<p>修改config.sh文件，该文件中配置项非常多，主要修改的有如下几处：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> gitmirror所运行的用户</span><br><span class="line">system_user="gitmirror"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 你在gitlab上建立的group</span><br><span class="line">gitlab_namespace="Mirrors"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> gitlab的地址</span><br><span class="line">gitlab_url="http://localhost"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> gitlab的管理员账户</span><br><span class="line">gitlab_user="root"</span><br></pre></td></tr></table></figure>
+<h2 id="9-镜像仓库"><a href="#9-镜像仓库" class="headerlink" title="9 镜像仓库"></a>9 镜像仓库</h2><ul>
+<li><p>添加仓库同步配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd gitlab-mirrors</span><br><span class="line">./add_mirror.sh --git --project-name test --mirror git@github.com:itmuch/test.git</span><br></pre></td></tr></table></figure>
+<p>这样，就可以将github.com中的指定仓库，同步到GitLab中指定Group中的<code>test</code> 仓库中去。</p>
+</li>
+<li><p>手动同步</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./git-mirrors.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定时同步</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@hourly /home/gitmirror/gitlab-mirrors/git-mirrors.sh</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p>github 或者gitlab 设置添加SSH, 避免每次提交重复输入用户名:<a href="javascript:;" target="_blank" rel="noopener">http://www.cnblogs.com/wutianlong/p/5465391.html</a></p>
+<p>使用gitlab-mirrors从其它版本库同步代码：<a href="javascript:;" target="_blank" rel="noopener">http://www.jianshu.com/p/54bd32c4862b</a></p>
+<p>GitLab Mirrors 官方文档：<a href="javascript:;" target="_blank" rel="noopener">https://github.com/samrocketman/gitlab-mirrors/blob/master/docs/installation.md</a></p>
+
+        <h2>相关文章</h2><ul><li><a href="../git-repo-sync-with-post-receive/index.html">使用post receive hook同步Git仓库</a></li><li><a href="../merge-two-git-repo-unrelated/index.html">合并两个不相关的Git仓库</a></li><li><a href="../git-sum/index.html">盘点Git的那些冷门玩法</a></li><li><a href="../../other/doc-generate/index.html">分享：如何生成漂亮的静态文档说明页</a></li><li><a href="../../other/mybatis-optional-support/index.html">我最喜欢的Mybatis 3.5新特性——Optional支持</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">使用GitLab Mirrors同步Git仓库</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../git-repo-sync-with-post-receive/index.html" class="pre-post btn btn-default" title="使用post receive hook同步Git仓库">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">使用post receive hook同步Git仓库</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../spring-cloud-sum/turbine-stream-cannot-register-into-eureka-server/index.html" class="next-post btn btn-default" title="解决Turbine Stream无法注册到Eureka Server上的问题">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">解决Turbine Stream无法注册到Eureka Server上的问题</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link current" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

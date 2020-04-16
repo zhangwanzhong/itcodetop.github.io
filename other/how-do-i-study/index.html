@@ -1,0 +1,630 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:38 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="工作,学习">
+
+
+    <meta name="description" content="挺多童鞋问我是怎么学习新知识的，干脆写篇文章总结一下，希望对大家有所帮助。对照书、技术博客、极客时间等学习的方式我就不说了。
+一、早期在15年及更早，由于知识储备少，基础偏弱，大致采取了如下的步骤：
+1.1 入门：找教学视频了解xx是什么，能解决什么问题。例如个人学习Spring、Struts...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>分享：个人是怎么学习新知识的 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="分享：个人是怎么学习新知识的">
+            
+                分享：个人是怎么学习新知识的
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="../../categories/其他/index.html">其他</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="../../tags/学习/index.html">学习</a> <a class="tag-link" href="../../tags/工作/index.html">工作</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/04/09</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、早期"><span class="toc-text">一、早期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-入门：找教学视频"><span class="toc-text">1.1 入门：找教学视频</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-实战：模拟项目"><span class="toc-text">1.2 实战：模拟项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、15年后"><span class="toc-text">二、15年后</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-入门：GitHub-Demo"><span class="toc-text">2.1 入门：GitHub Demo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-系统学习：官方文档"><span class="toc-text">2.2 系统学习：官方文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-实战：模拟项目"><span class="toc-text">2.3 实战：模拟项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-深入：带着问题分析源码"><span class="toc-text">2.4 深入：带着问题分析源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-广度：跟进业界动态"><span class="toc-text">2.5 广度：跟进业界动态</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、16年后"><span class="toc-text">三、16年后</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-写博客：让别人也能懂"><span class="toc-text">3.1 写博客：让别人也能懂</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、写在最后"><span class="toc-text">四、写在最后</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>挺多童鞋问我是怎么学习新知识的，干脆写篇文章总结一下，希望对大家有所帮助。对照书、技术博客、极客时间等学习的方式我就不说了。</p>
+<h2 id="一、早期"><a href="#一、早期" class="headerlink" title="一、早期"></a>一、早期</h2><p>在15年及更早，由于知识储备少，基础偏弱，大致采取了如下的步骤：</p>
+<h3 id="1-1-入门：找教学视频"><a href="#1-1-入门：找教学视频" class="headerlink" title="1.1 入门：找教学视频"></a>1.1 入门：找教学视频</h3><p>了解xx是什么，能解决什么问题。例如个人学习Spring、Struts、Hibernate时，就是找了 马士兵 老师的视频。</p>
+<p>值得一提的是，记笔记非常重要，一是可以形成相对完整的知识体系，二来也能应对面试——面试之前花点时间看看笔记就能很快记忆唤醒。<strong>个人原创学习笔记可关注公众号“IT牧场”，点击 资源领取 即可获得</strong>。</p>
+<h3 id="1-2-实战：模拟项目"><a href="#1-2-实战：模拟项目" class="headerlink" title="1.2 实战：模拟项目"></a>1.2 实战：模拟项目</h3><p>俗话说，学以致用，为学而学是没有意义的——即使有意义，过段时间也会遗忘。所以个人在掌握基础知识点以及常见用法后，一般都会做个简单的项目。作用主要有几点：</p>
+<ul>
+<li>巩固知识点</li>
+<li>总结最佳实践</li>
+<li>锻炼自己的产品思维</li>
+</ul>
+<p>从15年起，个人每年都会定”做一个 <code>Side Project</code> “的KPI——这个项目能承载如上三点作用即可。</p>
+<ul>
+<li>15年：基于当时的主流框架捣鼓的快速开发脚手架 <a href="javascript:;" target="_blank" rel="noopener">Platform</a>（选型较老，已被时代抛弃） ；</li>
+<li>16年：基于Spring Boot的半成品 <a href="javascript:;" target="_blank" rel="noopener">CMS</a> （起因是来了个私活儿，于是开工，后来合作崩了，就废弃了）；</li>
+<li>17年：基于Spring Cloud的快速开发脚手架与最佳实践总结 <a href="javascript:;" target="_blank" rel="noopener">Spring Cloud YES</a> ，现已升级到Spring Cloud Greenwich SR1版本；</li>
+<li>18年：微信小程序 <code>IT牧场</code> ，在公众号导航栏点击”资源领取”即可进入，近期开源。</li>
+</ul>
+<p>顺便说下，这些项目的内核基本一样，但每次又有优化——每次拷贝老代码前，都再思考一下，看有没有改进的空间——这不是正是”重构”？既是对自己过去代码的重构，也是对自己技术的重新审视。</p>
+<h2 id="二、15年后"><a href="#二、15年后" class="headerlink" title="二、15年后"></a>二、15年后</h2><p>15年后，由于工作好几年了，知识面、知识深度都达到一定程度——特别是15年初自学Hadoop以及Spark后。</p>
+<blockquote>
+<p><strong>一点趣闻</strong></p>
+<p>学习Hadoop和Spark的契机：当时大数据很火，工资很高，于是面向工资编程，想转型大数据。当时正好所在公司高层变动非常频繁，大佬们都忙着政治斗争——倒是爽了我这种小技术经理以及开发兄弟，整整一个半月，没有任何需求。于是投入全日制投入学习，偶尔改改bug。</p>
+<p>后来发现，学习Hadoop和Spark是个笑话——因为学完发现在南京找不到大数据岗位——</p>
+<ul>
+<li>面试中兴，技术通过了，开17K，部长面也过了，结果卡在学习，说民办本二算本三，不符合他们的学历要求，我也是醉了。</li>
+<li>面试鸿信：对方说自己有1T数据，规模在南京排前三。我嘴上不说心里想1T算个毛的大数据……</li>
+</ul>
+<p>后来又继续搞Web了。但学习还是有好处的——</p>
+<ul>
+<li>大数据知识点杂，有时候还涉及不同语言……这锻炼了自己的知识整合能力；</li>
+<li>Hadoop、Spark本身普遍是分布式应用，这为后来玩微服务打下很好的基础；</li>
+<li>很多时候，知识点是相通的，如果能探索到本质，会发现很多所谓高大上的东西其实也就是那么回事。</li>
+</ul>
+</blockquote>
+<p>此时，我觉得看视频入门效率太低了，所以调整了下节奏：</p>
+<h3 id="2-1-入门：GitHub-Demo"><a href="#2-1-入门：GitHub-Demo" class="headerlink" title="2.1 入门：GitHub Demo"></a>2.1 入门：GitHub Demo</h3><p>看教学视频固然是个很好的方法——因为学习曲线足够低，而且会有导师告诉你怎么用，甚至给你总结好最佳实践。但多数情况下，视频教程对于这个阶段的我，效率已经偏低了。很多视频几十分钟才讲一两个知识点…即使倍速，依然感觉在浪费时间。</p>
+<p>于是我采取了Demo驱动的方式学习。以学习 Spring Boot 为例，Spring Boot官方提供了 <a href="javascript:;" target="_blank" rel="noopener">Spring Boot Samples</a> ，把代码clone下来玩一遍，就能相对系统得了解Spring Boot提供的能力。</p>
+<blockquote>
+<p><strong>TIPS</strong></p>
+<p>并非完全放弃教学视频，学习途径的选择是多样的，有时候是二选一，有时是两者配合。</p>
+<p>只是进入这个阶段后，个人GitHub Demo驱动相对用得相对更多一些。建议大家做个简单的评估，怎么快怎么来。</p>
+</blockquote>
+<h3 id="2-2-系统学习：官方文档"><a href="#2-2-系统学习：官方文档" class="headerlink" title="2.2 系统学习：官方文档"></a>2.2 系统学习：官方文档</h3><p>Demo驱动入门后，我一般会对照官方文档撸一遍，例如学习Spring Cloud时，我把官方文档中的用例都过了一遍。</p>
+<p>官方文档带来的好处如下：</p>
+<ul>
+<li>一手文档——官方文档永远是最好的文档，书、视频等等本质也是别人通过学习官方文档进行二次创作的；</li>
+<li>能体会官方的意图</li>
+<li>感知该软件的发展趋势(例如阅读Release Log)</li>
+<li>系统、详尽。</li>
+</ul>
+<p>很多人可能觉得自己英文水平欠缺，不敢阅读英文文档，这点我只能说硬着头皮上吧，其实坚持一段时间后，你会发现也就那么回事。大部分英文文档还是比较通俗易懂的——再者，现在谷歌翻译质量非常高，进一步降低了阅读英文文档的难度。</p>
+<p>我的 <a href="javascript:;" target="_blank" rel="noopener">Kubernetes开源书</a> ，本质就是官方文档翻译(一般看一边翻译) + 个人理解 + 批注。</p>
+<p>总的来说，IT行业人才分布也是符合二八定律的——80%的普通人，20%的高手；20%高手里面，80%的普通高手，20%的大佬。我觉得英文不好不是借口，主要还是看你想成为哪个20%——付出和回报是成一定比例的。</p>
+<p>另外还有10000小时理论，也可以给大家共勉——要想成为某一领域的精英，必须在这一领域深耕10000小时——如果连英文文档都不敢去碰，怎么可能成为精英？</p>
+<p>大道理大家都懂，不再废话了。</p>
+<blockquote>
+<p><strong>闲话</strong></p>
+<p>13年个人定了一个原则，就是不找客观借口。因为客观借口只要想找，永远可以找100个。失败是客观事实，但很多失败都是由于主观因素导致的。失败就是失败，首先要有勇气直面。如果连尝试都不敢，就失败了，那真的是可耻到极致的失败。</p>
+<p>进入阿里后，我的思想再次发生变化。以前有时候我会觉得由于我没有xx资源，所以我做不了xx事；但现在，我的思想变成因为我要做xx事，所以我需要xx资源，如果没有，那我就去争取；如果没有那我就想办法抢。我离成功还很远，但我会继续努力。技术上成功的难度，对我来说相对低一些，所以我坚持技术路线。</p>
+</blockquote>
+<h3 id="2-3-实战：模拟项目"><a href="#2-3-实战：模拟项目" class="headerlink" title="2.3 实战：模拟项目"></a>2.3 实战：模拟项目</h3><p>和之前一样，还是做个简单的项目玩玩，项目能起到练手的目的即可。</p>
+<h3 id="2-4-深入：带着问题分析源码"><a href="#2-4-深入：带着问题分析源码" class="headerlink" title="2.4 深入：带着问题分析源码"></a>2.4 深入：带着问题分析源码</h3><p>起源于在 <code>焦点科技</code> 的一场面试——焦点科技面试官是对我职业生涯中造成影响的面试官，虽然只有一面之缘，甚至连对方的名字也不知道。</p>
+<p>与其说是面试，倒不如说是”切磋”——一般面试，往往是你问我答，OK，NEXT。回答对不对，到不到位，往往不会揭晓答案。</p>
+<p>这位面试官很有意思，他会从一个简单的问题逐步深入，并且如果回答不上来，对方会给你很多提示，就像武侠片里师父给徒弟喂招一样——这样面试下来会有所收获，也会了解自己欠缺的地方；更好玩的是，如果你聊到对方不了解的地方，也会问到他懂为止——这其实是考察候选人的沟通能力的常见手法之一，但目前业界又有多少面试官能做到呢？</p>
+<p>这次面试给我的启发是：如果广度已经很好，是不是应该深挖呢？</p>
+<p>深入，最好的方式就是阅读代码。而为了看代码而看代码，在我看来是浪费生命、浪费时间。所以，我选择在遇到问题时，带着问题分析源码——这里的遇到问题，并不是代码运行报错，或者是项目出异常；而是指对xxx感到好奇，想要了解原理，于是带着问题阅读代码。</p>
+<h3 id="2-5-广度：跟进业界动态"><a href="#2-5-广度：跟进业界动态" class="headerlink" title="2.5 广度：跟进业界动态"></a>2.5 广度：跟进业界动态</h3><p>个人比较喜欢看科技新闻，大学开始，常年在煎蛋、CNBeta、36氪等科技站上潜水。然而，从15年开始，就一直在995/996，跳到哪儿哪儿加班……时间不够用，必须做出取舍。</p>
+<p>经过分析，发现开源动态对自己更有价值。于是坚持每天花10-15分钟刷开源中国的”软件更新咨询”栏目——软件更新栏目相信很多人有所了解，其实就是某某开源软件又发布了新版本的新闻列表。</p>
+<p>然而，长期关注至少能获得如下几点信息：</p>
+<ul>
+<li>咦？xx软件发布了，这个是啥？解决什么问题的？</li>
+<li>咦？xx软件又发布了，这玩意儿挺活跃啊！</li>
+<li>咦？xx评论挺多的，看来很快会流行起来。</li>
+</ul>
+<p>长期关注的收益：</p>
+<ul>
+<li>了解行业动态</li>
+<li>增进知识广度</li>
+<li>培养行业敏感性</li>
+</ul>
+<p>我在15年玩Spring Cloud、16年玩Docker、17年玩Kubernetes，时间基本都在业界流行之前。之所以有这种行业敏感性，和长期刷开源中国是分不开的。</p>
+<blockquote>
+<p><strong>TIPS</strong></p>
+<p>再安利就变成开源中国软文了……相信我，开源中国没有给我钱……</p>
+</blockquote>
+<h2 id="三、16年后"><a href="#三、16年后" class="headerlink" title="三、16年后"></a>三、16年后</h2><h3 id="3-1-写博客：让别人也能懂"><a href="#3-1-写博客：让别人也能懂" class="headerlink" title="3.1 写博客：让别人也能懂"></a>3.1 写博客：让别人也能懂</h3><p>16年，因为一些契机，从开发转型成为架构师。角色的转变，带来的是思考视角的转变。之前做技术经理时，名下只有四五个人，多数问题口头交流就OK了；但成为架构师后，负责的面变大了，有时得和几十个人沟通，而很多沟通是重复的。</p>
+<p>此时，我意识到，不如把大家常见问题总结总结，写成手把手的文档——</p>
+<ul>
+<li>手把手上手系列</li>
+<li>手把手解决问题系列</li>
+<li>血的教训系列……</li>
+</ul>
+<p>再后来，发现写Spring Cloud开源书、博客、实体书……</p>
+<p>写作本身也是总结的过程，而且不仅要自己懂，还要想办法让别人也能看懂。</p>
+<p>可能是写手把手系列多了，所以我的文章一直也是手把手、附具体步骤、配详细代码，原理、源码分析写得相对少一些，这点也被一些人诟病。个人对博客的定位，主要是引导新手，其次是个人心得总结。如果人家已经入门了，还需要到处找文章吗？自己研究研究就OK了。</p>
+<p>那些喜欢看源码解读的”高手”，有多少是真高手，有多少是伪高手？我相信有源码阅读经验的，都不会觉得阅读源码是一件高大上的事情——多数情况下，看懂开源软件源码真的比看懂你所在项目的遗留代码简单多了！</p>
+<blockquote>
+<p><strong>趣闻</strong></p>
+<p>18年在华为面试 ，和面试官聊到Zuul相关源码。大致问题是：聊聊Zuul ErrorFilter存在的Bug。这个Bug其实在Camden已经修复了，但是我好说歹说面试官都不信。结果再一打听，原来面试官看到《Spring Cloud微服务实战》是这么写的——这本著作是基于Spring Cloud Brixton撰写的，该版本确实有Bug，所以作者非常贴心地给出了解决方案，却被这位面试官拿来做考察一个人对Spring Cloud是否深入的尺子。</p>
+</blockquote>
+<h2 id="四、写在最后"><a href="#四、写在最后" class="headerlink" title="四、写在最后"></a>四、写在最后</h2><p>以上是我历年学习方法的分享。其实总结起来就一句话：我不够聪明，但我会死磕，逐步积累；我不找客观原因，硬上。</p>
+<p>中间穿插了很多例子，文章可能有点碎……Anyway，希望对大家有用。</p>
+
+        <h2>相关文章</h2><ul><li><a href="../../work/git-sum/index.html">盘点Git的那些冷门玩法</a></li><li><a href="../../work-sum-log4j-to-logback/index.html">将应用的log4j换成logback</a></li><li><a href="../doc-generate/index.html">分享：如何生成漂亮的静态文档说明页</a></li><li><a href="../mybatis-optional-support/index.html">我最喜欢的Mybatis 3.5新特性——Optional支持</a></li><li><a href="../../work/app-can-not-startup-without-any-error/index.html">应用无法启动，并且不报错的总结</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">分享：个人是怎么学习新知识的</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../../spring-boot/send-email/index.html" class="pre-post btn btn-default" title="Spring Boot 2发送邮件手把手图文教程">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Spring Boot 2发送邮件手把手图文教程</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../spring-cloud-alibaba/03-nacos-ha/index.html" class="next-post btn btn-default" title="Spring Cloud Alibaba系列教程-03-搭建生产可用的Nacos集群">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Spring Cloud Alibaba系列教程-03-搭建生产可用的Nacos集群</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link current" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

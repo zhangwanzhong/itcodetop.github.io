@@ -1,0 +1,612 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:38 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Spring Cloud Stream">
+
+
+    <meta name="description" content="前面，已经探讨了：
+
+Spring Cloud Stream实现消息过滤消费
+Spring Cloud Stream错误处理详解
+
+本文来对Spring Cloud Stream，做一个知识点盘点和总结，包括：
+
+概念
+Stream注解
+Spring Cloud Integration（Spr...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Spring Cloud Stream知识点盘点 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Spring Cloud Stream知识点盘点">
+            
+                Spring Cloud Stream知识点盘点
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud Stream</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="javascript:;">Spring Cloud Stream</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/08/05</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#group"><span class="toc-text">group</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#destination-binder"><span class="toc-text">destination binder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#destination-binding"><span class="toc-text">destination binding</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#partition"><span class="toc-text">partition</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注解"><span class="toc-text">注解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Input-Stream"><span class="toc-text">Input(Stream)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Output-Stream"><span class="toc-text">Output(Stream)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#StreamListener-Stream"><span class="toc-text">StreamListener(Stream)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SendTo-messaging"><span class="toc-text">SendTo(messaging)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#InboundChannelAdapter-Integration"><span class="toc-text">InboundChannelAdapter(Integration)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ServiceActivator-Integration"><span class="toc-text">ServiceActivator(Integration)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Transformer-Integration"><span class="toc-text">Transformer(Integration)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PollableMessageSource-Stream"><span class="toc-text">PollableMessageSource(Stream)</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>前面，已经探讨了：</p>
+<ul>
+<li><a href="../../spring-cloud-alibaba/spring-cloud-stream-rocketmq-filter-consume/index.html">Spring Cloud Stream实现消息过滤消费</a></li>
+<li><a href="../spring-cloud-stream-error-handling/index.html">Spring Cloud Stream错误处理详解</a></li>
+</ul>
+<p>本文来对Spring Cloud Stream，做一个知识点盘点和总结，包括：</p>
+<ul>
+<li>概念</li>
+<li>Stream注解</li>
+<li>Spring Cloud Integration（Spring Cloud Stream的底层）注解</li>
+<li>Spring Messaging（Spring消息编程模型）注解</li>
+<li>Spring Cloud Stream API</li>
+</ul>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="group"><a href="#group" class="headerlink" title="group"></a>group</h3><p>组内只有1个实例消费。如果不设置group，则stream会自动为每个实例创建匿名且独立的group——于是每个实例都会消费。</p>
+<p>组内单次只有1个实例消费，并且会轮询负载均衡。通常，在将应用程序绑定到给定目标时，最好始终指定consumer group。</p>
+<h3 id="destination-binder"><a href="#destination-binder" class="headerlink" title="destination binder"></a>destination binder</h3><p>与外部消息系统通信的组件，为构造 <code>Binding</code>提供了 2 个方法，分别是 <code>bindConsumer</code> 和 <code>bindProducer</code> ，它们分别用于构造生产者和消费者。Binder使Spring Cloud Stream应用程序可以灵活地连接到中间件，目前spring为kafka、rabbitmq提供binder。</p>
+<h3 id="destination-binding"><a href="#destination-binding" class="headerlink" title="destination binding"></a>destination binding</h3><p><code>Binding</code> 是连接应用程序跟消息中间件的桥梁，用于消息的消费和生产，由binder创建。</p>
+<h3 id="partition"><a href="#partition" class="headerlink" title="partition"></a>partition</h3><blockquote>
+<p><strong>TIPS</strong></p>
+<p>严格来说这个不是概念，而是一种Stream提高伸缩性、吞吐量的一种方式。不过不想另起标题了，写在这里吧。</p>
+</blockquote>
+<p>一个或多个生产者将数据发送到多个消费者，并确保有共同特征标识的数据由同一个消费者处理。默认是对消息进行hashCode，然后根据分区个数取余，所以对于相同的消息，总会落到同一个消费者上。</p>
+<h2 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h2><h3 id="Input-Stream"><a href="#Input-Stream" class="headerlink" title="Input(Stream)"></a>Input(Stream)</h3><p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Barista</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Input</span>(<span class="string">"inboundOrders"</span>)</span><br><span class="line">    <span class="function">SubscribableChannel <span class="title">orders</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作用：</p>
+<ul>
+<li>用于接收消息</li>
+<li>为每个binding生成channel实例</li>
+<li>指定channel名称</li>
+<li>在spring容器中生成一个名为inboundOrders，类型为SubscribableChannel的bean</li>
+<li>在spring容器中生成一个类，实现Barista接口。</li>
+</ul>
+<h3 id="Output-Stream"><a href="#Output-Stream" class="headerlink" title="Output(Stream)"></a>Output(Stream)</h3><p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Source</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Output</span></span><br><span class="line">    <span class="function">MessageChannel <span class="title">output</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作用：</p>
+<p>类似Input，只是用来生产消息。</p>
+<h3 id="StreamListener-Stream"><a href="#StreamListener-Stream" class="headerlink" title="StreamListener(Stream)"></a>StreamListener(Stream)</h3><p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@StreamListener</span>(value = Sink.INPUT, condition = <span class="string">"headers['type']=='dog'"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(String body)</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Received: "</span> + body);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@InboundChannelAdapter</span>(value = Source.OUTPUT,</span><br><span class="line">        poller = <span class="meta">@Poller</span>(fixedDelay = <span class="string">"1000"</span>, maxMessagesPerPoll = <span class="string">"2"</span>))</span><br><span class="line"><span class="function"><span class="keyword">public</span> MessageSource&lt;String&gt; <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> () -&gt; &#123;</span><br><span class="line">        Map&lt;String, Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">1</span>);</span><br><span class="line">        map.put(<span class="string">"type"</span>, <span class="string">"dog"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> GenericMessage&lt;&gt;(<span class="string">"abcdef"</span>, map);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作用：</p>
+<p>用于消费消息</p>
+<p>condition的作用：符合条件，才进入处理方法。</p>
+<p>condition起作用的两个条件：</p>
+<ul>
+<li>注解的方法没有返回值</li>
+<li>方法是一个独立方法，不支持Reactive API</li>
+</ul>
+<h3 id="SendTo-messaging"><a href="#SendTo-messaging" class="headerlink" title="SendTo(messaging)"></a>SendTo(messaging)</h3><p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 接收INPUT这个channel的消息，并将返回值发送到OUTPUT这个channel</span></span><br><span class="line"><span class="meta">@StreamListener</span>(Sink.INPUT)</span><br><span class="line"><span class="meta">@SendTo</span>(Source.OUTPUT)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">receive</span><span class="params">(String receiveMsg)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="string">"handle..."</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作用：</p>
+<p>用于发送消息</p>
+<h3 id="InboundChannelAdapter-Integration"><a href="#InboundChannelAdapter-Integration" class="headerlink" title="InboundChannelAdapter(Integration)"></a>InboundChannelAdapter(Integration)</h3><p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@InboundChannelAdapter</span>(value = Source.OUTPUT,</span><br><span class="line">        poller = <span class="meta">@Poller</span>(fixedDelay = <span class="string">"10"</span>, maxMessagesPerPoll = <span class="string">"1"</span>))</span><br><span class="line"><span class="function"><span class="keyword">public</span> MessageSource&lt;String&gt; <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> () -&gt; <span class="keyword">new</span> GenericMessage&lt;&gt;(<span class="string">"Hello Spring Cloud Stream"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作用：</p>
+<p>表示让定义的方法生产消息。</p>
+<blockquote>
+<p>注：用 <code>InboundChannelAdapter</code> 注解的方法上即使有参数也没用。即下面test方法不要有参数。</p>
+</blockquote>
+<ul>
+<li>fixedDelay：多少毫秒发送1次</li>
+<li>maxMessagesPerPoll：一次发送几条消息。</li>
+</ul>
+<h3 id="ServiceActivator-Integration"><a href="#ServiceActivator-Integration" class="headerlink" title="ServiceActivator(Integration)"></a>ServiceActivator(Integration)</h3><p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ServiceActivator</span>(inputChannel = Sink.INPUT, outputChannel = Source.OUTPUT)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">transform</span><span class="params">(String payload)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> payload.toUpperCase();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作用：</p>
+<p>表示方法能够处理消息或消息有效内容，监听input消息，用方法体的代码处理，然后输出到output中。</p>
+<h3 id="Transformer-Integration"><a href="#Transformer-Integration" class="headerlink" title="Transformer(Integration)"></a>Transformer(Integration)</h3><p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transformer</span>(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">transform</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> message.toUpperCase();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作用：</p>
+<p>和 <code>ServiceActivator</code> 类似，表示方法能够转换消息，消息头，或消息有效内容</p>
+<h2 id="PollableMessageSource-Stream"><a href="#PollableMessageSource-Stream" class="headerlink" title="PollableMessageSource(Stream)"></a>PollableMessageSource(Stream)</h2><p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableBinding</span>(&#123;ConsumerApplication.PolledProcessor.class&#125;)</span><br><span class="line"><span class="meta">@EnableScheduling</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(ConsumerApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> PolledProcessor polledProcessor;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Scheduled</span>(fixedDelay = <span class="number">5_000</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">poll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        polledProcessor.input().poll(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">byte</span>[] bytes = (<span class="keyword">byte</span>[]) message.getPayload();</span><br><span class="line">            String payload = <span class="keyword">new</span> String(bytes);</span><br><span class="line">            System.out.println(payload);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PolledProcessor</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Input</span></span><br><span class="line">        <span class="function">PollableMessageSource <span class="title">input</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Output</span></span><br><span class="line">        <span class="function">MessageChannel <span class="title">output</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@InboundChannelAdapter</span>(value = <span class="string">"output"</span>,</span><br><span class="line">            poller = <span class="meta">@Poller</span>(fixedDelay = <span class="string">"1000"</span>, maxMessagesPerPoll = <span class="string">"1"</span>))</span><br><span class="line">    <span class="function"><span class="keyword">public</span> MessageSource&lt;String&gt; <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> () -&gt; &#123;</span><br><span class="line">            Map&lt;String, Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">1</span>);</span><br><span class="line">            map.put(<span class="string">"type"</span>, <span class="string">"dog"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> GenericMessage&lt;&gt;(<span class="string">"adfdfdsafdsfa"</span>, map);</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果不想自己做byte数组转换，可以添加配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    stream:</span></span><br><span class="line"><span class="attr">      bindings:</span></span><br><span class="line"><span class="attr">        output:</span></span><br><span class="line">          <span class="comment"># 指定content-type</span></span><br><span class="line"><span class="attr">          content-type:</span> <span class="string">text/plain</span></span><br></pre></td></tr></table></figure>
+<p>作用：</p>
+<p>允许消费者控制消费速率。</p>
+<p>相关文章：</p>
+<p><a href="javascript:;" target="_blank" rel="noopener">https://spring.io/blog/2018/02/27/spring-cloud-stream-2-0-polled-consumers</a></p>
+
+        <h2>相关文章</h2><ul><li><a href="../../spring-cloud-alibaba/spring-cloud-stream-rocketmq-filter-consume/index.html">Spring Cloud Stream实现消息过滤消费</a></li><li><a href="../spring-cloud-stream-error-handling/index.html">Spring Cloud Stream错误处理详解</a></li><li><a href="../spring-cloud-stream-study/index.html">Spring Cloud Stream 重点与总结</a></li><li><a href="../finchley-26/index.html">跟我学Spring Cloud（Finchley版）-26-使用Elasticsearch作为Zipkin Server的后端存储</a></li><li><a href="../../advertisment/my-spring-book-code/index.html">《Spring Cloud与Docker微服务架构实战》配套代码</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">Spring Cloud Stream知识点盘点</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../../spring-cloud-gateway/route-predicate-factory/index.html" class="pre-post btn btn-default" title="Spring Cloud Gateway-路由谓词工厂详解（Route Predicate Factories）">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Spring Cloud Gateway-路由谓词工厂详解（Route Predicate Factories）</span>
+        </a>
+    
+    
+        <a target="_blank" href="../spring-cloud-stream-error-handling/index.html" class="next-post btn btn-default" title="Spring Cloud Stream错误处理详解">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Spring Cloud Stream错误处理详解</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

@@ -1,0 +1,483 @@
+
+<!DOCTYPE HTML>
+<html lang="">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>集群部署(Cluster Deployment) · Apache RocketMQ开发者指南</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="RocketMQ官方">
+        
+        
+    
+    <link rel="stylesheet" href="../../../static/css/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../../static/css/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../static/css/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../static/css/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../static/css/website1.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    
+
+    
+    <link rel="next" href="../operation.html">
+    
+    
+    <link rel="prev" href="quick_start.html">
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search">
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+    
+        
+        <li>
+            <a href="../../../index.html" target="_blank" class="custom-link">博客首页</a>
+        </li>
+    
+        
+        <li>
+            <a href="javascript:;" target="_blank" class="custom-link">RocketMQ官方网站</a>
+        </li>
+    
+    
+
+    
+    <li class="divider"></li>
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../../rocketmq.html">
+            
+                    
+                    README
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../concept.html">
+            
+                <a href="../concept.html">
+            
+                    
+                    概念(Concept)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../features.html">
+            
+                <a href="../features.html">
+            
+                    
+                    特性(Features)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../architecture.html">
+            
+                <a href="../architecture.html">
+            
+                    
+                    架构(Architecture)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../design.html">
+            
+                <a href="../design.html">
+            
+                    
+                    设计(Design)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../RocketMQ_Example.html">
+            
+                <a href="javascript:;">
+            
+                    
+                    样例(Example)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../best_practice.html">
+            
+                <a href="../best_practice.html">
+            
+                    
+                    最佳实践（Best Practice）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="../msg_trace/user_guide.html">
+            
+                <a href="../msg_trace/user_guide.html">
+            
+                    
+                    消息轨迹指南(Message Trace)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../acl/user_guide.html">
+            
+                <a href="../acl/user_guide.html">
+            
+                    
+                    权限管理(Auth Management)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="quick_start.html">
+            
+                <a href="quick_start.html">
+            
+                    
+                    Dledger快速搭建(Quick Start)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.11" data-path="deploy_guide.html">
+            
+                <a href="">
+            
+                    
+                    集群部署(Cluster Deployment)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" data-path="../operation.html">
+            
+                <a href="../operation.html">
+            
+                    
+                    集群部署(Operation)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" data-path="../client/java/API_Reference_DefaultMQProducer.html">
+            
+                <a href="javascript:;">
+            
+                    
+                    DefaultMQProducer API Reference
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="javascript:;" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../../rocketmq.html">集群部署(Cluster Deployment)</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><a href="#dledger&#x96C6;&#x7FA4;&#x642D;&#x5EFA;">1. Dledger&#x96C6;&#x7FA4;&#x642D;&#x5EFA;</a></li><ul><li><a href="#&#x524D;&#x8A00;">1.1. &#x524D;&#x8A00;</a></li><li><a href="#1-&#x65B0;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;">1.2. 1. &#x65B0;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;</a></li><ul><li><a href="#12-&#x542F;&#x52A8;-broker">1.2.1. 1.2 &#x542F;&#x52A8; Broker</a></li></ul><li><a href="#2-&#x65E7;&#x96C6;&#x7FA4;&#x5347;&#x7EA7;">1.3. 2. &#x65E7;&#x96C6;&#x7FA4;&#x5347;&#x7EA7;</a></li><ul><li><a href="#21-&#x6740;&#x6389;&#x65E7;&#x7684;-broker">1.3.1. 2.1 &#x6740;&#x6389;&#x65E7;&#x7684; Broker</a></li><li><a href="#22-&#x68C0;&#x67E5;&#x65E7;&#x7684;-commitlog">1.3.2. 2.2 &#x68C0;&#x67E5;&#x65E7;&#x7684; Commitlog</a></li><li><a href="#23-&#x4FEE;&#x6539;&#x914D;&#x7F6E;">1.3.3. 2.3 &#x4FEE;&#x6539;&#x914D;&#x7F6E;</a></li><li><a href="#24-&#x91CD;&#x65B0;&#x542F;&#x52A8;-broker">1.3.4. 2.4 &#x91CD;&#x65B0;&#x542F;&#x52A8; Broker</a></li></ul></ul></ul></div><a href="#dledger&#x96C6;&#x7FA4;&#x642D;&#x5EFA;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="dledger&#x96C6;&#x7FA4;&#x642D;&#x5EFA;"><a name="dledger&#x96C6;&#x7FA4;&#x642D;&#x5EFA;" class="anchor-navigation-ex-anchor" href="#dledger&#x96C6;&#x7FA4;&#x642D;&#x5EFA;"><i class="fa fa-link" aria-hidden="true"></i></a>1. Dledger&#x96C6;&#x7FA4;&#x642D;&#x5EFA;</h1>
+<hr>
+<h2 id="&#x524D;&#x8A00;"><a name="&#x524D;&#x8A00;" class="anchor-navigation-ex-anchor" href="#&#x524D;&#x8A00;"><i class="fa fa-link" aria-hidden="true"></i></a>1.1. &#x524D;&#x8A00;</h2>
+<p>&#x8BE5;&#x6587;&#x6863;&#x4E3B;&#x8981;&#x4ECB;&#x7ECD;&#x5982;&#x4F55;&#x90E8;&#x7F72;&#x81EA;&#x52A8;&#x5BB9;&#x707E;&#x5207;&#x6362;&#x7684; RocketMQ-on-DLedger Group&#x3002;</p>
+<p>RocketMQ-on-DLedger Group &#x662F;&#x6307;&#x4E00;&#x7EC4;<strong>&#x76F8;&#x540C;&#x540D;&#x79F0;</strong>&#x7684; Broker&#xFF0C;&#x81F3;&#x5C11;&#x9700;&#x8981; 3 &#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x901A;&#x8FC7; Raft &#x81EA;&#x52A8;&#x9009;&#x4E3E;&#x51FA;&#x4E00;&#x4E2A; Leader&#xFF0C;&#x5176;&#x4F59;&#x8282;&#x70B9; &#x4F5C;&#x4E3A; Follower&#xFF0C;&#x5E76;&#x5728; Leader &#x548C; Follower &#x4E4B;&#x95F4;&#x590D;&#x5236;&#x6570;&#x636E;&#x4EE5;&#x4FDD;&#x8BC1;&#x9AD8;&#x53EF;&#x7528;&#x3002;<br>RocketMQ-on-DLedger Group &#x80FD;&#x81EA;&#x52A8;&#x5BB9;&#x707E;&#x5207;&#x6362;&#xFF0C;&#x5E76;&#x4FDD;&#x8BC1;&#x6570;&#x636E;&#x4E00;&#x81F4;&#x3002;<br>RocketMQ-on-DLedger Group &#x662F;&#x53EF;&#x4EE5;&#x6C34;&#x5E73;&#x6269;&#x5C55;&#x7684;&#xFF0C;&#x4E5F;&#x5373;&#x53EF;&#x4EE5;&#x90E8;&#x7F72;&#x4EFB;&#x610F;&#x591A;&#x4E2A; RocketMQ-on-DLedger Group &#x540C;&#x65F6;&#x5BF9;&#x5916;&#x63D0;&#x4F9B;&#x670D;&#x52A1;&#x3002;  </p>
+<h2 id="1-&#x65B0;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;"><a name="1-&#x65B0;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;" class="anchor-navigation-ex-anchor" href="#1-&#x65B0;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;"><i class="fa fa-link" aria-hidden="true"></i></a>1.2. 1. &#x65B0;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;</h2>
+<h4 id="11-&#x7F16;&#x5199;&#x914D;&#x7F6E;"><a name="11-&#x7F16;&#x5199;&#x914D;&#x7F6E;" class="anchor-navigation-ex-anchor" href="#11-&#x7F16;&#x5199;&#x914D;&#x7F6E;"><i class="fa fa-link" aria-hidden="true"></i></a>1.1 &#x7F16;&#x5199;&#x914D;&#x7F6E;</h4>
+<p>&#x6BCF;&#x4E2A; RocketMQ-on-DLedger Group &#x81F3;&#x5C11;&#x51C6;&#x5907;&#x4E09;&#x53F0;&#x673A;&#x5668;&#xFF08;&#x672C;&#x6587;&#x5047;&#x8BBE;&#x4E3A; 3&#xFF09;&#x3002;<br>&#x7F16;&#x5199; 3 &#x4E2A;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF0C;&#x5EFA;&#x8BAE;&#x53C2;&#x8003; conf/dledger &#x76EE;&#x5F55;&#x4E0B;&#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x6837;&#x4F8B;&#x3002;<br>&#x5173;&#x952E;&#x914D;&#x7F6E;&#x4ECB;&#x7ECD;&#xFF1A;  </p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>&#x542B;&#x4E49;</th>
+<th>&#x4E3E;&#x4F8B;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>enableDLegerCommitLog</td>
+<td>&#x662F;&#x5426;&#x542F;&#x52A8; DLedger</td>
+<td>true</td>
+</tr>
+<tr>
+<td>dLegerGroup</td>
+<td>DLedger Raft Group&#x7684;&#x540D;&#x5B57;&#xFF0C;&#x5EFA;&#x8BAE;&#x548C; brokerName &#x4FDD;&#x6301;&#x4E00;&#x81F4;</td>
+<td>RaftNode00</td>
+</tr>
+<tr>
+<td>dLegerPeers</td>
+<td>DLedger Group &#x5185;&#x5404;&#x8282;&#x70B9;&#x7684;&#x7AEF;&#x53E3;&#x4FE1;&#x606F;&#xFF0C;&#x540C;&#x4E00;&#x4E2A; Group &#x5185;&#x7684;&#x5404;&#x4E2A;&#x8282;&#x70B9;&#x914D;&#x7F6E;&#x5FC5;&#x987B;&#x8981;&#x4FDD;&#x8BC1;&#x4E00;&#x81F4;</td>
+<td>n0-127.0.0.1:40911;n1-127.0.0.1:40912;n2-127.0.0.1:40913</td>
+</tr>
+<tr>
+<td>dLegerSelfId</td>
+<td>&#x8282;&#x70B9; id, &#x5FC5;&#x987B;&#x5C5E;&#x4E8E; dLegerPeers &#x4E2D;&#x7684;&#x4E00;&#x4E2A;&#xFF1B;&#x540C; Group &#x5185;&#x5404;&#x4E2A;&#x8282;&#x70B9;&#x8981;&#x552F;&#x4E00;</td>
+<td>n0</td>
+</tr>
+<tr>
+<td>sendMessageThreadPoolNums</td>
+<td>&#x53D1;&#x9001;&#x7EBF;&#x7A0B;&#x4E2A;&#x6570;&#xFF0C;&#x5EFA;&#x8BAE;&#x914D;&#x7F6E;&#x6210; Cpu &#x6838;&#x6570;</td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<p>&#x8FD9;&#x91CC;&#x8D34;&#x51FA; conf/dledger/broker-n0.conf &#x7684;&#x914D;&#x7F6E;&#x4E3E;&#x4F8B;&#x3002;  </p>
+<pre><code>brokerClusterName = RaftCluster
+brokerName=RaftNode00
+listenPort=30911
+namesrvAddr=127.0.0.1:9876
+storePathRootDir=/tmp/rmqstore/node00
+storePathCommitLog=/tmp/rmqstore/node00/commitlog
+enableDLegerCommitLog=true
+dLegerGroup=RaftNode00
+dLegerPeers=n0-127.0.0.1:40911;n1-127.0.0.1:40912;n2-127.0.0.1:40913
+## must be unique
+dLegerSelfId=n0
+sendMessageThreadPoolNums=16
+</code></pre><h3 id="12-&#x542F;&#x52A8;-broker"><a name="12-&#x542F;&#x52A8;-broker" class="anchor-navigation-ex-anchor" href="#12-&#x542F;&#x52A8;-broker"><i class="fa fa-link" aria-hidden="true"></i></a>1.2.1. 1.2 &#x542F;&#x52A8; Broker</h3>
+<p>&#x4E0E;&#x8001;&#x7248;&#x672C;&#x7684;&#x542F;&#x52A8;&#x65B9;&#x5F0F;&#x4E00;&#x81F4;&#x3002;</p>
+<p><code>nohup sh bin/mqbroker -c conf/dledger/xxx-n0.conf &amp;</code><br><code>nohup sh bin/mqbroker -c conf/dledger/xxx-n1.conf &amp;</code><br><code>nohup sh bin/mqbroker -c conf/dledger/xxx-n2.conf &amp;</code>  </p>
+<h2 id="2-&#x65E7;&#x96C6;&#x7FA4;&#x5347;&#x7EA7;"><a name="2-&#x65E7;&#x96C6;&#x7FA4;&#x5347;&#x7EA7;" class="anchor-navigation-ex-anchor" href="#2-&#x65E7;&#x96C6;&#x7FA4;&#x5347;&#x7EA7;"><i class="fa fa-link" aria-hidden="true"></i></a>1.3. 2. &#x65E7;&#x96C6;&#x7FA4;&#x5347;&#x7EA7;</h2>
+<p>&#x5982;&#x679C;&#x65E7;&#x96C6;&#x7FA4;&#x91C7;&#x7528; Master &#x65B9;&#x5F0F;&#x90E8;&#x7F72;&#xFF0C;&#x5219;&#x6BCF;&#x4E2A; Master &#x90FD;&#x9700;&#x8981;&#x8F6C;&#x6362;&#x6210;&#x4E00;&#x4E2A; RocketMQ-on-DLedger Group&#x3002;<br>&#x5982;&#x679C;&#x65E7;&#x96C6;&#x7FA4;&#x91C7;&#x7528; Master-Slave &#x65B9;&#x5F0F;&#x90E8;&#x7F72;&#xFF0C;&#x5219;&#x6BCF;&#x4E2A; Master-Slave &#x7EC4;&#x90FD;&#x9700;&#x8981;&#x8F6C;&#x6362;&#x6210;&#x4E00;&#x4E2A; RocketMQ-on-DLedger Group&#x3002;</p>
+<h3 id="21-&#x6740;&#x6389;&#x65E7;&#x7684;-broker"><a name="21-&#x6740;&#x6389;&#x65E7;&#x7684;-broker" class="anchor-navigation-ex-anchor" href="#21-&#x6740;&#x6389;&#x65E7;&#x7684;-broker"><i class="fa fa-link" aria-hidden="true"></i></a>1.3.1. 2.1 &#x6740;&#x6389;&#x65E7;&#x7684; Broker</h3>
+<p>&#x53EF;&#x4EE5;&#x901A;&#x8FC7; kill &#x547D;&#x4EE4;&#x6765;&#x5B8C;&#x6210;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x8C03;&#x7528; <code>bin/mqshutdown broker</code>&#x3002;</p>
+<h3 id="22-&#x68C0;&#x67E5;&#x65E7;&#x7684;-commitlog"><a name="22-&#x68C0;&#x67E5;&#x65E7;&#x7684;-commitlog" class="anchor-navigation-ex-anchor" href="#22-&#x68C0;&#x67E5;&#x65E7;&#x7684;-commitlog"><i class="fa fa-link" aria-hidden="true"></i></a>1.3.2. 2.2 &#x68C0;&#x67E5;&#x65E7;&#x7684; Commitlog</h3>
+<p>RocketMQ-on-DLedger &#x7EC4;&#x4E2D;&#x7684;&#x6BCF;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x53EF;&#x4EE5;&#x517C;&#x5BB9;&#x65E7;&#x7684; Commitlog &#xFF0C;&#x4F46;&#x5176; Raft &#x590D;&#x5236;&#x8FC7;&#x7A0B;&#xFF0C;&#x53EA;&#x80FD;&#x9488;&#x5BF9;&#x65B0;&#x589E;&#x52A0;&#x7684;&#x6D88;&#x606F;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x4E3A;&#x4E86;&#x907F;&#x514D;&#x51FA;&#x73B0;&#x5F02;&#x5E38;&#xFF0C;&#x9700;&#x8981;&#x4FDD;&#x8BC1; &#x65E7;&#x7684; Commitlog &#x662F;&#x4E00;&#x81F4;&#x7684;&#x3002;<br>&#x5982;&#x679C;&#x65E7;&#x7684;&#x96C6;&#x7FA4;&#x662F;&#x91C7;&#x7528; Master-Slave &#x65B9;&#x5F0F;&#x90E8;&#x7F72;&#xFF0C;&#x6709;&#x53EF;&#x80FD;&#x5728;shutdown&#x65F6;&#xFF0C;&#x5176;&#x6570;&#x636E;&#x5E76;&#x4E0D;&#x662F;&#x4E00;&#x81F4;&#x7684;&#xFF0C;&#x5EFA;&#x8BAE;&#x901A;&#x8FC7;md5sum &#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x68C0;&#x67E5;&#x6700;&#x8FD1;&#x7684;&#x6700;&#x5C11; 2 &#x4E2A; Commmitlog &#x6587;&#x4EF6;&#xFF0C;&#x5982;&#x679C;&#x53D1;&#x73B0;&#x4E0D;&#x4E00;&#x81F4;&#xFF0C;&#x5219;&#x901A;&#x8FC7;&#x62F7;&#x8D1D;&#x7684;&#x65B9;&#x5F0F;&#x8FDB;&#x884C;&#x5BF9;&#x9F50;&#x3002;  </p>
+<p>&#x867D;&#x7136; RocketMQ-on-DLedger Group &#x4E5F;&#x53EF;&#x4EE5;&#x4EE5; 2 &#x8282;&#x70B9;&#x65B9;&#x5F0F;&#x90E8;&#x7F72;&#xFF0C;&#x4F46;&#x5176;&#x4F1A;&#x4E27;&#x5931;&#x5BB9;&#x707E;&#x5207;&#x6362;&#x80FD;&#x529B;&#xFF08;2n + 1 &#x539F;&#x5219;&#xFF0C;&#x81F3;&#x5C11;&#x9700;&#x8981;3&#x4E2A;&#x8282;&#x70B9;&#x624D;&#x80FD;&#x5BB9;&#x5FCD;&#x5176;&#x4E2D; 1 &#x4E2A;&#x5B95;&#x673A;&#xFF09;&#x3002;<br>&#x6240;&#x4EE5;&#x5728;&#x5BF9;&#x9F50;&#x4E86; Master &#x548C; Slave &#x7684; Commitlog &#x4E4B;&#x540E;&#xFF0C;&#x8FD8;&#x9700;&#x8981;&#x51C6;&#x5907;&#x7B2C; 3 &#x53F0;&#x673A;&#x5668;&#xFF0C;&#x5E76;&#x628A;&#x65E7;&#x7684; Commitlog &#x4ECE; Master &#x62F7;&#x8D1D;&#x5230; &#x7B2C; 3 &#x53F0;&#x673A;&#x5668;&#xFF08;&#x8BB0;&#x5F97;&#x540C;&#x65F6;&#x62F7;&#x8D1D;&#x4E00;&#x4E0B; config &#x6587;&#x4EF6;&#x5939;&#xFF09;&#x3002;  </p>
+<p>&#x5728; 3 &#x53F0;&#x673A;&#x5668;&#x51C6;&#x5907;&#x597D;&#x4E86;&#x4E4B;&#x540E;&#xFF0C;&#x65E7; Commitlog &#x6587;&#x4EF6;&#x4E5F;&#x4FDD;&#x8BC1;&#x4E00;&#x81F4;&#x4E4B;&#x540E;&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x5F00;&#x59CB;&#x8D70;&#x4E0B;&#x4E00;&#x6B65;&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x4E86;&#x3002;</p>
+<h3 id="23-&#x4FEE;&#x6539;&#x914D;&#x7F6E;"><a name="23-&#x4FEE;&#x6539;&#x914D;&#x7F6E;" class="anchor-navigation-ex-anchor" href="#23-&#x4FEE;&#x6539;&#x914D;&#x7F6E;"><i class="fa fa-link" aria-hidden="true"></i></a>1.3.3. 2.3 &#x4FEE;&#x6539;&#x914D;&#x7F6E;</h3>
+<p>&#x53C2;&#x8003;&#x65B0;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;&#x3002;</p>
+<h3 id="24-&#x91CD;&#x65B0;&#x542F;&#x52A8;-broker"><a name="24-&#x91CD;&#x65B0;&#x542F;&#x52A8;-broker" class="anchor-navigation-ex-anchor" href="#24-&#x91CD;&#x65B0;&#x542F;&#x52A8;-broker"><i class="fa fa-link" aria-hidden="true"></i></a>1.3.4. 2.4 &#x91CD;&#x65B0;&#x542F;&#x52A8; Broker</h3>
+<p>&#x53C2;&#x8003;&#x65B0;&#x96C6;&#x7FA4;&#x90E8;&#x7F72;&#x3002;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="quick_start.html" class="navigation navigation-prev " aria-label="Previous page: Dledger快速搭建(Quick Start)">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../operation.html" class="navigation navigation-next " aria-label="Next page: 集群部署(Operation)">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"集群部署(Cluster Deployment)","level":"1.11","depth":1,"next":{"title":"集群部署(Operation)","level":"1.12","depth":1,"path":"operation.md","ref":"operation.md","articles":[]},"previous":{"title":"Dledger快速搭建(Quick Start)","level":"1.10","depth":1,"path":"dledger/quick_start.md","ref":"dledger/quick_start.md","articles":[]},"dir":"ltr"},"config":{"plugins":["3-ba@^0.9.0","anchor-navigation-ex@0.1.8","livereload"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"livereload":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"isRewritePageTitle":true,"isShowTocTitleIcon":true,"tocLevel1Icon":"fa fa-hand-o-right","tocLevel2Icon":"fa fa-hand-o-right","tocLevel3Icon":"fa fa-hand-o-right"},"3-ba":{"configuration":"auto","token":"13766878cde148282622871dd245a973"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"RocketMQ官方","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Apache RocketMQ开发者指南","links":{"sidebar":{"博客首页":"http://www.itmuch.com","RocketMQ官方网站":"http://rocketmq.apache.org"}},"gitbook":"*"},"file":{"path":"dledger/deploy_guide.md","mtime":"2019-07-23T12:28:03.269Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-03T17:36:58.845Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../../static/js/gitbook.js"></script>
+    <script src="../../../static/js/theme.js"></script>
+    
+        
+        <script src="../../../static/js/plugin.js"></script>
+        
+    
+        
+        <script src="../../../static/js/plugin1.js"></script>
+        
+    
+        
+        <script src="../../../static/js/search-engine.js"></script>
+        
+    
+        
+        <script src="../../../static/js/search.js"></script>
+        
+    
+        
+        <script src="../../../static/js/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../../static/js/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../../static/js/buttons.js"></script>
+        
+    
+        
+        <script src="../../../static/js/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

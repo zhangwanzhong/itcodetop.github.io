@@ -1,0 +1,612 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:39 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Nacos,Consul,Apollo">
+
+
+    <meta name="description" content="本文从社区活跃度、产品特点、成功案例、产品缺点等维度，全方位对比Spring Cloud Config、Apollo、Nacos、Disconf、Spring Cloud Consul、Spring Cloud Zookeeper等几款Spring Cloud生态的配置服务器，帮助你选择合适的...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Spring Cloud生态的配置服务器最全对比贴 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Spring Cloud生态的配置服务器最全对比贴">
+            
+                Spring Cloud生态的配置服务器最全对比贴
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Apollo</a> <a class="tag-link" href="javascript:;">Consul</a> <a class="tag-link" href="javascript:;">Nacos</a> <a class="tag-link" href="javascript:;">Spring Cloud</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/01/27</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、Spring-Cloud-Config"><span class="toc-text">一、Spring Cloud Config</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GitHub地址"><span class="toc-text">GitHub地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开源厂商"><span class="toc-text">开源厂商</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#产品特点"><span class="toc-text">产品特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#演示环境"><span class="toc-text">演示环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#成功案例"><span class="toc-text">成功案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、Apollo"><span class="toc-text">二、Apollo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GitHub地址-1"><span class="toc-text">GitHub地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开源厂商-1"><span class="toc-text">开源厂商</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#产品特点-1"><span class="toc-text">产品特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#成功案例-1"><span class="toc-text">成功案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#演示环境-1"><span class="toc-text">演示环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点-1"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、Nacos"><span class="toc-text">三、Nacos</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GitHub地址-2"><span class="toc-text">GitHub地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开源厂商-2"><span class="toc-text">开源厂商</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#产品特点-2"><span class="toc-text">产品特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#成功案例-2"><span class="toc-text">成功案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#演示环境-2"><span class="toc-text">演示环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点-2"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、Disconf"><span class="toc-text">四、Disconf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GitHub地址-3"><span class="toc-text">GitHub地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开源厂商-3"><span class="toc-text">开源厂商</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#产品特点-3"><span class="toc-text">产品特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#成功案例-3"><span class="toc-text">成功案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点-3"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、Spring-Cloud-Consul"><span class="toc-text">五、Spring Cloud Consul</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GitHub地址-4"><span class="toc-text">GitHub地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开源厂商-4"><span class="toc-text">开源厂商</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#产品特点-4"><span class="toc-text">产品特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#成功案例-4"><span class="toc-text">成功案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#演示环境-3"><span class="toc-text">演示环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点-4"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六、Spring-Cloud-Zookeeper"><span class="toc-text">六、Spring Cloud Zookeeper</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GitHub地址-5"><span class="toc-text">GitHub地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开源厂商-5"><span class="toc-text">开源厂商</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#产品特点-5"><span class="toc-text">产品特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#演示环境-4"><span class="toc-text">演示环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#成功案例-5"><span class="toc-text">成功案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点-5"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-text">其他</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结论"><span class="toc-text">结论</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>本文从社区活跃度、产品特点、成功案例、产品缺点等维度，全方位对比Spring Cloud Config、Apollo、Nacos、Disconf、Spring Cloud Consul、Spring Cloud Zookeeper等几款Spring Cloud生态的配置服务器，帮助你选择合适的配置服务器。</p>
+<h2 id="一、Spring-Cloud-Config"><a href="#一、Spring-Cloud-Config" class="headerlink" title="一、Spring Cloud Config"></a>一、Spring Cloud Config</h2><h3 id="GitHub地址"><a href="#GitHub地址" class="headerlink" title="GitHub地址"></a>GitHub地址</h3><p><a href="javascript:;" target="_blank" rel="noopener">https://github.com/spring-cloud/spring-cloud-config</a> ，Star数1178，官方组件，社区较活跃</p>
+<h3 id="开源厂商"><a href="#开源厂商" class="headerlink" title="开源厂商"></a>开源厂商</h3><p>Pivotal（Spring官方团队）</p>
+<h3 id="产品特点"><a href="#产品特点" class="headerlink" title="产品特点"></a>产品特点</h3><ul>
+<li>遵循Spring Cloud Config的配置管理规范</li>
+<li>后端存储支持丰富（支持Git、SVN、MySQL、Vault、本地存储等）</li>
+</ul>
+<h3 id="演示环境"><a href="#演示环境" class="headerlink" title="演示环境"></a>演示环境</h3><p>暂无</p>
+<h3 id="成功案例"><a href="#成功案例" class="headerlink" title="成功案例"></a>成功案例</h3><p>N多，目前用Spring Cloud的大多团队都是用的Spring Cloud Config</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>没有界面，管理麻烦</li>
+<li>没有权限管理</li>
+<li>依赖繁多，例如：<ul>
+<li>如果使用Git作为后端存储，需要搭建GitLab或其他Git服务器集群</li>
+<li>如需实现配置批量刷新，需要借助Spring Cloud Bus，依赖Kafka或RabbitMQ</li>
+</ul>
+</li>
+<li>由于依赖太多，集群搭建很麻烦——GitLab、MQ、Config Server本身都得做集群</li>
+</ul>
+<h2 id="二、Apollo"><a href="#二、Apollo" class="headerlink" title="二、Apollo"></a>二、Apollo</h2><h3 id="GitHub地址-1"><a href="#GitHub地址-1" class="headerlink" title="GitHub地址"></a>GitHub地址</h3><p><a href="javascript:;" target="_blank" rel="noopener">https://github.com/ctripcorp/apollo</a> ，Star数11169，社区很活跃</p>
+<h3 id="开源厂商-1"><a href="#开源厂商-1" class="headerlink" title="开源厂商"></a>开源厂商</h3><p>携程</p>
+<h3 id="产品特点-1"><a href="#产品特点-1" class="headerlink" title="产品特点"></a>产品特点</h3><ul>
+<li>概念较为清晰，上手简单</li>
+<li><strong>完善的流程、权限控制</strong></li>
+<li>界面友好</li>
+<li>文档较为丰富</li>
+</ul>
+<h3 id="成功案例-1"><a href="#成功案例-1" class="headerlink" title="成功案例"></a>成功案例</h3><p>携程、网易蜂巢、中国平安等，更多公司详见<a href="javascript:;" target="_blank" rel="noopener">https://github.com/ctripcorp/apollo</a></p>
+<h3 id="演示环境-1"><a href="#演示环境-1" class="headerlink" title="演示环境"></a>演示环境</h3><p><code>http://106.12.25.204:8070/</code> </p>
+<p>账号/密码：apollo/admin</p>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>暂未发现</p>
+<h2 id="三、Nacos"><a href="#三、Nacos" class="headerlink" title="三、Nacos"></a>三、Nacos</h2><h3 id="GitHub地址-2"><a href="#GitHub地址-2" class="headerlink" title="GitHub地址"></a>GitHub地址</h3><p><a href="javascript:;" target="_blank" rel="noopener">https://github.com/alibaba/nacos</a> ，Star数3820，社区非常活跃</p>
+<h3 id="开源厂商-2"><a href="#开源厂商-2" class="headerlink" title="开源厂商"></a>开源厂商</h3><p>阿里巴巴</p>
+<h3 id="产品特点-2"><a href="#产品特点-2" class="headerlink" title="产品特点"></a>产品特点</h3><ul>
+<li><strong>目前在Spring Cloud孵化器中孵化，孵化成功后，将成为Spring Cloud官方推荐的组件之一</strong></li>
+<li>不仅能做配置管理，也能做注册中心</li>
+<li>界面友好</li>
+<li>上手简单</li>
+<li>文档丰富</li>
+</ul>
+<h3 id="成功案例-2"><a href="#成功案例-2" class="headerlink" title="成功案例"></a>成功案例</h3><p>阿里巴巴、虎牙直播、工商银行软件开发中心、爱奇艺等，更多公司详见<a href="javascript:;" target="_blank" rel="noopener">https://github.com/alibaba/nacos/issues/273</a></p>
+<h3 id="演示环境-2"><a href="#演示环境-2" class="headerlink" title="演示环境"></a>演示环境</h3><p><code>http://console.nacos.io/nacos/index.html</code> </p>
+<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><p>暂未发现明显缺点</p>
+<h2 id="四、Disconf"><a href="#四、Disconf" class="headerlink" title="四、Disconf"></a>四、Disconf</h2><h3 id="GitHub地址-3"><a href="#GitHub地址-3" class="headerlink" title="GitHub地址"></a>GitHub地址</h3><p><a href="javascript:;" target="_blank" rel="noopener">https://github.com/knightliao/disconf</a> ，Start数4505，社区活跃度一般</p>
+<h3 id="开源厂商-3"><a href="#开源厂商-3" class="headerlink" title="开源厂商"></a>开源厂商</h3><p>原百度员工，现在蚂蚁金服</p>
+<h3 id="产品特点-3"><a href="#产品特点-3" class="headerlink" title="产品特点"></a>产品特点</h3><ul>
+<li>界面良好</li>
+<li>部署简单</li>
+</ul>
+<h3 id="成功案例-3"><a href="#成功案例-3" class="headerlink" title="成功案例"></a>成功案例</h3><p>百度、滴滴出行、顺丰、网易等，更多公司详见<a href="javascript:;" target="_blank" rel="noopener">https://github.com/knightliao/disconf</a></p>
+<h3 id="缺点-3"><a href="#缺点-3" class="headerlink" title="缺点"></a>缺点</h3><p>最新的版本发布于两年前，有点久了。</p>
+<h2 id="五、Spring-Cloud-Consul"><a href="#五、Spring-Cloud-Consul" class="headerlink" title="五、Spring Cloud Consul"></a>五、Spring Cloud Consul</h2><h3 id="GitHub地址-4"><a href="#GitHub地址-4" class="headerlink" title="GitHub地址"></a>GitHub地址</h3><p><a href="javascript:;" target="_blank" rel="noopener">https://github.com/spring-cloud/spring-cloud-consul</a> ，Star数493，官方组件，社区较活跃</p>
+<h3 id="开源厂商-4"><a href="#开源厂商-4" class="headerlink" title="开源厂商"></a>开源厂商</h3><p>Pivotal（Spring官方团队）</p>
+<h3 id="产品特点-4"><a href="#产品特点-4" class="headerlink" title="产品特点"></a>产品特点</h3><ul>
+<li>有个还算将就的界面</li>
+<li>使用较为简单</li>
+<li>遵循Spring Cloud Config的配置管理规范</li>
+<li>不仅能做配置管理，也能做注册中心</li>
+</ul>
+<h3 id="成功案例-4"><a href="#成功案例-4" class="headerlink" title="成功案例"></a>成功案例</h3><p>暂未发现</p>
+<h3 id="演示环境-3"><a href="#演示环境-3" class="headerlink" title="演示环境"></a>演示环境</h3><p>暂无</p>
+<h3 id="缺点-4"><a href="#缺点-4" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>没有权限管理</li>
+<li>管理界面不够友善</li>
+<li>要想用得好，得了解Spring Cloud Config管理规范</li>
+</ul>
+<h2 id="六、Spring-Cloud-Zookeeper"><a href="#六、Spring-Cloud-Zookeeper" class="headerlink" title="六、Spring Cloud Zookeeper"></a>六、Spring Cloud Zookeeper</h2><h3 id="GitHub地址-5"><a href="#GitHub地址-5" class="headerlink" title="GitHub地址"></a>GitHub地址</h3><p><a href="javascript:;" target="_blank" rel="noopener">https://github.com/spring-cloud/spring-cloud-zookeeper</a> ，Star数330，官方组件，社区较活跃</p>
+<h3 id="开源厂商-5"><a href="#开源厂商-5" class="headerlink" title="开源厂商"></a>开源厂商</h3><p>Pivotal（Spring官方团队）</p>
+<h3 id="产品特点-5"><a href="#产品特点-5" class="headerlink" title="产品特点"></a>产品特点</h3><ul>
+<li>使用较为简单</li>
+<li>遵循Spring Cloud Config的配置管理规范</li>
+<li>不仅能做配置管理，也能做注册中心</li>
+</ul>
+<h3 id="演示环境-4"><a href="#演示环境-4" class="headerlink" title="演示环境"></a>演示环境</h3><p>暂无</p>
+<h3 id="成功案例-5"><a href="#成功案例-5" class="headerlink" title="成功案例"></a>成功案例</h3><p>暂未发现</p>
+<h3 id="缺点-5"><a href="#缺点-5" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>无界面</li>
+<li>无权限管理</li>
+<li>要想用得好，得了解Spring Cloud Config管理规范</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>如果使用的是Spring Cloud Kubernetes，或者将Spring Cloud应用部署在Kubernetes环境中，还可以选择ConfigMap，这种方式就笔者了解，业界这么玩的还不多，暂时不分析了。已经将Spring Cloud Kubernetes列入博客19年更新名单中了，敬请期待。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ul>
+<li>Spring Cloud Config不太好用，需要制作一个界面，才能更好地帮助我们管理配置；</li>
+<li>Nacos或者Apollo是笔者现在眼中的首选，功能完备、上手简单、傻瓜化操作、并且目前维护比较给力；</li>
+<li>Consul也可以作为一个选择，但国内用Consul做配置管理的公司还没发现，并且Consul是Go语言编写的，如果选用，得有Hold住它的能力——尽管Consul很稳定。</li>
+</ul>
+
+        <h2>相关文章</h2><ul><li><a href="../../spring-cloud-alibaba/02-nacos-service-registry/index.html">Spring Cloud Alibaba系列教程-02-将应用注册到Nacos上</a></li><li><a href="../../spring-cloud-alibaba/01-nacos-install/index.html">Spring Cloud Alibaba系列教程-01-Nacos安装与启停</a></li><li><a href="../../spring-cloud-alibaba/03-nacos-ha/index.html">Spring Cloud Alibaba系列教程-03-搭建生产可用的Nacos集群</a></li><li><a href="../../spring-cloud-alibaba/04-nacos-config/index.html">Spring Cloud Alibaba系列教程-04-使用Nacos管理配置</a></li><li><a href="../../spring-cloud-alibaba-migration/spring-cloud-alibaba-1/index.html">Spring Cloud Alibaba迁移指南1：零代码从Eureka迁移到Nacos</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">Spring Cloud生态的配置服务器最全对比贴</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../../spring-cloud/finchley-19/index.html" class="pre-post btn btn-default" title="跟我学Spring Cloud（Finchley版）-19-配置中心-Spring Cloud Config">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">跟我学Spring Cloud（Finchley版）-19-配置中心-Spring Cloud Config</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../spring-cloud/finchley-18/index.html" class="next-post btn btn-default" title="跟我学Spring Cloud（Finchley版）-18-Zuul深入">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">跟我学Spring Cloud（Finchley版）-18-Zuul深入</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

@@ -1,0 +1,613 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:39 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Feign">
+
+
+    <meta name="description" content="上一节（ 跟我学Spring Cloud（Finchley版）-09-Feign ）讲了Feign的入门姿势并深入对比了RestTemplate，本节来深入探讨Feign的高级特性。总的来说，Feign是一个相对简单的组件，但细节还是比较多的，一不小心就可能入坑，注意点我会以WARINING的...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>跟我学Spring Cloud（Finchley版）-10-Feign深入 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="跟我学Spring Cloud（Finchley版）-10-Feign深入">
+            
+                跟我学Spring Cloud（Finchley版）-10-Feign深入
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Feign</a> <a class="tag-link" href="javascript:;">Spring Cloud</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/01/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Feign配置自定义【细粒度配置】"><span class="toc-text">Feign配置自定义【细粒度配置】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方式一、代码配置方式"><span class="toc-text">方式一、代码配置方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#代码示例：自定义日志级别"><span class="toc-text">代码示例：自定义日志级别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#配套代码"><span class="toc-text">配套代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法二、属性配置方式【Edgware开始提供】"><span class="toc-text">方法二、属性配置方式【Edgware开始提供】</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#代码示例：自定义日志级别-1"><span class="toc-text">代码示例：自定义日志级别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#配套代码-1"><span class="toc-text">配套代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Feign配置自定义【通用配置】"><span class="toc-text">Feign配置自定义【通用配置】</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置优先级"><span class="toc-text">配置优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#压缩"><span class="toc-text">压缩</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#继承"><span class="toc-text">继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他特性"><span class="toc-text">其他特性</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>上一节（ <a href="../finchley-9/index.html">跟我学Spring Cloud（Finchley版）-09-Feign</a> ）讲了Feign的入门姿势并深入对比了RestTemplate，本节来深入探讨Feign的高级特性。总的来说，Feign是一个相对简单的组件，<strong>但细节还是比较多的，一不小心就可能入坑</strong>，注意点我会以WARINING的形式标记出来，便于读者查阅。</p>
+<h2 id="Feign配置自定义【细粒度配置】"><a href="#Feign配置自定义【细粒度配置】" class="headerlink" title="Feign配置自定义【细粒度配置】"></a>Feign配置自定义【细粒度配置】</h2><h3 id="方式一、代码配置方式"><a href="#方式一、代码配置方式" class="headerlink" title="方式一、代码配置方式"></a>方式一、代码配置方式</h3><p>Spring Cloud Netflix provides the following beans by default for feign (<code>BeanType</code> beanName: <code>ClassName</code>):</p>
+<ul>
+<li><code>Decoder</code> feignDecoder: <code>ResponseEntityDecoder</code> (which wraps a <code>SpringDecoder</code>)</li>
+<li><code>Encoder</code> feignEncoder: <code>SpringEncoder</code></li>
+<li><code>Logger</code> feignLogger: <code>Slf4jLogger</code></li>
+<li><code>Contract</code> feignContract: <code>SpringMvcContract</code></li>
+<li><code>Feign.Builder</code> feignBuilder: <code>HystrixFeign.Builder</code></li>
+<li><code>Client</code> feignClient: if Ribbon is enabled it is a <code>LoadBalancerFeignClient</code>, otherwise the default feign client is used.</li>
+</ul>
+<p>The OkHttpClient and ApacheHttpClient feign clients can be used by setting <code>feign.okhttp.enabled</code> or<code>feign.httpclient.enabled</code> to <code>true</code>, respectively, and having them on the classpath.</p>
+<p>Spring Cloud Netflix <em>does not</em> provide the following beans by default for feign, but still looks up beans of these types from the application context to create the feign client:</p>
+<ul>
+<li><code>Logger.Level</code></li>
+<li><code>Retryer</code></li>
+<li><code>ErrorDecoder</code></li>
+<li><code>Request.Options</code></li>
+<li><code>Collection&lt;RequestInterceptor&gt;</code></li>
+<li><code>SetterFactory</code></li>
+</ul>
+<h4 id="代码示例：自定义日志级别"><a href="#代码示例：自定义日志级别" class="headerlink" title="代码示例：自定义日志级别"></a>代码示例：自定义日志级别</h4><p>默认Feign是不打印任何日志的，下面我们来开启Feign的日志，Feign有四种日志级别：</p>
+<ul>
+<li>NONE【性能最佳，适用于生产】：不记录任何日志（默认值）。</li>
+<li><strong>BASIC【适用于生产环境追踪问题】</strong>：仅记录请求方法、URL、响应状态代码以及执行时间。</li>
+<li>HEADERS：记录BASIC级别的基础上，记录请求和响应的header。</li>
+<li><strong>FULL【比较适用于开发及测试环境定位问题】</strong>：记录请求和响应的header、body和元数据。</li>
+</ul>
+<blockquote>
+<p><strong>插科打诨 &amp; 恶意揣测</strong></p>
+<p><a href="../finchley-9/index.html">跟我学Spring Cloud（Finchley版）-09-Feign</a>说过，Feign的性能中等，可能官方对自己的性能也是知道的，索性全部关闭日志了，哈哈</p>
+</blockquote>
+<ul>
+<li><p>将前文的Feign Client修改为如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(name = <span class="string">"microservice-provider-user"</span>, configuration = UserFeignConfig.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserFeignClient</span> </span>&#123;</span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/users/&#123;id&#125;"</span>)</span><br><span class="line">  <span class="function">User <span class="title">findById</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> Long id)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 该Feign Client的配置类，注意：</span></span><br><span class="line"><span class="comment"> * 1. 该类可以独立出去；</span></span><br><span class="line"><span class="comment"> * 2. 该类上也可添加<span class="doctag">@Configuration</span>声明是一个配置类；</span></span><br><span class="line"><span class="comment"> * 配置类上也可添加<span class="doctag">@Configuration</span>注解，声明这是一个配置类；</span></span><br><span class="line"><span class="comment"> * 但此时千万别将该放置在主应用程序上下文<span class="doctag">@ComponentScan</span>所扫描的包中，</span></span><br><span class="line"><span class="comment"> * 否则，该配置将会被所有Feign Client共享，无法实现细粒度配置！</span></span><br><span class="line"><span class="comment"> * 个人建议：像我一样，不加<span class="doctag">@Configuration</span>注解</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> zhouli</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserFeignConfig</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Bean</span></span><br><span class="line">  <span class="keyword">public</span> Logger.<span class="function">Level <span class="title">logger</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Logger.Level.FULL;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如代码所示，使用注解<code>@FeignClient</code> 的<code>configuration</code> 属性，指定一个类，即可实现Feign配置自定义。</p>
+<blockquote>
+<p><strong>TIPS</strong></p>
+<ul>
+<li>本例简单起见，直接弄了个外部类作为配置类<code>UserFeignConfig</code>，读者也可将该类独立出去作为一个<code>public class</code> 。</li>
+</ul>
+<p><strong>WARNING</strong></p>
+<ul>
+<li>配置类上也可添加<code>@Configuraiton</code> 注解，声明这是一个配置类；但此时千万别将该放置在主应用程序上下文<code>@ComponentScan</code> 所扫描的包中，<strong>否则，该配置将会被所有Feign Client共享</strong>（相当于变成了通用配置，其实本质还是Spring父子上下文扫描包重叠导致的问题），无法实现细粒度配置！</li>
+<li><strong>个人建议</strong>：像我一样，不加@Configuration注解，省得进坑。</li>
+</ul>
+<p><strong>联想记忆</strong></p>
+<p>还记得Ribbon如何使用Java代码自定义配置吗？Ribbon使用Java代码自定义配置时也必须防止配置类在<code>@ComponentScan</code> 上下文内，详见： <a href="../finchley-8/index.html">跟我学Spring Cloud（Finchley版）-08-Ribbon深入</a> </p>
+</blockquote>
+</li>
+<li><p>在<code>application.yml</code> 中添加以下内容，将该Feign接口的日志级别设置为DEBUG：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">logging:</span></span><br><span class="line"><span class="attr">  level:</span></span><br><span class="line">    <span class="string">com.itmuch.cloud.study.user.feign.UserFeignClient:</span> <span class="string">debug</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>此时，当该Feign Client的方法被调用时，将会打印类似如下的日志：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">2019-01-10 22:14:10.611 DEBUG 26321 --- [nio-8010-exec-2] c.i.c.study.user.feign.UserFeignClient   : [UserFeignClient#findById] ---&gt; GET http://microservice-provider-user/users/1 HTTP/1.1</span><br><span class="line">2019-01-10 22:14:10.611 DEBUG 26321 --- [nio-8010-exec-2] c.i.c.study.user.feign.UserFeignClient   : [UserFeignClient#findById] ---&gt; END HTTP (0-byte body)</span><br><span class="line">2019-01-10 22:14:10.623 DEBUG 26321 --- [nio-8010-exec-2] c.i.c.study.user.feign.UserFeignClient   : [UserFeignClient#findById] &lt;--- HTTP/1.1 200 (11ms)</span><br><span class="line">2019-01-10 22:14:10.623 DEBUG 26321 --- [nio-8010-exec-2] c.i.c.study.user.feign.UserFeignClient   : [UserFeignClient#findById] content-type: application/json;charset=UTF-8</span><br><span class="line">2019-01-10 22:14:10.623 DEBUG 26321 --- [nio-8010-exec-2] c.i.c.study.user.feign.UserFeignClient   : [UserFeignClient#findById] date: Thu, 10 Jan 2019 14:14:10 GMT</span><br><span class="line">2019-01-10 22:14:10.623 DEBUG 26321 --- [nio-8010-exec-2] c.i.c.study.user.feign.UserFeignClient   : [UserFeignClient#findById] transfer-encoding: chunked</span><br><span class="line">2019-01-10 22:14:10.623 DEBUG 26321 --- [nio-8010-exec-2] c.i.c.study.user.feign.UserFeignClient   : [UserFeignClient#findById] </span><br><span class="line">2019-01-10 22:14:10.624 DEBUG 26321 --- [nio-8010-exec-2] c.i.c.study.user.feign.UserFeignClient   : [UserFeignClient#findById] &#123;"id":1,"username":"account1","name":"张三","age":20,"balance":100.00&#125;</span><br><span class="line">2019-01-10 22:14:10.624 DEBUG 26321 --- [nio-8010-exec-2] c.i.c.study.user.feign.UserFeignClient   : [UserFeignClient#findById] &lt;--- END HTTP (72-byte body)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="配套代码"><a href="#配套代码" class="headerlink" title="配套代码"></a>配套代码</h4><p>GitHub：<a href="javascript:;" target="_blank" rel="noopener">https://github.com/eacdy/spring-cloud-study/tree/master/2018-Finchley/microservice-consumer-movie-feign-config-java</a></p>
+<p>Gitee：<a href="javascript:;" target="_blank" rel="noopener">https://gitee.com/itmuch/spring-cloud-study/tree/master/2018-Finchley/microservice-consumer-movie-feign-config-java</a></p>
+<h3 id="方法二、属性配置方式【Edgware开始提供】"><a href="#方法二、属性配置方式【Edgware开始提供】" class="headerlink" title="方法二、属性配置方式【Edgware开始提供】"></a>方法二、属性配置方式【Edgware开始提供】</h3><p>从Spring Cloud Edgware开始，Feign支持使用属性自定义Feign。对于一个指定名称的Feign Client（例如该Feign Client的名称为<code>feignName</code> ），Feign支持如下配置项：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      feignName:</span></span><br><span class="line"><span class="attr">        connectTimeout:</span> <span class="number">5000</span>  <span class="comment"># 相当于Request.Options</span></span><br><span class="line"><span class="attr">        readTimeout:</span> <span class="number">5000</span>     <span class="comment"># 相当于Request.Options</span></span><br><span class="line">        <span class="comment"># 配置Feign的日志级别，相当于代码配置方式中的Logger</span></span><br><span class="line"><span class="attr">        loggerLevel:</span> <span class="string">full</span></span><br><span class="line">        <span class="comment"># Feign的错误解码器，相当于代码配置方式中的ErrorDecoder</span></span><br><span class="line"><span class="attr">        errorDecoder:</span> <span class="string">com.example.SimpleErrorDecoder</span></span><br><span class="line">        <span class="comment"># 配置重试，相当于代码配置方式中的Retryer</span></span><br><span class="line"><span class="attr">        retryer:</span> <span class="string">com.example.SimpleRetryer</span></span><br><span class="line">        <span class="comment"># 配置拦截器，相当于代码配置方式中的RequestInterceptor</span></span><br><span class="line"><span class="attr">        requestInterceptors:</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">com.example.FooRequestInterceptor</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">com.example.BarRequestInterceptor</span></span><br><span class="line"><span class="attr">        decode404:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p><strong>TIPS</strong></p>
+<p><strong>个人并不建议配置retryer</strong>，Spring Cloud Camden以及之后的版本中，Spring Cloud关闭了Feign的重试，而是使用Ribbon的重试。如果自己再定义Feign的重试后，那么可能会造成重试特性的混乱。笔者已在<a href="javascript:;" target="_blank" rel="noopener">https://github.com/spring-cloud/spring-cloud-netflix/issues/2330</a> 提出该问题。</p>
+<h4 id="代码示例：自定义日志级别-1"><a href="#代码示例：自定义日志级别-1" class="headerlink" title="代码示例：自定义日志级别"></a>代码示例：自定义日志级别</h4><p>要想用属性配置方式来达到上面Java代码方式的效果，只需在<code>application.yml</code> 中添加如下内容即可：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      microservice-provider-user:</span></span><br><span class="line"><span class="attr">        loggerLevel:</span> <span class="string">full</span></span><br><span class="line"><span class="attr">logging:</span></span><br><span class="line"><span class="attr">  level:</span></span><br><span class="line">    <span class="string">com.itmuch.cloud.study.user.feign.UserFeignClient:</span> <span class="string">debug</span></span><br></pre></td></tr></table></figure>
+<h4 id="配套代码-1"><a href="#配套代码-1" class="headerlink" title="配套代码"></a>配套代码</h4><p>GitHub：<a href="javascript:;" target="_blank" rel="noopener">https://github.com/eacdy/spring-cloud-study/tree/master/2018-Finchley/microservice-consumer-movie-feign-config-properties</a></p>
+<p>Gitee：<a href="javascript:;" target="_blank" rel="noopener">https://gitee.com/itmuch/spring-cloud-study/tree/master/2018-Finchley/microservice-consumer-movie-feign-config-properties</a></p>
+<h2 id="Feign配置自定义【通用配置】"><a href="#Feign配置自定义【通用配置】" class="headerlink" title="Feign配置自定义【通用配置】"></a>Feign配置自定义【通用配置】</h2><p>上面讨论了如何配置特定名称的Feign Client，那么如果想为所有的Feign Client都进行配置，该怎么办呢？我们知道，<code>@EnableFeignClients</code> 注解上有个<code>defaultConfiguration</code> 属性，我们可以将默认配置写成一个类，然后用<code>defaultConfiguration</code> 来引用，例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableFeignClients</span>(defaultConfiguration = DefaultRibbonConfig.class)</span><br></pre></td></tr></table></figure>
+<p>如果想使用配置属性的方式，只需使用类似如下的写法即可。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      default:</span></span><br><span class="line"><span class="attr">        connectTimeout:</span> <span class="number">5000</span></span><br><span class="line"><span class="attr">        readTimeout:</span> <span class="number">5000</span></span><br><span class="line"><span class="attr">        loggerLevel:</span> <span class="string">basic</span></span><br></pre></td></tr></table></figure>
+<h2 id="配置优先级"><a href="#配置优先级" class="headerlink" title="配置优先级"></a>配置优先级</h2><p>如果你不小心又使用了Java代码配置Feign，同时又使用了配置属性配置Feign，那么<strong>使用配置属性的优先级更高</strong>。配置属性配置的方式将会覆盖Java代码配置。如果你想修改代码配置方式的优先级，可使用如下属性：<code>feign.client.default-to-properties=false</code> 。</p>
+<h2 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h2><p>一些场景下，我们可能需要对请求或响应进行压缩，此时可使用以下属性启用Feign的压缩功能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">feign.compression.request.enabled=true</span><br><span class="line">feign.compression.response.enabled=true</span><br></pre></td></tr></table></figure>
+<p>对于请求的压缩，Feign还提供了更为详细的设置，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">feign.compression.request.enabled=true</span><br><span class="line">feign.compression.request.mime-types=text/xml,application/xml,application/json</span><br><span class="line">feign.compression.request.min-request-size=2048</span><br></pre></td></tr></table></figure>
+<p>其中，<code>feign.compression.request.mime-types</code> 用于支持的媒体类型列表，默认是text/xml、application/xml以及application/json。</p>
+<p><code>feign.compression.request.min-request-size</code> 用于设置请求的最小阈值，默认是2048。</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>比较重要，业界对继承特性看法非常不一样，喜欢的特别喜欢，讨厌的特别讨厌（例如我）。将以番外形式体现，并对比两者优缺点，<strong>以及最佳实践</strong>，明天或后天更新，敬请期待。</p>
+<h2 id="其他特性"><a href="#其他特性" class="headerlink" title="其他特性"></a>其他特性</h2><p>Feign其他特性我已经写了很多了，知识体系已经完备了。懒得再在这个系列里凑字数，这不是我的风格，直接贴地址吧：</p>
+<ul>
+<li><a href="../../spring-cloud-sum/feign-hystrix/index.html">生产技巧：Feign如何控制Hystrix的启停、超时、熔断？</a></li>
+<li><a href="../../spring-cloud-sum/feign-form-params/index.html">使用Feign实现Form表单提交</a></li>
+<li><a href="../../spring-cloud-sum/feign-multiple-params/index.html">如何使用Feign构造多参数的请求</a></li>
+<li><a href="javascript:;">Spring Cloud中，Feign常见问题总结</a></li>
+<li><a href="../../spring-cloud-feign-ribbon-first-request-fail/index.html">Spring Cloud中，如何解决Feign/Ribbon第一次请求失败的问题？</a></li>
+<li><a href="../../spring-cloud-sum/spring-cloud-feign-upload/index.html">使用Spring Cloud Feign上传文件</a></li>
+</ul>
+
+        <h2>相关文章</h2><ul><li><a href="../../spring-cloud-sum/feign-form-params/index.html">使用Feign实现Form表单提交</a></li><li><a href="../../spring-cloud-feign-ribbon-first-request-fail/index.html">Spring Cloud中，如何解决Feign/Ribbon第一次请求失败的问题？</a></li><li><a href="../finchley-14/index.html">跟我学Spring Cloud（Finchley版）-14-Feign使用Hystrix</a></li><li><a href="../finchley-15/index.html">跟我学Spring Cloud（Finchley版）-15-Hystrix监控详解</a></li><li><a href="../finchley-11/index.html">跟我学Spring Cloud（Finchley版）-11-Feign常见问题总结</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">跟我学Spring Cloud（Finchley版）-10-Feign深入</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../finchley-11/index.html" class="pre-post btn btn-default" title="跟我学Spring Cloud（Finchley版）-11-Feign常见问题总结">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">跟我学Spring Cloud（Finchley版）-11-Feign常见问题总结</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../work/jdk12/index.html" class="next-post btn btn-default" title="JDK 12即将发布，你还学得动吗？">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">JDK 12即将发布，你还学得动吗？</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

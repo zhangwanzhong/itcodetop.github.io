@@ -1,0 +1,640 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:38 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Light Security">
+
+
+    <meta name="description" content="Light Security是一款简洁而不简单的权限控制框架，基于 jwt ，支持与 Spring Boot 配合使用。
+地址
+GitHub
+Gitee
+
+特点优点
+上手快速
+开箱即用
+轻量级，代码精简，不到500行代码；
+功能实用，市面上安全框架常用能力与套路均已具备：
+支持 RESTful...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Light Security 1.0.1发布 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Light Security 1.0.1发布">
+            
+                Light Security 1.0.1发布
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="../../categories/工作/index.html">工作</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Light Security</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/04/27</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#地址"><span class="toc-text">地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特点"><span class="toc-text">特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#依赖"><span class="toc-text">依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#快速上手"><span class="toc-text">快速上手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基于配置文件的权限配置"><span class="toc-text">基于配置文件的权限配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于代码的权限配置"><span class="toc-text">基于代码的权限配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展点"><span class="toc-text">扩展点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见问题"><span class="toc-text">常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么要再造个轮子？"><span class="toc-text">为什么要再造个轮子？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么不实现一个通用的权限解决方案？"><span class="toc-text">为什么不实现一个通用的权限解决方案？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么不考虑身份认证-登录-？"><span class="toc-text">为什么不考虑身份认证(登录)？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TODO"><span class="toc-text">TODO</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <p>Light Security是一款简洁而不简单的权限控制框架，基于 <code>jwt</code> ，支持与 <code>Spring Boot</code> 配合使用。</p>
+<h2 id="地址"><a href="#地址" class="headerlink" title="地址"></a>地址</h2><ul>
+<li><a href="javascript:;" target="_blank" rel="noopener">GitHub</a></li>
+<li><a href="javascript:;" target="_blank" rel="noopener">Gitee</a></li>
+</ul>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>上手快速</li>
+<li><strong>开箱即用</strong></li>
+<li><strong>轻量级，代码精简，不到500行代码</strong>；</li>
+<li><strong>功能实用，市面上安全框架常用能力与套路均已具备</strong>：<ul>
+<li>支持 <code>RESTful</code> 权限控制</li>
+<li>支持灵活的权限配置(<strong>代码配置方式优先级更高</strong>)<ul>
+<li>支持基于配置文件的权限配置</li>
+<li>支持基于代码的权限控制</li>
+</ul>
+</li>
+<li>支持基于注解的权限控制</li>
+</ul>
+</li>
+<li>设计简单，没有复杂概念；<ul>
+<li>基于权限配置的方式：核心是1个拦截器</li>
+<li>基于注解的权限控制：核心是1个切面</li>
+</ul>
+</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>功能<ul>
+<li>比 Spring Security 弱一点</li>
+<li>和Shiro比功能差不多，但没有实现复杂的Authentication Strategy（想实现；</li>
+</ul>
+</li>
+<li><strong>只考虑权限相关问题</strong><ul>
+<li>不考虑身份认证(登录)，意味着登录逻辑得自己玩；</li>
+<li>不考虑防攻击，意味着网络攻击得自己防；</li>
+</ul>
+</li>
+<li><strong>目前与Spring MVC强绑定</strong>，暂不支持WebFlux或其他框架。</li>
+</ul>
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><ul>
+<li>Spring MVC：用到Spring MVC的拦截器，如果只使用基于注解的权限控制，则无需该部分依赖；</li>
+<li>Spring AOP：如果不用基于注解的权限控制，则无需该部分依赖；</li>
+<li>jwt：你懂的</li>
+</ul>
+<h2 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h2><blockquote>
+<p><strong>TIPS</strong></p>
+<p>快速上手可详见项目 <code>light-security-example</code> 目录，内附详细测试步骤。</p>
+</blockquote>
+<h3 id="基于配置文件的权限配置"><a href="#基于配置文件的权限配置" class="headerlink" title="基于配置文件的权限配置"></a>基于配置文件的权限配置</h3><ul>
+<li><p>加依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.itmuch.security<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>light-security-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.1-RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-aop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>写配置</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">light-security:</span></span><br><span class="line">  <span class="comment"># 权限规则配置：表示用&#123;http-method&#125;方法请求的&#123;path&#125;路径必须具备什么&#123;expression&#125;</span></span><br><span class="line"><span class="attr">  spec-list:</span></span><br><span class="line"><span class="attr">    - http-method:</span> <span class="string">ANY</span></span><br><span class="line"><span class="attr">      path:</span> <span class="string">/login</span></span><br><span class="line"><span class="attr">      expression:</span> <span class="string">"anon()"</span></span><br><span class="line"><span class="attr">    - http-method:</span> <span class="string">ANY</span></span><br><span class="line"><span class="attr">      path:</span> <span class="string">/user</span></span><br><span class="line"><span class="attr">      expression:</span> <span class="string">"hasAnyRoles('user','admin')"</span></span><br><span class="line"><span class="attr">    - http-method:</span> <span class="string">GET</span></span><br><span class="line"><span class="attr">      path:</span> <span class="string">/error</span></span><br><span class="line"><span class="attr">      expression:</span> <span class="string">"anon()"</span></span><br><span class="line"><span class="attr">    - http-method:</span> <span class="string">ANY</span></span><br><span class="line"><span class="attr">      path:</span> <span class="string">/**</span></span><br><span class="line"><span class="attr">      expression:</span> <span class="string">"hasLogin()"</span></span><br><span class="line"><span class="attr">  jwt:</span></span><br><span class="line">    <span class="comment"># jwt sign算法</span></span><br><span class="line"><span class="attr">    algorithm:</span> <span class="string">hs512</span></span><br><span class="line">    <span class="comment"># jwt secret</span></span><br><span class="line"><span class="attr">    secret:</span> <span class="string">http-security-secret-modify-mehttp-security-secret-modify</span></span><br><span class="line">    <span class="comment"># jwt 有效时间</span></span><br><span class="line"><span class="attr">    expiration-in-second:</span> <span class="number">1209600</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>写代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequiredArgsConstructor</span>(onConstructor = @__(<span class="meta">@Autowired</span>))</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> UserOperator userOperator;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> JwtOperator operator;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 演示如何获取当前登录用户信息</span></span><br><span class="line"><span class="comment">     * - 该路径需要具备user或admin权限才可访问，详见application.yml</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 用户信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/user"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userOperator.getUser();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 演示基于注解的权限控制</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 如果有权限返回 亲，你同时有user、admin角色..</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/annotation-test"</span>)</span><br><span class="line">    <span class="meta">@PreAuthorize</span>(<span class="string">"hasAllRoles('user','admin')"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">annotationTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"亲，你同时有user、admin角色.."</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 模拟登录，颁发token</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> token字符串</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/login"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">loginReturnToken</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        User user = User.builder()</span><br><span class="line">                .id(<span class="number">1</span>)</span><br><span class="line">                .username(<span class="string">"张三"</span>)</span><br><span class="line">                .roles(Arrays.asList(<span class="string">"user"</span>, <span class="string">"admin"</span>))</span><br><span class="line">                .build();</span><br><span class="line">        <span class="keyword">return</span> operator.generateToken(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="基于代码的权限配置"><a href="#基于代码的权限配置" class="headerlink" title="基于代码的权限配置"></a>基于代码的权限配置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LightSecurityConfigurtion</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SpecRegistry <span class="title">specRegistry</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SpecRegistry()</span><br><span class="line">                .add(HttpMethod.GET, <span class="string">"/user"</span>, <span class="string">"hasAnyRoles('user')"</span>)</span><br><span class="line">                .add(HttpMethod.ANY, <span class="string">"/**"</span>, <span class="string">"hasLogin()"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时，<code>application.yml</code> 中的如下配置可删除，<strong>因为代码配置方式优先级更高，配置文件方式将会失效</strong>。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">light-security:</span></span><br><span class="line">  <span class="comment"># 权限规则配置：表示用&#123;http-method&#125;方法请求的&#123;path&#125;路径必须具备什么&#123;expression&#125;</span></span><br><span class="line"><span class="attr">  spec-list:</span></span><br><span class="line"><span class="attr">    - http-method:</span> <span class="string">ANY</span></span><br><span class="line"><span class="attr">      path:</span> <span class="string">/login</span></span><br><span class="line"><span class="attr">      expression:</span> <span class="string">"anon()"</span></span><br><span class="line"><span class="attr">    - http-method:</span> <span class="string">ANY</span></span><br><span class="line"><span class="attr">      path:</span> <span class="string">/user</span></span><br><span class="line"><span class="attr">      expression:</span> <span class="string">"hasAnyRoles('user','admin')"</span></span><br><span class="line"><span class="attr">    - http-method:</span> <span class="string">GET</span></span><br><span class="line"><span class="attr">      path:</span> <span class="string">/error</span></span><br><span class="line"><span class="attr">      expression:</span> <span class="string">"anon()"</span></span><br><span class="line"><span class="attr">    - http-method:</span> <span class="string">ANY</span></span><br><span class="line"><span class="attr">      path:</span> <span class="string">/**</span></span><br><span class="line"><span class="attr">      expression:</span> <span class="string">"hasLogin()"</span></span><br></pre></td></tr></table></figure>
+<h2 id="扩展点"><a href="#扩展点" class="headerlink" title="扩展点"></a>扩展点</h2><table>
+<thead>
+<tr>
+<th>类</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>com.itmuch.lightsecurity.jwt.UserOperator</td>
+<td>提供用户相关操作，例如解析token获得用户信息等。</td>
+</tr>
+<tr>
+<td>com.itmuch.lightsecurity.el.PreAuthorizeExpressionRoot</td>
+<td>提供了表达式，例如<code>hasAnyRoles(&#39;user&#39;)</code> 等，如需新能力，只要写新方法即可</td>
+</tr>
+<tr>
+<td>com.itmuch.lightsecurity.annotation.support.PreAuthorizeAspect</td>
+<td>为注解 <code>@PreAuthorize(&quot;hasAllRoles(&#39;user&#39;,&#39;admin&#39;)&quot;)</code>提供支持</td>
+</tr>
+</tbody>
+</table>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="为什么要再造个轮子？"><a href="#为什么要再造个轮子？" class="headerlink" title="为什么要再造个轮子？"></a>为什么要再造个轮子？</h3><p>老是有人问我诸如”微服务安全怎么管理？”、”Spring Securityxxxx问题你遇到过吗？”、”能写个Spring Cloud Security的系列教程吗？”、”Shiroxxxx问题你遇到过吗？”</p>
+<p>烦不胜烦，初期积极回复；后来消极回复；再后来懒得回复。</p>
+<p>分析一下，发现主要原因还是Spring Security、Shiro学习曲线较高，特别是Spring Security。所以就想写个轻量的框架，能够快速解决主要矛盾——足够简单、能实现权限控制。</p>
+<h3 id="为什么不实现一个通用的权限解决方案？"><a href="#为什么不实现一个通用的权限解决方案？" class="headerlink" title="为什么不实现一个通用的权限解决方案？"></a>为什么不实现一个通用的权限解决方案？</h3><p>有考虑实现一个通用权限框架，但那样会增加挺多代码，而且要添加挺多适配逻辑(例如适配Spring MVC、WebFlux等)。</p>
+<p>个人认为这在现阶段去实现还不合适，个人不太喜欢画饼。既然”通用性”不是目前最主要的矛盾，高效解决问题相对更加重要。那何必花精力去实现通用性？设计上支持往”通用性”迁移即可。</p>
+<p>未来如果有需求，我会做一个通用版本，并且低版本也可无痛、平滑地迁移。</p>
+<h3 id="为什么不考虑身份认证-登录-？"><a href="#为什么不考虑身份认证-登录-？" class="headerlink" title="为什么不考虑身份认证(登录)？"></a>为什么不考虑身份认证(登录)？</h3><p>目前市面上大多权限框架都考虑了”身份认证(登录)” + “权限管理” 。然而登录操作在现在这个时代，是一个”五花八门”的操作。例如：</p>
+<ul>
+<li>手机号 + 验证码登录</li>
+<li>扫二维码登录</li>
+<li>账号密码登录</li>
+<li>证书登录</li>
+</ul>
+<p>往往还需还同时支持多种登录方式。这挺难去抽象出通用模式，并为典型的登录方式提供支持。</p>
+<p>索性不考虑了——把登录问题留给使用者自己。用户可根据业务需求实现登录逻辑，并颁发Token，后面的事情就交给 <code>Light Security</code> ，让它给你搞定。这样相对更加灵活，更重要的是——你也不再需要去学习用框架应该怎么登录。</p>
+<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><ul>
+<li>支持对称加密/非对称加密配置化；</li>
+<li>支持 <code>JWE</code> </li>
+<li>补充单元测试</li>
+<li>将 <code>light-security</code> 与 <code>light-security-spring-boot</code> 分离，否则既是框架，又是Starter感觉有点怪。</li>
+</ul>
+
+        
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">Light Security 1.0.1发布</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../../spring-boot/banner/index.html" class="pre-post btn btn-default" title="Spring Boot Banner自定义">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Spring Boot Banner自定义</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../spring-cloud/spring-cloud-stream-study/index.html" class="next-post btn btn-default" title="Spring Cloud Stream 重点与总结">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Spring Cloud Stream 重点与总结</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link current" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

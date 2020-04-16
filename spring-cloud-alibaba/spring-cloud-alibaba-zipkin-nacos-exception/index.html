@@ -1,0 +1,591 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:38 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Spring Cloud Alibaba,Zipkin">
+
+
+    <meta name="description" content="
+TIPS
+
+本文服务发现组件以Nacos为例。
+本文基于 Spring Cloud Greenwich SR1 
+
+
+问题复现依赖1234&lt;dependency&gt;  &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; ...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>解决Spring Cloud Alibaba/Spring Cloud整合Zipkin之后的报错问题 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="解决Spring Cloud Alibaba/Spring Cloud整合Zipkin之后的报错问题">
+            
+                解决Spring Cloud Alibaba/Spring Cloud整合Zipkin之后的报错问题
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="javascript:;">Spring Cloud Alibaba</a> <a class="tag-link" href="javascript:;">Zipkin</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/08/25</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题复现"><span class="toc-text">问题复现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖"><span class="toc-text">依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置"><span class="toc-text">配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结果"><span class="toc-text">结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#谈谈Zipkin-Server注册到服务发现组件"><span class="toc-text">谈谈Zipkin Server注册到服务发现组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置走你！"><span class="toc-text">配置走你！</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-Cloud-Sleuth-Bug、解决方案与Pull-Request"><span class="toc-text">Spring Cloud Sleuth Bug、解决方案与Pull Request</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么Zipkin-Server不支持服务发现，Spring-Cloud还弄个服务发现的配置？"><span class="toc-text">为什么Zipkin Server不支持服务发现，Spring Cloud还弄个服务发现的配置？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一点吐槽"><span class="toc-text">一点吐槽</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <blockquote>
+<p><strong>TIPS</strong></p>
+<ul>
+<li>本文服务发现组件以Nacos为例。</li>
+<li>本文基于 <code>Spring Cloud Greenwich SR1</code> </li>
+</ul>
+</blockquote>
+<h2 id="问题复现"><a href="#问题复现" class="headerlink" title="问题复现"></a>问题复现</h2><h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-zipkin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  zipkin:</span></span><br><span class="line"><span class="attr">    base-url:</span> <span class="attr">http://localhost:9411/</span></span><br><span class="line"><span class="attr">  sleuth:</span></span><br><span class="line"><span class="attr">    sampler:</span></span><br><span class="line"><span class="attr">      probability:</span> <span class="number">1.0</span></span><br></pre></td></tr></table></figure>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>只要你的API被调用，应用就会疯狂报类似如下的异常。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">2019-08-24 23:10:25.330 ERROR [user-center,,,] 48628 --- [.naming.updater] com.alibaba.nacos.client.naming          : [NA] failed to update serviceName: DEFAULT_GROUP@@localhost</span><br><span class="line"></span><br><span class="line">java.lang.IllegalStateException: failed to req API:/nacos/v1/ns/instance/list after all servers([localhost:8848]) tried: failed to req API:http://localhost:8848/nacos/v1/ns/instance/list. code:404 msg: service not found: DEFAULT_GROUP@@localhost</span><br><span class="line">	at com.alibaba.nacos.client.naming.net.NamingProxy.reqAPI(NamingProxy.java:380) ~[nacos-client-1.0.0.jar:na]</span><br><span class="line">	at com.alibaba.nacos.client.naming.net.NamingProxy.reqAPI(NamingProxy.java:304) ~[nacos-client-1.0.0.jar:na]</span><br><span class="line">	at com.alibaba.nacos.client.naming.net.NamingProxy.queryList(NamingProxy.java:217) ~[nacos-client-1.0.0.jar:na]</span><br><span class="line">	at com.alibaba.nacos.client.naming.core.HostReactor.updateServiceNow(HostReactor.java:273) ~[nacos-client-1.0.0.jar:na]</span><br><span class="line">	at com.alibaba.nacos.client.naming.core.HostReactor$UpdateTask.run(HostReactor.java:318) [nacos-client-1.0.0.jar:na]</span><br><span class="line">	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [na:1.8.0_201]</span><br><span class="line">	at java.util.concurrent.FutureTask.run$$$capture(FutureTask.java:266) [na:1.8.0_201]</span><br><span class="line">	at java.util.concurrent.FutureTask.run(FutureTask.java) [na:1.8.0_201]</span><br><span class="line">	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180) [na:1.8.0_201]</span><br><span class="line">	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293) [na:1.8.0_201]</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [na:1.8.0_201]</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [na:1.8.0_201]</span><br><span class="line">	at java.lang.Thread.run(Thread.java:748) [na:1.8.0_201]</span><br></pre></td></tr></table></figure>
+<p>原因：</p>
+<p>Spring Cloud把 <code>http://localhost:9411/</code> 当作了服务发现组件里面的服务名称；于是，Nacos Client尝试从Nacos Server寻找一个名为 <code>localhost:9411</code> 的服务…这个服务根本不存在啊，于是就疯狂报异常（因为Nacos Client本地定时任务，刷新本地服务发现缓存）</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>知道原因之后，要想解决很简单：</p>
+<ul>
+<li>让Spring Cloud 正确识别  <code>http://localhost:9411/</code> ，当成一个URL，而不要当做服务名。</li>
+<li>把Zipkin Server注册到Nacos</li>
+</ul>
+<h2 id="谈谈Zipkin-Server注册到服务发现组件"><a href="#谈谈Zipkin-Server注册到服务发现组件" class="headerlink" title="谈谈Zipkin Server注册到服务发现组件"></a>谈谈Zipkin Server注册到服务发现组件</h2><p><code>Zipkin Server</code> 官方并不支持注册到服务发现组件！！！！在 <code>https://github.com/openzipkin/zipkin/issues/2540</code> 里面，官方人员解答得很清楚了：</p>
+<blockquote>
+<p><a href="javascript:;" target="_blank" rel="noopener">@nkorange</a> thank you for reaching out. We have had several users ask about service discovery with Zipkin Server over the years (see <a href="javascript:;" target="_blank" rel="noopener">#1870</a>) and less ask about dynamic/external configuration. We don’t currently support any service discovery as a first-class feature. There is a workaround to use Eureka mentioned in <a href="javascript:;" target="_blank" rel="noopener">#1870</a>. So unless a user is using that, or is building a custom Zipkin Server (which we don’t officially support), there should be no service discovery.</p>
+<p>If you want to come chat with us on Gitter (<a href="javascript:;" target="_blank" rel="noopener">https://gitter.im/openzipkin/zipkin</a>) about next steps, please do.</p>
+</blockquote>
+<p>详见 <code>We don&#39;t currently support any service discovery as a first-class feature.</code> </p>
+<p>如果你想要注册到服务发现组件，那么可以参考 <code>https://github.com/openzipkin/zipkin/issues/1870</code> 说明自己改造Zipkin Server让其注册到服务发现组件，但这样做不会得到任何官方的技术支持！！</p>
+<blockquote>
+<p>所以，将Zipkin Server注册到Nacos或者其他服务发现组件，不是最优解。我们的解决方案就演变成了：让Spring Cloud 正确识别  <code>http://localhost:9411/</code> ，当成一个URL，而不要当做服务名。这一种解决方案。</p>
+</blockquote>
+<h2 id="配置走你！"><a href="#配置走你！" class="headerlink" title="配置走你！"></a>配置走你！</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  zipkin:</span></span><br><span class="line"><span class="attr">    base-url:</span> <span class="attr">http://localhost:9411/</span></span><br><span class="line"><span class="attr">    discovery-client-enabled:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>从这个配置的注释（ 代码见 <code>org.springframework.cloud.sleuth.zipkin2.ZipkinProperties#discoveryClientEnabled</code> ）来看，只要设置成false，那么就会把 <code>http://localhost:9411/</code> 当成一个URL，而不是服务名称了。</p>
+<p>你以为已经牛逼了，然而当你去测试的时候，发现 <code>然并卵</code> ，一点效果都没有。</p>
+<h2 id="Spring-Cloud-Sleuth-Bug、解决方案与Pull-Request"><a href="#Spring-Cloud-Sleuth-Bug、解决方案与Pull-Request" class="headerlink" title="Spring Cloud Sleuth Bug、解决方案与Pull Request"></a>Spring Cloud Sleuth Bug、解决方案与Pull Request</h2><p>问题代码在这里：<code>org.springframework.cloud.sleuth.zipkin2.sender.ZipkinRestTemplateSenderConfiguration.DiscoveryClientZipkinUrlExtractorConfiguration.ZipkinClientNoOpConfiguration</code> ，里面是这么玩的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty</span>(value = <span class="string">"spring.zipkin.discoveryClientEnabled"</span>, havingValue = <span class="string">"false"</span>)</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ZipkinClientNoOpConfiguration</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当你看到这个代码的时候，就应该知道解决方案啦！那就是你得把配置修改为：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  zipkin:</span></span><br><span class="line"><span class="attr">    base-url:</span> <span class="attr">http://localhost:9411/</span></span><br><span class="line"><span class="attr">    discoveryClientEnabled:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>就可以了！</p>
+<p>这其实是Spring Cloud Sleuth子项目 <code>spring-cloud-sleuth-zipkin</code> 的一个Bug！</p>
+<ul>
+<li>相关的Issue在：<code>https://github.com/spring-cloud/spring-cloud-sleuth/issues/1376</code> </li>
+<li>解决的Pul Request在：<code>https://github.com/spring-cloud/spring-cloud-sleuth/pull/1379</code> ，<strong>代码已经合并了，在 <code>Spring Cloud Greenwich SR3</code> 版本中会修正！</strong></li>
+</ul>
+<p>简单总结一下：</p>
+<ul>
+<li>如果你使用的是Greenwich SR3之前的版本，务必使用 <code>spring.zipkin.discoveryClientEnabled = false</code> ，否则配置不生效！！</li>
+<li>如果你使用的是Greenwich SR3及更高版本，可使用 <code>discovery-client-enabled</code> 或者 <code>discoveryClientEnabled</code> 。</li>
+</ul>
+<h2 id="为什么Zipkin-Server不支持服务发现，Spring-Cloud还弄个服务发现的配置？"><a href="#为什么Zipkin-Server不支持服务发现，Spring-Cloud还弄个服务发现的配置？" class="headerlink" title="为什么Zipkin Server不支持服务发现，Spring Cloud还弄个服务发现的配置？"></a>为什么Zipkin Server不支持服务发现，Spring Cloud还弄个服务发现的配置？</h2><p>我暂时没有找到Spring Cloud这样做的意图。我的猜想：是因为早期Spring Cloud是使用自己编写代码实现Zipkin Server的（从Finchley开始，改成了直接用Zipkin官方现成的jar包启动），这种方式可以注册到你想要的服务发现组件上（因为本质上，Zipkin Server就是个基于Spring Boot的应用嘛）。</p>
+<h2 id="一点吐槽"><a href="#一点吐槽" class="headerlink" title="一点吐槽"></a>一点吐槽</h2><p>个人觉得Spring Cloud这部分的设计不太优雅，如果让我来设计的话，我应该会这么设计：</p>
+<p>URL模式：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  zipkin:</span></span><br><span class="line"><span class="attr">    base-url:</span> <span class="attr">http://localhost:9411/</span></span><br></pre></td></tr></table></figure>
+<p>服务名称的模式：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  zipkin:</span></span><br><span class="line"><span class="attr">    base-url:</span> <span class="attr">lb://zipkin-server/</span></span><br></pre></td></tr></table></figure>
+<p>这样带来的好处：</p>
+<ul>
+<li>scheme（<code>http://</code> 、 <code>lb://</code> ）就可以区分出是具体URL还是微服务名称了，无需配置 <code>discoveryClientEnabled</code> </li>
+<li><code>lb://</code> 协议和Spring Cloud Gateway形成了呼应，学习成本也比较低，使用体验更加一致</li>
+</ul>
+<p>不过工作比较忙，只有创意，暂时没有时间提交PR…哈哈，所以…吐槽完还是得继续忍着啊…</p>
+
+        <h2>相关文章</h2><ul><li><a href="../sentinel-rules-persistence-pull-mode/index.html">Alibaba Sentinel 规则持久化-拉模式-手把手教程【基于文件】</a></li><li><a href="../../spring-cloud/zipkin-server-install/index.html">Zipkin Server下载与搭建</a></li><li><a href="../01-nacos-install/index.html">Spring Cloud Alibaba系列教程-01-Nacos安装与启停</a></li><li><a href="../05-sentinel/index.html">Spring Cloud Alibaba系列教程-05-Sentinel入门与整合</a></li><li><a href="../ribbon-nacos-weight-cluster/index.html">扩展Ribbon支持Nacos集群配置</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">解决Spring Cloud Alibaba/Spring Cloud整合Zipkin之后的报错问题</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../../other/doc-generate/index.html" class="pre-post btn btn-default" title="分享：如何生成漂亮的静态文档说明页">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">分享：如何生成漂亮的静态文档说明页</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../spring-cloud/zipkin-server-install/index.html" class="next-post btn btn-default" title="Zipkin Server下载与搭建">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Zipkin Server下载与搭建</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

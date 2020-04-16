@@ -1,0 +1,767 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:38 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Spring Cloud Alibaba,Sentinel">
+
+
+    <meta name="description" content="
+本文总结了Alibaba Sentinel各种规则的参数。
+基于Sentinel 1.6.2编写，未来如果本文不再适用，可自行点击每一节 参考 一览的链接前往查看如何配置。
+
+一、流控规则1.1 配置
+
+1.2 参数
+
+
+
+Field
+说明
+默认值
+
+
+
+
+resource
+资源名，资源名是...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Alibaba Sentinel 规则参数总结 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Alibaba Sentinel 规则参数总结">
+            
+                Alibaba Sentinel 规则参数总结
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud Alibaba</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Sentinel</a> <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="javascript:;">Spring Cloud Alibaba</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/07/13</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、流控规则"><span class="toc-text">一、流控规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、降级规则"><span class="toc-text">二、降级规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、热点规则"><span class="toc-text">三、热点规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、系统规则"><span class="toc-text">四、系统规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、授权规则"><span class="toc-text">五、授权规则</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <blockquote>
+<p>本文总结了Alibaba Sentinel各种规则的参数。</p>
+<p>基于Sentinel 1.6.2编写，未来如果本文不再适用，可自行点击每一节 <code>参考</code> 一览的链接前往查看如何配置。</p>
+</blockquote>
+<h2 id="一、流控规则"><a href="#一、流控规则" class="headerlink" title="一、流控规则"></a>一、流控规则</h2><p>1.1 配置</p>
+<p><img src="../../static/picture/flow.png" alt="流控规则"></p>
+<p>1.2 参数</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>说明</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>resource</td>
+<td>资源名，资源名是限流规则的作用对象</td>
+<td></td>
+</tr>
+<tr>
+<td>count</td>
+<td>限流阈值</td>
+<td></td>
+</tr>
+<tr>
+<td>grade</td>
+<td>限流阈值类型，QPS 或线程数模式</td>
+<td>QPS 模式</td>
+</tr>
+<tr>
+<td>limitApp</td>
+<td>流控针对的调用来源</td>
+<td><code>default</code>，代表不区分调用来源</td>
+</tr>
+<tr>
+<td>strategy</td>
+<td>判断的根据是资源自身，还是根据其它关联资源 (<code>refResource</code>)，还是根据链路入口</td>
+<td>根据资源本身</td>
+</tr>
+<tr>
+<td>controlBehavior</td>
+<td>流控效果（直接拒绝 / 排队等待 / 慢启动模式）</td>
+<td>直接拒绝</td>
+</tr>
+</tbody>
+</table>
+<p>1.3 代码配置示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initFlowQpsRule</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    List&lt;FlowRule&gt; rules = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    FlowRule rule = <span class="keyword">new</span> FlowRule(resourceName);</span><br><span class="line">    <span class="comment">// set limit qps to 20</span></span><br><span class="line">    rule.setCount(<span class="number">20</span>);</span><br><span class="line">    rule.setGrade(RuleConstant.FLOW_GRADE_QPS);</span><br><span class="line">    rule.setLimitApp(<span class="string">"default"</span>);</span><br><span class="line">    rules.add(rule);</span><br><span class="line">    FlowRuleManager.loadRules(rules);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>1.4 参考：<code>https://github.com/alibaba/Sentinel/wiki/如何使用#流量控制规则-flowrule</code></p>
+<p>1.5 参考：<a href="javascript:;" target="_blank" rel="noopener">流量控制</a></p>
+<h2 id="二、降级规则"><a href="#二、降级规则" class="headerlink" title="二、降级规则"></a>二、降级规则</h2><p>2.1 配置</p>
+<p><img src="../../static/picture/degrade.png" alt="降级规则"></p>
+<p>2.2 参数</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>说明</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>resource</td>
+<td>资源名，即限流规则的作用对象</td>
+<td></td>
+</tr>
+<tr>
+<td>count</td>
+<td>阈值</td>
+<td></td>
+</tr>
+<tr>
+<td>grade</td>
+<td>降级模式，根据 RT 降级还是根据异常比例降级</td>
+<td>RT</td>
+</tr>
+<tr>
+<td>timeWindow</td>
+<td>降级的时间，单位为 s</td>
+</tr>
+</tbody>
+</table>
+<p>2.3 代码配置示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initDegradeRule</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    List&lt;DegradeRule&gt; rules = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    DegradeRule rule = <span class="keyword">new</span> DegradeRule();</span><br><span class="line">    rule.setResource(KEY);</span><br><span class="line">    <span class="comment">// set threshold RT, 10 ms</span></span><br><span class="line">    rule.setCount(<span class="number">10</span>);</span><br><span class="line">    rule.setGrade(RuleConstant.DEGRADE_GRADE_RT);</span><br><span class="line">    rule.setTimeWindow(<span class="number">10</span>);</span><br><span class="line">    rules.add(rule);</span><br><span class="line">    DegradeRuleManager.loadRules(rules);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.4 参考：<code>https://github.com/alibaba/Sentinel/wiki/如何使用#熔断降级规则-degraderule</code></p>
+<h2 id="三、热点规则"><a href="#三、热点规则" class="headerlink" title="三、热点规则"></a>三、热点规则</h2><p>3.1 配置</p>
+<p><img src="../../static/picture/hot.png" alt="热点规则"></p>
+<p>3.2 参数</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>resource</td>
+<td>资源名，必填</td>
+<td></td>
+</tr>
+<tr>
+<td>count</td>
+<td>限流阈值，必填</td>
+<td></td>
+</tr>
+<tr>
+<td>grade</td>
+<td>限流模式</td>
+<td>QPS 模式</td>
+</tr>
+<tr>
+<td>durationInSec</td>
+<td>统计窗口时间长度（单位为秒），1.6.0 版本开始支持</td>
+<td>1s</td>
+</tr>
+<tr>
+<td>controlBehavior</td>
+<td>流控效果（支持快速失败和匀速排队模式），1.6.0 版本开始支持</td>
+<td>快速失败</td>
+</tr>
+<tr>
+<td>maxQueueingTimeMs</td>
+<td>最大排队等待时长（仅在匀速排队模式生效），1.6.0 版本开始支持</td>
+<td>0ms</td>
+</tr>
+<tr>
+<td>paramIdx</td>
+<td>热点参数的索引，必填，对应 <code>SphU.entry(xxx, args)</code> 中的参数索引位置</td>
+<td></td>
+</tr>
+<tr>
+<td>paramFlowItemList</td>
+<td>参数例外项，可以针对指定的参数值单独设置限流阈值，不受前面 <code>count</code> 阈值的限制。<strong>仅支持基本类型</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>clusterMode</td>
+<td>是否是集群参数流控规则</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td>clusterConfig</td>
+<td>集群流控相关配置</td>
+</tr>
+</tbody>
+</table>
+<p>3.3 代码配置示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ParamFlowRule rule = <span class="keyword">new</span> ParamFlowRule(resourceName)</span><br><span class="line">    .setParamIdx(<span class="number">0</span>)</span><br><span class="line">    .setCount(<span class="number">5</span>);</span><br><span class="line"><span class="comment">// 针对 int 类型的参数 PARAM_B，单独设置限流 QPS 阈值为 10，而不是全局的阈值 5.</span></span><br><span class="line">ParamFlowItem item = <span class="keyword">new</span> ParamFlowItem().setObject(String.valueOf(PARAM_B))</span><br><span class="line">    .setClassType(<span class="keyword">int</span>.class.getName())</span><br><span class="line">    .setCount(<span class="number">10</span>);</span><br><span class="line">rule.setParamFlowItemList(Collections.singletonList(item));</span><br><span class="line"></span><br><span class="line">ParamFlowRuleManager.loadRules(Collections.singletonList(rule));</span><br></pre></td></tr></table></figure>
+<p>3.4 参考：<code>https://github.com/alibaba/Sentinel/wiki/热点参数限流</code></p>
+<h2 id="四、系统规则"><a href="#四、系统规则" class="headerlink" title="四、系统规则"></a>四、系统规则</h2><p>4.1 配置</p>
+<p><img src="../../static/picture/system.png" alt="系统规则"></p>
+<p>4.2 参数</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>说明</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>highestSystemLoad</td>
+<td>最大的 <code>load1</code></td>
+<td>-1 (不生效)</td>
+</tr>
+<tr>
+<td>avgRt</td>
+<td>所有入口流量的平均响应时间</td>
+<td>-1 (不生效)</td>
+</tr>
+<tr>
+<td>maxThread</td>
+<td>入口流量的最大并发数</td>
+<td>-1 (不生效)</td>
+</tr>
+<tr>
+<td>qps</td>
+<td>所有入口资源的 QPS</td>
+<td>-1 (不生效)</td>
+</tr>
+</tbody>
+</table>
+<p>4.3 代码配置示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initSystemRule</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    List&lt;SystemRule&gt; rules = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    SystemRule rule = <span class="keyword">new</span> SystemRule();</span><br><span class="line">    rule.setHighestSystemLoad(<span class="number">10</span>);</span><br><span class="line">    rules.add(rule);</span><br><span class="line">    SystemRuleManager.loadRules(rules);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>4.4 参考：<code>https://github.com/alibaba/Sentinel/wiki/如何使用#系统保护规则-systemrule</code></p>
+<h2 id="五、授权规则"><a href="#五、授权规则" class="headerlink" title="五、授权规则"></a>五、授权规则</h2><p>5.1 配置</p>
+<p><img src="../../static/picture/auth.png" alt="授权规则"></p>
+<p>5.2 参数</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>说明</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>resource</td>
+<td>资源名，即限流规则的作用对象</td>
+<td>-</td>
+</tr>
+<tr>
+<td>limitApp</td>
+<td>对应的黑名单/白名单，不同 origin 用 <code>,</code> 分隔，如 <code>appA,appB</code></td>
+<td>default，代表不区分调用来源</td>
+</tr>
+<tr>
+<td>strategy</td>
+<td>限制模式，<code>AUTHORITY_WHITE</code> 为白名单模式，<code>AUTHORITY_BLACK</code> 为黑名单模式，默认为白名单模式</td>
+<td>AUTHORITY_WHITE</td>
+</tr>
+</tbody>
+</table>
+<p>5.3 代码配置示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">AuthorityRule rule = <span class="keyword">new</span> AuthorityRule();</span><br><span class="line">rule.setResource(<span class="string">"test"</span>);</span><br><span class="line">rule.setStrategy(RuleConstant.AUTHORITY_WHITE);</span><br><span class="line">rule.setLimitApp(<span class="string">"appA,appB"</span>);</span><br><span class="line">AuthorityRuleManager.loadRules(Collections.singletonList(rule));</span><br></pre></td></tr></table></figure>
+<p>5.4 参考：<code>https://github.com/alibaba/Sentinel/wiki/如何使用#访问控制规则-authorityrule</code></p>
+
+        <h2>相关文章</h2><ul><li><a href="../../spring-cloud-alibaba-migration/spring-cloud-alibaba-2/index.html">Spring Cloud Alibaba迁移指南2：一行代码从Hystrix迁移到Sentinel</a></li><li><a href="../05-sentinel/index.html">Spring Cloud Alibaba系列教程-05-Sentinel入门与整合</a></li><li><a href="../nacos-ha/index.html">搭建生产可用的Nacos集群</a></li><li><a href="../sentinel-rules-persistence-pull-mode/index.html">Alibaba Sentinel 规则持久化-拉模式-手把手教程【基于文件】</a></li><li><a href="../sentinel-resoure-annotation/index.html">SentinelResource注解 属性总结</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">Alibaba Sentinel 规则参数总结</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../sentinel-resoure-annotation/index.html" class="pre-post btn btn-default" title="SentinelResource注解 属性总结">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SentinelResource注解 属性总结</span>
+        </a>
+    
+    
+        <a target="_blank" href="../../spring-cloud-sum/feign-problems/index.html" class="next-post btn btn-default" title="Feign常见问题总结">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Feign常见问题总结</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>

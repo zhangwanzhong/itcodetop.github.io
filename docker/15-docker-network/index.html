@@ -1,0 +1,678 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:39 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="周立的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Docker">
+
+
+    <meta name="description" content="
+本文是篇翻译。原文：https://docs.docker.com/engine/userguide/networking/
+
+本节概述了Docker默认的网络行为，包括默认情况下创建的网络类型以及如何创建用户自定义网络。 本文也描述了在单个主机或集群上创建网络所需的资源。
+有关Docker...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Docker系列教程15-Docker容器网络 | 周立的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="周立的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">周立的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    
+
+<p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Docker系列教程15-Docker容器网络">
+            
+                Docker系列教程15-Docker容器网络
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Docker</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Docker</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/03/23</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content" id="post-content">
+        
+    <div class="toc-article">
+        <strong>
+            目录
+        </strong>
+        <div class="toc-content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#默认网络"><span class="toc-text">默认网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#默认网桥"><span class="toc-text">默认网桥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用户自定义的网络"><span class="toc-text">用户自定义的网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#网桥网络"><span class="toc-text">网桥网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-gwbridge网络"><span class="toc-text">docker_gwbridge网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swarm模式下的覆盖网络"><span class="toc-text">swarm模式下的覆盖网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非swarm模式下的覆盖网络"><span class="toc-text">非swarm模式下的覆盖网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义网络插件"><span class="toc-text">自定义网络插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内嵌DNS服务器"><span class="toc-text">内嵌DNS服务器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#暴露和发布端口"><span class="toc-text">暴露和发布端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#容器与代理服务器"><span class="toc-text">容器与代理服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置Docker客户端"><span class="toc-text">配置Docker客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#手动设置环境变量"><span class="toc-text">手动设置环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#链接"><span class="toc-text">链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker和iptables"><span class="toc-text">Docker和iptables</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#相关信息"><span class="toc-text">相关信息</span></a></li></ol>
+        </div>
+    </div>
+
+
+        <blockquote>
+<p>本文是篇翻译。原文：<a href="javascript:;" target="_blank" rel="noopener">https://docs.docker.com/engine/userguide/networking/</a></p>
+</blockquote>
+<p>本节概述了Docker默认的网络行为，包括默认情况下创建的网络类型以及如何创建用户自定义网络。 本文也描述了在单个主机或集群上创建网络所需的资源。</p>
+<p>有关Docker如何在Linux主机上与<code>iptables</code>进行交互的详细信息，请参阅<a href="javascript:;" target="_blank" rel="noopener">Docker和<code>iptables</code></a> 。<br><a id="more"></a></p>
+<h2 id="默认网络"><a href="#默认网络" class="headerlink" title="默认网络"></a>默认网络</h2><p>当您安装Docker时，它会自动创建三个网络，可使用<code>docker network ls</code>命令列出这些网络：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ docker network ls</span><br><span class="line"></span><br><span class="line">NETWORK ID          NAME                DRIVER</span><br><span class="line">7fca4eb8c647        bridge              bridge</span><br><span class="line">9f904ee27bf5        none                null</span><br><span class="line">cf03ee007fb4        host                host</span><br></pre></td></tr></table></figure>
+<p>Docker内置如上三个网络。 运行容器时，可使用<code>--network</code> 标志来指定容器应连接到哪些网络。</p>
+<p><code>bridge</code> 网络代表所有Docker安装中存在的<code>docker0</code> 网络。 除非您使用<code>docker run --network=&lt;NETWORK&gt;</code> 选项，否则Docker守护程序默认将容器连接到此网络。 可使用<code>ip addr show</code> 命令（或简写形式， <code>ip a</code> ），xia显示该网桥的信息。 （ <code>ifconfig</code>命令已被弃用，根据系统的不同，还可能会<code>command not found</code>错误。）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ip addr show</span><br><span class="line"></span><br><span class="line">docker0   Link encap:Ethernet  HWaddr 02:42:47:bc:3a:eb</span><br><span class="line">          inet addr:172.17.0.1  Bcast:0.0.0.0  Mask:255.255.0.0</span><br><span class="line">          inet6 addr: fe80::42:47ff:febc:3aeb/64 Scope:Link</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST  MTU:9001  Metric:1</span><br><span class="line">          RX packets:17 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:0</span><br><span class="line">          RX bytes:1100 (1.1 KB)  TX bytes:648 (648.0 B)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>如何在Docker for Mac或Docker for Windows上运行？</strong></p>
+<p>如果您使用Docker for Mac（或在Docker for Windows上运行Linux容器）， <code>docker network ls</code> 命令将按照上述方式工作，但<code>ip addr show</code> 和<code>ifconfig</code> 命令可能会展示结果，但会给你本地主机的IP地址信息，而不是Docker容器网络。 这是因为Docker使用虚拟机中运行的网卡，而并非在宿主机的网卡。</p>
+<p>要使用<code>ip addr show</code>或<code>ifconfig</code>命令浏览Docker网络，请前往<a href="javascript:;" target="_blank" rel="noopener">Docker Machine</a> 查看相关文档；如您使用的是云提供商，如AWS上的<a href="javascript:;" target="_blank" rel="noopener">Docker Machine</a>或Digital Ocean上的<a href="javascript:;" target="_blank" rel="noopener">Docker Machine</a> 。可使用<code>docker-machine ssh &lt;machine-name&gt;</code> 登录到本地或云托管的机器，也可根据云提供商站点上的描述，直接<code>ssh</code> 。</p>
+</blockquote>
+<p><code>none</code> 网络将容器添加到容器特定的网络，该容器缺少网卡。Attach到一个网络为<code>none</code> 模式的容器，将会看到类似如下的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ docker attach nonenetcontainer</span><br><span class="line"></span><br><span class="line">root@0cb243cd1293:/# cat /etc/hosts</span><br><span class="line">127.0.0.1	localhost</span><br><span class="line">::1	localhost ip6-localhost ip6-loopback</span><br><span class="line">fe00::0	ip6-localnet</span><br><span class="line">ff00::0	ip6-mcastprefix</span><br><span class="line">ff02::1	ip6-allnodes</span><br><span class="line">ff02::2	ip6-allrouters</span><br><span class="line">root@0cb243cd1293:/# ifconfig</span><br><span class="line">lo        Link encap:Local Loopback</span><br><span class="line">          inet addr:127.0.0.1  Mask:255.0.0.0</span><br><span class="line">          inet6 addr: ::1/128 Scope:Host</span><br><span class="line">          UP LOOPBACK RUNNING  MTU:65536  Metric:1</span><br><span class="line">          RX packets:0 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:0</span><br><span class="line">          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)</span><br><span class="line"></span><br><span class="line">root@0cb243cd1293:/#</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注意</strong> ：可使用<code>CTRL-p CTRL-q</code> 断开容器连接并离开。</p>
+</blockquote>
+<p><code>host</code> 网络模式将容器添加到在宿主机的网络栈上。就网络而言，宿主机和容器之间没有隔离。例如，如果您使用<code>host</code> 网络运行在80端口上运行一个Web服务器容器，则该容器可在宿主机的80端口上使用。</p>
+<p>在Docker中，<code>none</code> 和 <code>host</code> 网络模式不能直接配置。 但是，您可以配置默认的<code>bridge</code> 网络，以及用户自定义的网桥。</p>
+<h2 id="默认网桥"><a href="#默认网桥" class="headerlink" title="默认网桥"></a>默认网桥</h2><p>所有Docker主机上都有默认的<code>bridge</code> 网络。 如不指定网络，容器将自动连接到默认的<code>bridge</code> 网络。</p>
+<p><code>docker network inspect</code>命令返回有关网络的信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ docker network inspect bridge</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">   &#123;</span><br><span class="line">       &quot;Name&quot;: &quot;bridge&quot;,</span><br><span class="line">       &quot;Id&quot;: &quot;f7ab26d71dbd6f557852c7156ae0574bbf62c42f539b50c8ebde0f728a253b6f&quot;,</span><br><span class="line">       &quot;Scope&quot;: &quot;local&quot;,</span><br><span class="line">       &quot;Driver&quot;: &quot;bridge&quot;,</span><br><span class="line">       &quot;IPAM&quot;: &#123;</span><br><span class="line">           &quot;Driver&quot;: &quot;default&quot;,</span><br><span class="line">           &quot;Config&quot;: [</span><br><span class="line">               &#123;</span><br><span class="line">                   &quot;Subnet&quot;: &quot;172.17.0.1/16&quot;,</span><br><span class="line">                   &quot;Gateway&quot;: &quot;172.17.0.1&quot;</span><br><span class="line">               &#125;</span><br><span class="line">           ]</span><br><span class="line">       &#125;,</span><br><span class="line">       &quot;Containers&quot;: &#123;&#125;,</span><br><span class="line">       &quot;Options&quot;: &#123;</span><br><span class="line">           &quot;com.docker.network.bridge.default_bridge&quot;: &quot;true&quot;,</span><br><span class="line">           &quot;com.docker.network.bridge.enable_icc&quot;: &quot;true&quot;,</span><br><span class="line">           &quot;com.docker.network.bridge.enable_ip_masquerade&quot;: &quot;true&quot;,</span><br><span class="line">           &quot;com.docker.network.bridge.host_binding_ipv4&quot;: &quot;0.0.0.0&quot;,</span><br><span class="line">           &quot;com.docker.network.bridge.name&quot;: &quot;docker0&quot;,</span><br><span class="line">           &quot;com.docker.network.driver.mtu&quot;: &quot;9001&quot;</span><br><span class="line">       &#125;,</span><br><span class="line">       &quot;Labels&quot;: &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>运行以下两个命令启动两个<code>busybox</code> 容器，两个容器都连接到默认的<code>bridge</code> 网络。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -itd --name=container1 busybox</span><br><span class="line"></span><br><span class="line">3386a527aa08b37ea9232cbcace2d2458d49f44bb05a6b775fba7ddd40d8f92c</span><br><span class="line"></span><br><span class="line">$ docker run -itd --name=container2 busybox</span><br><span class="line"></span><br><span class="line">94447ca479852d29aeddca75c28f7104df3c3196d7b6d83061879e339946805c</span><br></pre></td></tr></table></figure>
+<p>启动两个容器后再检查<code>bridge</code> 网络。 这两个<code>busybox</code>容器都连接到网络。 可看到类似如下的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">$ docker network inspect bridge</span><br><span class="line"></span><br><span class="line">&#123;[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Name&quot;: &quot;bridge&quot;,</span><br><span class="line">        &quot;Id&quot;: &quot;f7ab26d71dbd6f557852c7156ae0574bbf62c42f539b50c8ebde0f728a253b6f&quot;,</span><br><span class="line">        &quot;Scope&quot;: &quot;local&quot;,</span><br><span class="line">        &quot;Driver&quot;: &quot;bridge&quot;,</span><br><span class="line">        &quot;IPAM&quot;: &#123;</span><br><span class="line">            &quot;Driver&quot;: &quot;default&quot;,</span><br><span class="line">            &quot;Config&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;Subnet&quot;: &quot;172.17.0.1/16&quot;,</span><br><span class="line">                    &quot;Gateway&quot;: &quot;172.17.0.1&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;Containers&quot;: &#123;</span><br><span class="line">            &quot;3386a527aa08b37ea9232cbcace2d2458d49f44bb05a6b775fba7ddd40d8f92c&quot;: &#123;</span><br><span class="line">                &quot;EndpointID&quot;: &quot;647c12443e91faf0fd508b6edfe59c30b642abb60dfab890b4bdccee38750bc1&quot;,</span><br><span class="line">                &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;,</span><br><span class="line">                &quot;IPv4Address&quot;: &quot;172.17.0.2/16&quot;,</span><br><span class="line">                &quot;IPv6Address&quot;: &quot;&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;94447ca479852d29aeddca75c28f7104df3c3196d7b6d83061879e339946805c&quot;: &#123;</span><br><span class="line">                &quot;EndpointID&quot;: &quot;b047d090f446ac49747d3c37d63e4307be745876db7f0ceef7b311cbba615f48&quot;,</span><br><span class="line">                &quot;MacAddress&quot;: &quot;02:42:ac:11:00:03&quot;,</span><br><span class="line">                &quot;IPv4Address&quot;: &quot;172.17.0.3/16&quot;,</span><br><span class="line">                &quot;IPv6Address&quot;: &quot;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;Options&quot;: &#123;</span><br><span class="line">            &quot;com.docker.network.bridge.default_bridge&quot;: &quot;true&quot;,</span><br><span class="line">            &quot;com.docker.network.bridge.enable_icc&quot;: &quot;true&quot;,</span><br><span class="line">            &quot;com.docker.network.bridge.enable_ip_masquerade&quot;: &quot;true&quot;,</span><br><span class="line">            &quot;com.docker.network.bridge.host_binding_ipv4&quot;: &quot;0.0.0.0&quot;,</span><br><span class="line">            &quot;com.docker.network.bridge.name&quot;: &quot;docker0&quot;,</span><br><span class="line">            &quot;com.docker.network.driver.mtu&quot;: &quot;9001&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;Labels&quot;: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>连接到默认<code>bridge</code> 网络的容器可通过IP地址进行通信。 <strong>Docker不支持在默认网桥上自动发现服务。如果您希望容器能够通过容器名称来解析IP地址，那么可使用用户自定义网络</strong> 。您可以使用遗留的<code>docker run --link</code> 选项将两个容器连接在一起，但在大多数情况下不推荐使用。</p>
+<p>您可以<code>attach</code> 到正在运行的容器，查看容器内部的IP是什么。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ docker attach container1</span><br><span class="line"></span><br><span class="line">root@3386a527aa08:/# ifconfig</span><br><span class="line"></span><br><span class="line">eth0      Link encap:Ethernet  HWaddr 02:42:AC:11:00:02</span><br><span class="line">          inet addr:172.17.0.2  Bcast:0.0.0.0  Mask:255.255.0.0</span><br><span class="line">          inet6 addr: fe80::42:acff:fe11:2/64 Scope:Link</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST  MTU:9001  Metric:1</span><br><span class="line">          RX packets:16 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:0</span><br><span class="line">          RX bytes:1296 (1.2 KiB)  TX bytes:648 (648.0 B)</span><br><span class="line"></span><br><span class="line">lo        Link encap:Local Loopback</span><br><span class="line">          inet addr:127.0.0.1  Mask:255.0.0.0</span><br><span class="line">          inet6 addr: ::1/128 Scope:Host</span><br><span class="line">          UP LOOPBACK RUNNING  MTU:65536  Metric:1</span><br><span class="line">          RX packets:0 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:0</span><br><span class="line">          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)</span><br></pre></td></tr></table></figure>
+<p>从容器内部，使用<code>ping</code> 命令测试与其他容器的网络连接。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@3386a527aa08:/# ping -w3 172.17.0.3</span><br><span class="line"></span><br><span class="line">PING 172.17.0.3 (172.17.0.3): 56 data bytes</span><br><span class="line">64 bytes from 172.17.0.3: seq=0 ttl=64 time=0.096 ms</span><br><span class="line">64 bytes from 172.17.0.3: seq=1 ttl=64 time=0.080 ms</span><br><span class="line">64 bytes from 172.17.0.3: seq=2 ttl=64 time=0.074 ms</span><br><span class="line"></span><br><span class="line">--- 172.17.0.3 ping statistics ---</span><br><span class="line">3 packets transmitted, 3 packets received, 0% packet loss</span><br><span class="line">round-trip min/avg/max = 0.074/0.083/0.096 ms</span><br></pre></td></tr></table></figure>
+<p>使用<code>cat</code>命令查看容器上的<code>/etc/hosts</code> 文件。 该命令显示容器识别的主机名和IP地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@3386a527aa08:/# cat /etc/hosts</span><br><span class="line"></span><br><span class="line">172.17.0.2	3386a527aa08</span><br><span class="line">127.0.0.1	localhost</span><br><span class="line">::1	localhost ip6-localhost ip6-loopback</span><br><span class="line">fe00::0	ip6-localnet</span><br><span class="line">ff00::0	ip6-mcastprefix</span><br><span class="line">ff02::1	ip6-allnodes</span><br><span class="line">ff02::2	ip6-allrouters</span><br></pre></td></tr></table></figure>
+<p>要从<code>container1</code> 容器离开，并保持容器的运行，请依次使用<strong>CTRL-p CTRL-q</strong> 。 如果你愿意，也可attch到<code>container2</code> ，并重复上面的命令。</p>
+<p>默认的<code>docker0</code> 桥接网络支持使用端口映射和<code>docker run --link</code> ，以便在<code>docker0</code> 网络中的容器之间进行通信。 不推荐这种方法。 如果可以，请使用<a href="javascript:;" target="_blank" rel="noopener">用户定义的桥接网络</a>。</p>
+<h2 id="用户自定义的网络"><a href="#用户自定义的网络" class="headerlink" title="用户自定义的网络"></a>用户自定义的网络</h2><p>建议使用用户自定义网桥来控制哪些容器可以相互通信，这样也可启用自动DNS去解析容器名称到IP地址。 Docker提供了创建这些网络的默认<strong>网络驱动程序</strong>。您可以创建一个新的<strong>桥接网络</strong>， <strong>覆盖网络</strong>或<strong>MACVLAN网络</strong> 。 您还可以创建一个<strong>网络插件</strong>或<strong>远程网络</strong>进行完整的自定义和控制。</p>
+<p><strong>您可以根据需要创建任意数量的网络，并且可在任意时间将容器连接到这些网络中的零个或多个</strong>。 此外，您可以将运行着的容器连接或断开网络，而无需重启容器。当容器连接到多个网络时，<strong>其外部连接通过第一个非内部网络以词汇顺序提供</strong>。</p>
+<p>接下来的几节将详细介绍Docker的内置网络驱动程序。</p>
+<h3 id="网桥网络"><a href="#网桥网络" class="headerlink" title="网桥网络"></a>网桥网络</h3><p><code>bridge</code> 网络是Docker中最常见的网络类型。 桥接网络类似于默认的<code>bridge</code> 网络，但添加一些新功能并删除一些旧的能力。 以下示例创建了桥接网络，并对这些网络上的容器执行一些实验。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ docker network create --driver bridge isolated_nw</span><br><span class="line"></span><br><span class="line">1196a4c5af43a21ae38ef34515b6af19236a3fc48122cf585e3f3054d509679b</span><br><span class="line"></span><br><span class="line">$ docker network inspect isolated_nw</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Name&quot;: &quot;isolated_nw&quot;,</span><br><span class="line">        &quot;Id&quot;: &quot;1196a4c5af43a21ae38ef34515b6af19236a3fc48122cf585e3f3054d509679b&quot;,</span><br><span class="line">        &quot;Scope&quot;: &quot;local&quot;,</span><br><span class="line">        &quot;Driver&quot;: &quot;bridge&quot;,</span><br><span class="line">        &quot;IPAM&quot;: &#123;</span><br><span class="line">            &quot;Driver&quot;: &quot;default&quot;,</span><br><span class="line">            &quot;Config&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;Subnet&quot;: &quot;172.21.0.0/16&quot;,</span><br><span class="line">                    &quot;Gateway&quot;: &quot;172.21.0.1/16&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;Containers&quot;: &#123;&#125;,</span><br><span class="line">        &quot;Options&quot;: &#123;&#125;,</span><br><span class="line">        &quot;Labels&quot;: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">$ docker network ls</span><br><span class="line"></span><br><span class="line">NETWORK ID          NAME                DRIVER</span><br><span class="line">9f904ee27bf5        none                null</span><br><span class="line">cf03ee007fb4        host                host</span><br><span class="line">7fca4eb8c647        bridge              bridge</span><br><span class="line">c5ee82f76de3        isolated_nw         bridge</span><br></pre></td></tr></table></figure>
+<p>创建网络后，您可以使用<code>docker run --network=&lt;NETWORK&gt;</code> 选项启动容器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --network=isolated_nw -itd --name=container3 busybox</span><br><span class="line"></span><br><span class="line">8c1a0a5be480921d669a073393ade66a3fc49933f08bcc5515b37b8144f6d47c</span><br><span class="line"></span><br><span class="line">$ docker network inspect isolated_nw</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Name&quot;: &quot;isolated_nw&quot;,</span><br><span class="line">        &quot;Id&quot;: &quot;1196a4c5af43a21ae38ef34515b6af19236a3fc48122cf585e3f3054d509679b&quot;,</span><br><span class="line">        &quot;Scope&quot;: &quot;local&quot;,</span><br><span class="line">        &quot;Driver&quot;: &quot;bridge&quot;,</span><br><span class="line">        &quot;IPAM&quot;: &#123;</span><br><span class="line">            &quot;Driver&quot;: &quot;default&quot;,</span><br><span class="line">            &quot;Config&quot;: [</span><br><span class="line">                &#123;&#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;Containers&quot;: &#123;</span><br><span class="line">            &quot;8c1a0a5be480921d669a073393ade66a3fc49933f08bcc5515b37b8144f6d47c&quot;: &#123;</span><br><span class="line">                &quot;EndpointID&quot;: &quot;93b2db4a9b9a997beb912d28bcfc117f7b0eb924ff91d48cfa251d473e6a9b08&quot;,</span><br><span class="line">                &quot;MacAddress&quot;: &quot;02:42:ac:15:00:02&quot;,</span><br><span class="line">                &quot;IPv4Address&quot;: &quot;172.21.0.2/16&quot;,</span><br><span class="line">                &quot;IPv6Address&quot;: &quot;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;Options&quot;: &#123;&#125;,</span><br><span class="line">        &quot;Labels&quot;: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>您启动到此网络的容器必须驻留在同一个Docker主机上。网络中的每个容器可以立即与其他容器通信。 <strong>虽然网络本身将容器与外部网络隔离开来</strong>。</p>
+<p><img src="../../static/picture/bridge_network.png" alt=""></p>
+<p>在用户定义的桥接网络中，不支持链接（link）。 您可以在此网络中的容器上<a href="javascript:;" target="_blank" rel="noopener">暴露和发布容器端口</a> 。 如果您希望使一部分<code>bridge</code> 网络可用于外部网络，这将非常有用。</p>
+<p><img src="../../static/picture/network_access.png" alt=""></p>
+<p>如果您希望在单个主机上运行相对较小的网络，桥接网络将非常有用。 但是，您可以通过创建<code>overlay</code>网络来创建更大的网络。</p>
+<h3 id="docker-gwbridge网络"><a href="#docker-gwbridge网络" class="headerlink" title="docker_gwbridge网络"></a><code>docker_gwbridge</code>网络</h3><p><code>docker_gwbridge</code> 是由Docker在两种不同情况下自动创建的本地桥接网络：</p>
+<ul>
+<li>当您初始化或加入swarm时，Docker会创建<code>docker_gwbridge</code> 网络，并将其用于不同主机上swarm节点之间的通信。</li>
+<li>当容器网络不能提供外部连接时，除了容器的其他网络之外，Docker将容器连接到<code>docker_gwbridge</code> 网络，以便容器可以连接到外部网络或其他swarm节点。</li>
+</ul>
+<p>如果您需要自定义配置，您可以提前创建<code>docker_gwbridge</code> 网络，否则Docker会根据需要创建它。 以下示例使用一些自定义选项创建<code>docker_gwbridge</code>网络。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker network create --subnet 172.30.0.0/16 \</span><br><span class="line">                        --opt com.docker.network.bridge.name=docker_gwbridge \</span><br><span class="line">			--opt com.docker.network.bridge.enable_icc=false \</span><br><span class="line">			docker_gwbridge</span><br></pre></td></tr></table></figure>
+<p>当您使用<code>overlay</code> 网络时， <code>docker_gwbridge</code> 网络始终存在。</p>
+<h3 id="swarm模式下的覆盖网络"><a href="#swarm模式下的覆盖网络" class="headerlink" title="swarm模式下的覆盖网络"></a>swarm模式下的覆盖网络</h3><p>当Docker在swarm模式下运行时，您可以在管理节点上创建覆盖网络，而无需外部key-value存储。swarm使覆盖网络仅可用于需要服务的swarm节点。 当您创建使用覆盖网络的服务时，管理节点会自动将覆盖网络扩展到运行服务任务的节点。</p>
+<p>要了解有关在swarm模式下运行Docker Engine的更多信息，请参阅<a href="javascript:;" target="_blank" rel="noopener">Swarm模式概述</a> 。</p>
+<p>下面的示例显示了如何创建网络并将其用于来自swarm管理节点的服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ docker network create \</span><br><span class="line">  --driver overlay \</span><br><span class="line">  --subnet 10.0.9.0/24 \</span><br><span class="line">  my-multi-host-network</span><br><span class="line"></span><br><span class="line">400g6bwzd68jizzdx5pgyoe95</span><br><span class="line"></span><br><span class="line">$ docker service create --replicas 2 --network my-multi-host-network --name my-web nginx</span><br><span class="line"></span><br><span class="line">716thylsndqma81j6kkkb5aus</span><br></pre></td></tr></table></figure>
+<p>只有swarm服务可以连接到覆盖网络，而不是独立的容器。 有关群集的更多信息，请参阅<a href="javascript:;" target="_blank" rel="noopener">Docker swarm模式覆盖网络安全模型</a> 以及 <a href="javascript:;" target="_blank" rel="noopener">将服务附加到覆盖网络</a> 。</p>
+<h3 id="非swarm模式下的覆盖网络"><a href="#非swarm模式下的覆盖网络" class="headerlink" title="非swarm模式下的覆盖网络"></a>非swarm模式下的覆盖网络</h3><p>如果您不是在swarm模式下使用Docker Engine，那么<code>overlay</code>网络需要有效的key-value存储。 支持的key-value存储包括Consul，Etcd和ZooKeeper（分布式存储）。 在以这种方式创建网络之前，您必须安装并配置您所选择的key-value存储服务。 网络中的Docker宿主机、服务必须能够进行通信。</p>
+<blockquote>
+<p><strong>注意</strong> ：以swarm模式运行的Docker Engine与使用外部key-value存储的网络不兼容。</p>
+</blockquote>
+<p>对于大多数Docker用户，不推荐这种使用覆盖网络的方法。它可以与独立的swarm一起使用，可能对在Docker顶部构建解决方案的系统开发人员有用。 将来可能会被弃用。 如果您认为可能需要以这种方式使用覆盖网络，请参阅<a href="javascript:;" target="_blank" rel="noopener">本指南</a> 。</p>
+<h3 id="自定义网络插件"><a href="#自定义网络插件" class="headerlink" title="自定义网络插件"></a>自定义网络插件</h3><p>如果任何上述网络机制无法满足您的需求，您可以使用Docker的插件基础架构编写自己的网络驱动插件。 该插件将在运行Docker deamon的主机上作为单独的进程运行。 使用网络插件是一个高级主题。</p>
+<p>网络插件遵循与其他插件相同的限制和安装规则。 所有插件都使用插件API，并具有包含了安装，启动，停止和激活的生命周期。</p>
+<p>创建并安装自定义网络驱动后，您可以使用<code>--driver</code> 标志创建一个使用该驱动的网络。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network create --driver weave mynet</span><br></pre></td></tr></table></figure>
+<p>您可以检查该网络、让容器连接或断开该网络，删除该网络。 特定的插件为特定的需求而生。 检查插件文档的具体信息。 有关编写插件的更多信息，请参阅<a href="javascript:;" target="_blank" rel="noopener">扩展Docker</a> 以及 <a href="javascript:;" target="_blank" rel="noopener">编写网络驱动程序插件</a> 。</p>
+<h3 id="内嵌DNS服务器"><a href="#内嵌DNS服务器" class="headerlink" title="内嵌DNS服务器"></a>内嵌DNS服务器</h3><p>Docker daemon运行一个嵌入式的DNS服务器，从而为连接到同一用户自定义网络的容器之间提供DNS解析——这样，这些容器即可将容器名称解析为IP地址。 如果内嵌DNS服务器无法解析请求，它将被转发到为容器配置的任意外部DNS服务器。 <strong>为了方便，当容器创建时，只有<code>127.0.0.11</code> 可访问的内嵌DNS服务器会列在容器的<code>resolv.conf</code>文件中。</strong> 有关在用户自定义网络的内嵌DNS服务器的更多信息，请参阅用户定义网络中的<a href="javascript:;" target="_blank" rel="noopener">内嵌DNS服务器</a></p>
+<h2 id="暴露和发布端口"><a href="#暴露和发布端口" class="headerlink" title="暴露和发布端口"></a>暴露和发布端口</h2><p>在Docker网络中，有两种不同的机制可以直接涉及网络端口：暴露端口和发布端口。 这适用于默认网桥和用户定义的网桥。</p>
+<ul>
+<li><p>您使用<code>Dockerfile</code> 中的<code>EXPOSE</code> 关键字或 <code>docker run</code> 命令中的<code>--expose</code> 标志来暴露端口。 <strong>暴露端口是记录使用哪些端口，但实际上并不映射或打开任何端口的一种方式</strong>。 暴露端口是可选的。</p>
+</li>
+<li><p>您可以使用<code>Dockerfile</code> 中的<code>PUBLISH</code> 关键字或 <code>docker run</code> 命令中的<code>--publish</code>标志来发布端口。 这告诉Docker在容器的网络接口上打开哪些端口。当端口发布时，它将映射到宿主机上可用的高阶端口（高于<code>30000</code> ），除非您在运行时指定要映射到宿主机的哪个端口。 您不能在Dockerfile中指定要映射的端口，因为无法保证端口在运行image的宿主机上可用。</p>
+<p>此示例将容器中的端口80发布到宿主机上的随机高阶端口（在这种情况下为<code>32768</code> ）。 <code>-d</code> 标志使容器在后台运行，因此您可以发出<code>docker ps</code> 命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it -d -p 80 nginx</span><br><span class="line"></span><br><span class="line">$ docker ps</span><br><span class="line"></span><br><span class="line">64879472feea        nginx               &quot;nginx -g &apos;daemon ...&quot;   43 hours ago        Up About a minute   443/tcp, 0.0.0.0:32768-&gt;80/tcp   blissful_mclean</span><br></pre></td></tr></table></figure>
+<p>下一个示例指定80端口应映射到宿主机上的8080端口。 如果端口8080不可用，将失败。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it -d -p 8080:80 nginx</span><br><span class="line"></span><br><span class="line">$ docker ps</span><br><span class="line"></span><br><span class="line">b9788c7adca3        nginx               &quot;nginx -g &apos;daemon ...&quot;   43 hours ago        Up 3 seconds        80/tcp, 443/tcp, 0.0.0.0:8080-&gt;80/tcp   goofy_brahmagupta</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="容器与代理服务器"><a href="#容器与代理服务器" class="headerlink" title="容器与代理服务器"></a>容器与代理服务器</h2><p>如果您的容器需要使用HTTP、HTTPS或者FTP代理，你可以使用如下两种方式进行配置：</p>
+<ul>
+<li>对于Docker 17.07或更高版本，你可以配置Docker客户端从而将代理信息自动传递给容器。</li>
+<li>对于Docker 17.06或更低版本，你必须在容器内设置环境变量。你可以在构建镜像（这样不太好移植）或启动容器时执行此操作。</li>
+</ul>
+<h3 id="配置Docker客户端"><a href="#配置Docker客户端" class="headerlink" title="配置Docker客户端"></a>配置Docker客户端</h3><blockquote>
+<p><strong>仅限Edge版本</strong> ：此选项仅适用于Docker CE Edge版本。 请参阅<a href="javascript:;" target="_blank" rel="noopener">Docker CE Edge</a> 。</p>
+</blockquote>
+<ol>
+<li><p>在Docker客户端上，在启动容器所使用的用户的主目录中创建或编辑<code>~/.config.json</code> 文件。在其中添加如类似下所示的JSON，如果需要，使用<code>httpsproxy</code> 或<code>ftpproxy</code> 替换代理类型，然后替换代理服务器的地址和端口。 您可以同时配置多个代理服务器。</p>
+<p>您可以通过将<code>noProxy</code> 键设置为一个或多个逗号分隔的IP地址或主机名来选择将指定主机或指定范围排除使用代理服务器。 支持使用<code>*</code>字符作为通配符，如此示例所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;proxies&quot;:</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;httpProxy&quot;: &quot;http://127.0.0.1:3001&quot;,</span><br><span class="line">    &quot;noProxy&quot;: &quot;*.test.example.com,.example2.com&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>保存文件。</p>
+</li>
+<li><p>当您创建或启动新容器时，环境变量将在容器内自动设置。</p>
+</li>
+</ol>
+<h3 id="手动设置环境变量"><a href="#手动设置环境变量" class="headerlink" title="手动设置环境变量"></a>手动设置环境变量</h3><p>在构建映像时，或在创建或运行容器时使用<code>--env</code> 标志，可将下表中的一个或多个变量设置为适当的值。 这种方法使镜像不太可移植，因此如果您使用Docker 17.07或更高版本，则应该配置Docker客户端。</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>Dockerfile示例</th>
+<th><code>docker run</code>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HTTP_PROXY</code></td>
+<td><code>ENV HTTP_PROXY &quot;http://127.0.0.1:3001&quot;</code></td>
+<td><code>--env HTTP_PROXY &quot;http://127.0.0.1:3001&quot;</code></td>
+</tr>
+<tr>
+<td><code>HTTPS_PROXY</code></td>
+<td><code>ENV HTTPS_PROXY &quot;https://127.0.0.1:3001&quot;</code></td>
+<td><code>--env HTTPS_PROXY &quot;https://127.0.0.1:3001&quot;</code></td>
+</tr>
+<tr>
+<td><code>FTP_PROXY</code></td>
+<td><code>ENV FTP_PROXY &quot;ftp://127.0.0.1:3001&quot;</code></td>
+<td><code>--env FTP_PROXY &quot;ftp://127.0.0.1:3001&quot;</code></td>
+</tr>
+<tr>
+<td><code>NO_PROXY</code></td>
+<td>`ENV NO_PROXY “*.test.example.com,.example2.com”</td>
+<td><code>-env NO_PROXY“* .test.example.com，.example2.com”</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><p>在Docker包含“用户自定义网络”功能之前，您可以使用Docker <code>--link</code> 功能来允许容器将另一个容器的名称解析为IP地址，还可以访问你所链接的容器的环境变量。 如果可以，您应该避免使用 <code>--link</code> 标志。</p>
+<p>当您创建连接时，当您使用默认<code>bridge</code> 或用户自定义网桥时，它们的行为会有所不同。 有关详细信息，请参阅默认<code>bridge</code>链接功能的<a href="javascript:;" target="_blank" rel="noopener">遗留链接</a>以及在<a href="javascript:;" target="_blank" rel="noopener">用户自定义网络中链接容器的链接容器</a> 。</p>
+<h2 id="Docker和iptables"><a href="#Docker和iptables" class="headerlink" title="Docker和iptables"></a>Docker和iptables</h2><p>Linux主机使用内核模块<code>iptables</code> 来管理对网络设备的访问，包括路由，端口转发，网络地址转换（NAT）等问题。 Docker会在启动或停止发布端口的容器、创建或修改网络、attach到容器或其他与网络相关的操作时修改<code>iptables</code> 规则。</p>
+<p>对<code>iptables</code> 全面讨论超出了本主题的范围。 要查看哪个<code>iptables</code> 规则在任何时间生效，可以使用<code>iptables -L</code> 。 如存在多个表，例如<code>nat</code> ， <code>prerouting</code> 或<code>postrouting</code> ，您可以使用诸如<code>iptables -t nat -L</code> 类的命令列出特定的表。 有关<code>iptables</code> 的完整文档，请参阅<a href="javascript:;" target="_blank" rel="noopener">netfilter / iptables</a> 。</p>
+<p>通常， <code>iptables</code>规则由初始化脚本或守护进程创建，例如<code>firewalld</code> 。 规则在系统重新启动时不会持久存在，因此脚本或程序必须在系统引导时执行，通常在运行级别3或直接在网络初始化之后运行。请参阅您的Linux发行版的网络相关的文档，了解如何使<code>iptables</code> 规则持续存在。</p>
+<p>Docker动态管理Docker daemon、容器，服务和网络的<code>iptables</code> 规则。 在Docker 17.06及更高版本中，您可以向名为<code>DOCKER-USER</code>的新表添加规则，这些规则会在Docker自动创建任何规则之前加载。 如果您需要在Docker运行之前预先设置需要使用的<code>iptables</code> 规则，这将非常有用。</p>
+<h2 id="相关信息"><a href="#相关信息" class="headerlink" title="相关信息"></a>相关信息</h2><ul>
+<li><a href="javascript:;" target="_blank" rel="noopener">Work with network commands</a></li>
+<li><a href="javascript:;" target="_blank" rel="noopener">Get started with multi-host networking</a></li>
+<li><a href="javascript:;" target="_blank" rel="noopener">Managing Data in Containers</a></li>
+<li><a href="javascript:;" target="_blank" rel="noopener">Docker Machine overview</a></li>
+<li><a href="javascript:;" target="_blank" rel="noopener">Docker Swarm overview</a></li>
+<li><a href="javascript:;" target="_blank" rel="noopener">Investigate the LibNetwork project</a></li>
+</ul>
+
+        <h2>相关文章</h2><ul><li><a href="../11-docker-nexus/index.html">Docker系列教程11-使用Nexus管理Docker镜像</a></li><li><a href="../../docker-compose-eureka-ha/index.html">Docker容器双向联通与高可用的Eureka Server</a></li><li><a href="../00-docker-lession-index.html">Docker系列教程</a></li><li><a href="../03-docker-mirror/index.html">Docker系列教程03-配置镜像加速器</a></li><li><a href="../04-docker-command-images/index.html">Docker系列教程04-Docker镜像常用命令</a></li></ul>
+    </div>
+    
+    <div class="post-footer">
+        <div class="col-sm-10">
+            <div>
+                <b>本文链接</b>：<a href="" target="_blank">Docker系列教程15-Docker容器网络</a>
+            </div>
+            <div>
+                
+                    转载声明：本博客由周立创作，采用 <a href="javascript:;" target="_blank"> CC BY 3.0 CN </a> 许可协议。可自由转载、引用，但需署名作者且注明文章出处。如转载至微信公众号，请在文末添加作者公众号二维码。
+                
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <img src="../../static/picture/wx.jpg" width="100%/">
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a target="_blank" href="../16-docker-network-command/index.html" class="pre-post btn btn-default" title="Docker系列教程16-network命令">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Docker系列教程16-network命令</span>
+        </a>
+    
+    
+        <a target="_blank" href="../14-docker-volume/index.html" class="next-post btn btn-default" title="Docker系列教程14-Docker数据持久化">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Docker系列教程14-Docker数据持久化</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-5">
+                <img src="../../static/picture/xcx.jpg" alt="小程序" class="img-responsive">
+            </div>
+            <div class="col-md-7">
+                <a class="series-a" href="javascript:void(0)">小程序</a>
+                <ul>
+                    <li>• 原创笔记</li>
+                    <li>• 独家心法</li>
+                    <li><b>• 扫码领取</b></li>
+                </ul>
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link current" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+        
+        
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>
