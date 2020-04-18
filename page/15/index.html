@@ -1,0 +1,1105 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Mon Apr 06 2020 02:12:42 GMT+0800 (CST)">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="张万众的博客 - 关注Spring Cloud、Docker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    
+    <!--SEO-->
+
+    <meta name="keywords" content="Spring Cloud,Docker,微服务架构,Spring Boot">
+
+
+    <meta name="description" content="Spring Cloud、Docker、微服务架构、Cloud Native相关知识分享。">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>张万众的博客 - 关注Spring Cloud、Docker</title>
+
+
+    <link rel="alternate" href="../../atom.html" title="张万众的博客 - 关注Spring Cloud、Docker" type="application/atom+xml">
+
+
+    
+
+    
+
+
+
+<link rel="stylesheet" href="../../static/css/bootstrap.min-271a649e0635d6fa1b.css">
+<link rel="stylesheet" href="../../static/css/font-awesome.min-ac2bebcf7fb5b26.css">
+<link rel="stylesheet" href="../../static/css/style-6f3c140f6eee20e6591da00ec0.css">
+
+
+
+
+    
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?13766878cde148282622871dd245a973";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <nav class="navbar navbar-default" style="background-color:#fff;border:0;margin-bottom:0" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                            <span class="sr-only">切</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="../../index.html">
+                            <img src="../../static/picture/favicon.jpg">张万众的博客
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" style="border:0;" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            
+                                
+                                    <li>
+                                        <a href="../../about.html" target="_blank">
+                                            <i class="fa fa-user"></i>
+                                            关于我
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li>
+                                        <a href="../../archives.html" target="_blank">
+                                            <i class="fa fa-archive"></i>
+                                            归档
+                                        </a>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-fire"></i>
+                                            系列课程
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../docker/00-docker-lession-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Docker系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-cloud/spring-cloud-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Cloud系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../spring-boot/spring-boot-index.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        Spring Boot系列教程
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-book"></i>
+                                            开源书
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../books/rocketmq.html" target="_blank">
+                                                        <i class="fa fa-rocket"></i>
+                                                        RocketMQ开发者指南
+                                                    </a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a href="../../books/skywalking.html" target="_blank">
+                                                        <i class="fa fa-skyatlas"></i>
+                                                        Skywalking 6.2.0中文文档
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                                
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            工具
+                                            <strong class="caret"></strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            
+                                                <li>
+                                                    <a href="../../tools/markdown2.html" target="_blank">
+                                                        <i class="fa "></i>
+                                                        微信排版工具2.0
+                                                    </a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </li>
+                                
+                            
+                        </ul>
+                        
+                            <form id="search-form" class="navbar-form navbar-right">
+                                <div class="form-group input-group">
+                                    <input type="text" id="local-search-input" class="form-control" placeholder="搜我...">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="local-search-result" class="local-search-result-cls"></div>
+                            </form>
+                        
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <a href="javascript:;" target="_blank">
+        <img style="position: absolute; width:100px; top: 0; left: 0; border: 0;" src="../../static/picture/fork-me.png" alt="Fork me on GitHub">
+    </a>
+
+
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content ">
+                    
+
+
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud/edgware-new-optional-enable-discovery-client/index.html" target="_blank">Spring Cloud Edgware新特性之七：可选的EnableDiscoveryClient注解</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2018年01月15日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                最近家里事情比较多，有20天没有更新博客了。12月31日早上，老婆突然肚子疼，然后就去医院了。在经过难熬的28个小时之后，老婆早产生了个小姑娘。之后就一直奔波在家、医院，直至今日。昨晚凌晨，姑娘突然大便出血，又住院了……南京几个医院的新生儿科都不让陪护，只有周一周四才能看到。
+姑娘是个非常乖的宝宝，在家不哭不闹，饿了就吃，吃了就睡，睡醒就拉，拉完接着吃。送到医院给医生洗了个澡就大哭不止。但是没有办法，有病总得治，只能听医生的了。从生老大开始，我就开始跟医院有矛盾。如果把中间的细节描绘一下，大致可以成书。绝对狗血，并且比《Spring Cloud与Docker微服务架构实战》那本精彩，评分高。
+话说我家的娃们跟过年大致都有点关系——
+
+老大农历初二生的
+老二元旦生的
+
+希望他们的人生像过年一样无忧无虑、吃穿不愁。原本我想写富足，但是富足往往是父母赐给的，以我目前的实力，给他们许诺“富足”还很遥远。
+言归正传，回到Spring Cloud——
+相信熟悉Spring Cloud的读者对注解@EnableDiscoveryClient 及@EnableEurekaClient 并不陌生。简单回顾一下——
+要想将一个微服务注册到Eureka Server（或其他服务发现组件，例如Zookeeper、Consul等），只需：…
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Spring Cloud</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud/edgware-new-optional-enable-discovery-client/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud/edgware-new-artifact-id/index.html" target="_blank">Spring Cloud Edgware新特性之六：Artifact ID变更</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年12月25日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                Spring Cloud是当前炙手可热的微服务开发框架。它的功能强大，组件丰富，设计优雅。目前Spring Cloud还在不断发展之中。
+Spring Cloud即将发布Spring Cloud Edgware 版本。该版本解决了不少Bug，新增了不少新特性，本系列博客将为大家详细阐述在Spring Cloud Edgware中新增的特性。
+严格来说，本篇并不是新特性，而是Edgware版本的一个改变——Edgware重命名了很多Starter的Artifact ID。虽然在Edgware版中，原Artifact ID依然可用，但一旦Spring Cloud Finchley 发布，老的Artifact ID将会废弃！
+因此，学习本文还是很有意义的——至少能了解Spring Cloud的发展趋势。…
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Spring Cloud</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud/edgware-new-artifact-id/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a target="_blank" href="../../work/confluence-crack/index.html">
+                <img class="img-ajax" src="../../static/picture/loading.gif" data-src="../../static/picture/install-5.png" alt="基于Docker安装、部署、破解Confluence 6.6图文教程">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../work/confluence-crack/index.html" target="_blank">基于Docker安装、部署、破解Confluence 6.6图文教程</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年12月15日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                
+ Confluence可谓目前最强大的Wiki系统，但它是个收费软件。本文讲解如何安装、部署、破解Confluence，部署的环境是Docker。
+
+WARNING
+不建议大家在公司使用破解版，用收费版的吧^_^。如果不想掏钱，可以尝试开源的XWik ，功能也非常强大。
+本文只提供破解的思路及步骤，破解补丁 atlassian-extras-decoder-v2-3.2.jar 不提供，聪明如你，一定能在谷歌、百度、bing、ask上找到。
+
+最近公司想将Conflu...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="../../categories/工作/index.html">工作</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Confluence</a> <a class="tag-link" href="../../tags/破解/index.html">破解</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../work/confluence-crack/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud-sum/spring-cloud-concurrent/index.html" target="_blank">Spring Cloud各组件调优参数</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年12月12日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                Spring Cloud整合了各种组件，每个组件往往还有各种参数。本文来详细探讨Spring Cloud各组件的调优参数。欢迎联系我的QQ：511932633 或微信：jumping_me ，补充或者勘误，一起总结出最全、最实用的调优参数。
+Tomcat配置参数1234server:  tomcat:    max-connections: 0 # 默认值    max-threads: 0     # 默认值…
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Spring Cloud</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud-sum/spring-cloud-concurrent/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud-sum/hystrix-threadlocal/index.html" target="_blank">实用技巧：Hystrix传播ThreadLocal对象（两种方案）</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年12月05日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                目前，Spring Cloud已在南京公司推广开来，不仅如此，深圳那边近期也要基于Spring Cloud新开微服务了。
+于是，领导要求我出一套基于Spring Cloud的快速开发脚手架（近期开源）。在编写脚手架的过程中，也顺带总结一下以前在项目中遇到的问题：
+
+使用Hystrix时，如何传播ThreadLocal对象？
+
+我们知道，Hystrix有隔离策略：THREAD以及SEMAPHORE。
+
+如果你不知道Hystrix的隔离策略，可以阅读我的书籍《Spring Cloud与Docker微服务架构实战》，或者参考文档：https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationstrategy 
+…
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Hystrix</a> <a class="tag-link" href="javascript:;">Spring Cloud</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud-sum/hystrix-threadlocal/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud-sum/spring-cloud-feign-upload/index.html" target="_blank">使用Spring Cloud Feign上传文件</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年12月04日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                最近经常有人问Spring Cloud Feign如何上传文件。有团队的新成员，也有其他公司的兄弟。本文简单做个总结——
+早期的Spring Cloud中，Feign本身是没有上传文件的能力的（1年之前），要想实现这一点，需要自己去编写Encoder 去实现上传。现在我们幸福了很多。因为Feign官方提供了子项目feign-form ，其中实现了上传所需的 Encoder 。
+
+ 注：笔者测试的版本是Edgware.RELEASE。Camden、Dalston同样适应本文所述。
+…
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Feign</a> <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="../../tags/上传/index.html">上传</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud-sum/spring-cloud-feign-upload/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud-sum/spring-cloud-ratelimit/index.html" target="_blank">Spring Cloud限流详解</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年12月01日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                在高并发的应用中，限流往往是一个绕不开的话题。本文详细探讨在Spring Cloud中如何实现限流。
+在Zuul 上实现限流是个不错的选择，只需要编写一个过滤器就可以了，关键在于如何实现限流的算法。常见的限流算法有漏桶算法以及令牌桶算法。这个可参考 https://www.cnblogs.com/LBSer/p/4083131.html ，写得通俗易懂，你值得拥有，我就不拽文了。
+Google Guava 为我们提供了限流工具类RateLimiter ，于是乎，我们可以撸代码了。…
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="../../tags/限流/index.html">限流</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud-sum/spring-cloud-ratelimit/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../install/docker-install-manually/index.html" target="_blank">手动安装Docker 17.06</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年11月30日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                以前我们已经讨论过如何使用yum 之类的包管理工具安装Docker（可在本博客搜索）。
+然而有时，我们的机器无法联网，此时就需离线安装了。…
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="../../categories/安装教程/index.html">安装教程</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Docker</a> <a class="tag-link" href="../../tags/安装教程/index.html">安装教程</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../install/docker-install-manually/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud-sum/spring-cloud-retry/index.html" target="_blank">Spring Cloud各组件重试总结</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年11月29日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                最近挺多童鞋问我如何配置Spring Cloud xxx组件的重试。本篇进行一个总结。
+Spring Cloud中的重试机制应该说是比较混乱的，不同的版本有一定区别，实现也不大一样，好在Spring Cloud Camden之后已经基本稳定下来，Dalston中又进行了一些改进，详情暂且不表。
+下面我们来详细探讨。
+笔者使用的版本是 Spring Cloud Dalston SR4 ，同样适应于Edgware 以及更高版本，对于Dalston 此前的版本，本文不做讨论，大家可自行研究。…
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="../../tags/重试/index.html">重试</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud-sum/spring-cloud-retry/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h3 class="post-title">
+                <a href="../../spring-cloud-sum/spring-cloud-timeout/index.html" target="_blank">Spring Cloud各组件超时总结</a>
+            </h3>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年11月28日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                Ribbon的超时全局设置：
+123ribbon:  ReadTimeout: 60000  ConnectTimeout: 60000…
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="javascript:;">Spring Cloud</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="javascript:;">Spring Cloud</a> <a class="tag-link" href="../../tags/超时/index.html">超时</a>
+                
+            </span>
+        </span>
+    
+
+    
+</div>
+            </div>
+
+            <div class="post-permalink">
+                <a target="_blank" href="../../spring-cloud-sum/spring-cloud-timeout/index.html" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+
+
+    <nav class="pagination" role="navigation">
+        <div id="page-nav">
+            <a class="extend prev" rel="prev" href="../14/index.html"><i class="fa fa-angle-left"></i></a><a class="page-number" href="../../index.html">1</a><span class="space">&hellip;</span><a class="page-number" href="../13/index.html">13</a><a class="page-number" href="../14/index.html">14</a><span class="page-number current">15</span><a class="page-number" href="../16/index.html">16</a><a class="page-number" href="../17/index.html">17</a><span class="space">&hellip;</span><a class="page-number" href="../19/index.html">19</a><a class="extend next" rel="next" href="../16/index.html"><i class="fa fa-angle-right"></i></a>
+        </div>
+    </nav>
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        <div class="widget about-me">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="../../static/picture/wx.jpg" alt="公众号" class="img-responsive center-block">
+        </div>
+        <div class="col-md-7">
+            <a class="series-a" href="javascript:void(0)">公众号</a>
+            <ul>
+                <li>• 技术干货推送</li>
+                <li>• 免费资料领取</li>
+                <li><b>• 扫码领取更多惊喜</b></li>
+            </ul>
+        </div>
+    </div>
+    
+        <hr class="divider-hr">
+        <div class="content social">
+            
+                <a href="javascript:;" rel="external nofollow" title="GitHub" target="_blank">
+                    <i class="github fa fa-github"></i>
+                </a>
+            
+                <a href="javascript:;" rel="external nofollow" title="Gitee" target="_blank">
+                    <i class="git fa fa-git"></i>
+                </a>
+            
+                <a href="mailto:eacdy0000@126.com" rel="external nofollow" title="邮箱" target="_blank">
+                    <i class="envelope-o fa fa-envelope-o"></i>
+                </a>
+            
+                <a href="javascript:;" rel="external nofollow" title="慕课网" target="_blank">
+                    <i class="book fa fa-book"></i>
+                </a>
+            
+                <a href="../../atom.html" rel="external nofollow" title="RSS" target="_blank">
+                    <i class="feed fa fa-feed"></i>
+                </a>
+            
+        </div>
+    
+</div>
+
+
+
+
+        
+        
+    <div class="ad">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:;" rel="nofollow" target="_blank">
+                    <img class="img-responsive center-block" title="Spring Cloud Alibaba从入门到进阶" src="../../static/picture/imooc.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        
+        <div class="widget">
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud" class="img-responsive center-block" src="../../static/picture/spring-cloud.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-cloud/spring-cloud-index.html">Spring Cloud系列教程</a>
+            <p>全面、通俗易懂的Spring Cloud教程</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Cloud Alibaba视频教程" class="img-responsive center-block" src="../../static/picture/alibaba.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="javascript:;">Spring Cloud Alibaba视频教程</a>
+            <p>全网唯一，你值得拥有</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Docker" class="img-responsive center-block" src="../../static/picture/docker.png">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../docker/00-docker-lession-index.html">Docker系列教程</a>
+            <p>Docker系列</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <img alt="Spring Boot" class="img-responsive center-block" src="../../static/picture/spring-boot.jpg">
+        </div>
+        <div class="col-md-9">
+            <a class="series-a" target="_blank" href="../../spring-boot/spring-boot-index.html">Spring Boot系列教程</a>
+            <p>Boot是基石...</p>
+        </div>
+    </div>
+</div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Docker</i></a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Kubernetes</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Boot</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud</i></a><span class="category-list-count">94</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Alibaba</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="javascript:;"><i class="fa" aria-hidden="true">Spring Cloud Stream</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/其他/index.html"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/安装教程/index.html"><i class="fa" aria-hidden="true">安装教程</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="../../categories/工作/index.html"><i class="fa" aria-hidden="true">工作</i></a><span class="category-list-count">20</span></li></ul>
+    </div>
+
+
+        
+        
+    
+        <div class="widget">
+            <h3 class="title">标签云</h3>
+            <div class="content tag-cloud">
+                
+                <canvas width="300" height="300" id="tag-cloud-3d">
+                    <a href="javascript:;" style="font-size: 11.54px;">API Gateway</a> <a href="javascript:;" style="font-size: 10.77px;">Actuator</a> <a href="javascript:;" style="font-size: 10px;">Apollo</a> <a href="javascript:;" style="font-size: 10.77px;">Awesome</a> <a href="javascript:;" style="font-size: 10px;">Chrome</a> <a href="javascript:;" style="font-size: 10px;">Confluence</a> <a href="javascript:;" style="font-size: 13.08px;">Consul</a> <a href="javascript:;" style="font-size: 19.23px;">Docker</a> <a href="javascript:;" style="font-size: 16.15px;">Docker Compose</a> <a href="javascript:;" style="font-size: 10.77px;">Dubbo</a> <a href="javascript:;" style="font-size: 10px;">ELK</a> <a href="javascript:;" style="font-size: 15.38px;">Eureka</a> <a href="javascript:;" style="font-size: 16.92px;">Feign</a> <a href="javascript:;" style="font-size: 11.54px;">Git</a> <a href="javascript:;" style="font-size: 15.38px;">Hystrix</a> <a href="javascript:;" style="font-size: 10px;">Hystrix Dashboard</a> <a href="javascript:;" style="font-size: 10px;">IDEA</a> <a href="javascript:;" style="font-size: 10px;">JDK</a> <a href="javascript:;" style="font-size: 10px;">JWT</a> <a href="javascript:;" style="font-size: 10px;">Jenkins</a> <a href="javascript:;" style="font-size: 11.54px;">Kafka</a> <a href="javascript:;" style="font-size: 12.31px;">Kubernetes</a> <a href="javascript:;" style="font-size: 10.77px;">Kubespray</a> <a href="javascript:;" style="font-size: 10px;">Light Security</a> <a href="javascript:;" style="font-size: 10px;">Log4j</a> <a href="javascript:;" style="font-size: 10px;">Logback</a> <a href="javascript:;" style="font-size: 10px;">MQ</a> <a href="javascript:;" style="font-size: 10px;">Maven</a> <a href="javascript:;" style="font-size: 10px;">MongoDB</a> <a href="javascript:;" style="font-size: 10px;">MySQL</a> <a href="javascript:;" style="font-size: 10.77px;">Mybatis</a> <a href="javascript:;" style="font-size: 13.85px;">Nacos</a> <a href="javascript:;" style="font-size: 11.54px;">Nexus</a> <a href="javascript:;" style="font-size: 10.77px;">Nginx</a> <a href="javascript:;" style="font-size: 10px;">PostgreSQL</a> <a href="javascript:;" style="font-size: 10px;">RabbitMQ</a> <a href="javascript:;" style="font-size: 13.08px;">Ribbon</a> <a href="javascript:;" style="font-size: 11.54px;">RocketMQ</a> <a href="javascript:;" style="font-size: 15.38px;">Sentinel</a> <a href="javascript:;" style="font-size: 10px;">SonarQube</a> <a href="javascript:;" style="font-size: 10px;">Sonartype</a> <a href="javascript:;" style="font-size: 10px;">Spring</a> <a href="javascript:;" style="font-size: 16.15px;">Spring Boot</a> <a href="javascript:;" style="font-size: 20px;">Spring Cloud</a> <a href="javascript:;" style="font-size: 18.46px;">Spring Cloud Alibaba</a> <a href="javascript:;" style="font-size: 14.62px;">Spring Cloud Config</a> <a href="javascript:;" style="font-size: 11.54px;">Spring Cloud Consul</a> <a href="javascript:;" style="font-size: 14.62px;">Spring Cloud Gateway</a> <a href="javascript:;" style="font-size: 12.31px;">Spring Cloud Sleuth</a> <a href="javascript:;" style="font-size: 12.31px;">Spring Cloud Stream</a> <a href="javascript:;" style="font-size: 10px;">Spring Integration</a> <a href="javascript:;" style="font-size: 10px;">Swagger</a> <a href="javascript:;" style="font-size: 10px;">Turbine</a> <a href="javascript:;" style="font-size: 12.31px;">Zipkin</a> <a href="javascript:;" style="font-size: 10px;">Zookeeper</a> <a href="javascript:;" style="font-size: 16.15px;">Zuul</a> <a href="../../tags/expect/index.html" style="font-size: 10px;">expect</a> <a href="../../tags/mongodump/index.html" style="font-size: 10px;">mongodump</a> <a href="../../tags/上传/index.html" style="font-size: 10px;">上传</a> <a href="../../tags/其他/index.html" style="font-size: 13.08px;">其他</a> <a href="../../tags/分布式锁/index.html" style="font-size: 10px;">分布式锁</a> <a href="../../tags/备份/index.html" style="font-size: 10px;">备份</a> <a href="../../tags/学习/index.html" style="font-size: 10px;">学习</a> <a href="../../tags/安装教程/index.html" style="font-size: 13.85px;">安装教程</a> <a href="../../tags/工作/index.html" style="font-size: 17.69px;">工作</a> <a href="../../tags/常见问题/index.html" style="font-size: 10px;">常见问题</a> <a href="../../tags/性能/index.html" style="font-size: 10px;">性能</a> <a href="../../tags/总结/index.html" style="font-size: 15.38px;">总结</a> <a href="../../tags/数据库/index.html" style="font-size: 10px;">数据库</a> <a href="../../tags/断路器/index.html" style="font-size: 12.31px;">断路器</a> <a href="../../tags/日志/index.html" style="font-size: 11.54px;">日志</a> <a href="../../tags/服务发现/index.html" style="font-size: 12.31px;">服务发现</a> <a href="../../tags/注册中心/index.html" style="font-size: 12.31px;">注册中心</a> <a href="../../tags/监控/index.html" style="font-size: 10.77px;">监控</a> <a href="../../tags/破解/index.html" style="font-size: 10px;">破解</a> <a href="../../tags/网关/index.html" style="font-size: 11.54px;">网关</a> <a href="../../tags/负载均衡/index.html" style="font-size: 10.77px;">负载均衡</a> <a href="../../tags/超时/index.html" style="font-size: 10px;">超时</a> <a href="../../tags/跨域/index.html" style="font-size: 10px;">跨域</a> <a href="../../tags/邮件/index.html" style="font-size: 10px;">邮件</a> <a href="../../tags/配置中心/index.html" style="font-size: 15.38px;">配置中心</a> <a href="../../tags/重试/index.html" style="font-size: 10px;">重试</a> <a href="../../tags/限流/index.html" style="font-size: 10px;">限流</a>
+                </canvas>
+                
+            </div>
+        </div>
+    
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友情链接</h3>
+        <div class="content friends-link">
+        
+            <a href="javascript:;" class="fa" target="_blank">程序猿DD|翟永超</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">泥瓦匠的博客</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">梁桂钊的博客</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">猿天地</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">二丫讲梵</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">ANOYI轻量级微服务架构</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">python教程</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">京东资深SRE工程师</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">王欣的博客</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">PM的AI知识库</a>
+        
+            <a href="javascript:;" class="fa" target="_blank">李庆林个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; <strong>Since 2018-12-26</strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="javascript:;" class="copyright-links" target="_blank" rel="nofollow">ITMuch</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/bootstrap-hover-dropdown.min.js"></script>
+
+    <script src="../../static/js/search-3f4fbd0557c869ca0516ebb5f.js"></script>
+
+
+
+    <script src="../../static/js/tagcanvas.min-d3e34a34636b6f4c81.js"></script>
+    <script>
+        var tagOption = {
+                textColour: '#29afec', // 字体颜色
+                outlineMethod: 'block', // 选中模式
+                outlineColour: '#bbb', // 选中模式的颜色
+                interval: 10 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true ||
+        '', // 选中的标签是否继续滚动
+            frontSelect
+        : true ||
+        '', // 不选标签云后部的标签
+            initial
+        :
+        [0.3, -0.3],
+            depth
+        :
+        0.5,
+            decel
+        :
+        0.95,
+            maxSpeed
+        :
+        0.03,
+            reverse
+        : true ||
+        '', // 是否反向触发
+            fadeIn
+        :
+        500, // 进入动画时间
+            wheelZoom
+        : true ||
+        '', // 是否启用鼠标滚轮
+            zoomMax
+        :
+        1.5,
+            zoomMin
+        :
+        1.0
+        }
+        TagCanvas.Start('tag-cloud-3d', '', tagOption);
+    </script>
+
+
+
+    <script async="" src="../../static/js/busuanzi.pure.mini.js"></script>
+
+
+<script src="../../static/js/app-da10bb3b2ae5c8348d2bd2cc3faf.js"></script>
+
+
+
+</body>
